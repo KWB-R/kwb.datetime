@@ -1,0 +1,10 @@
+Package: kwb.datetime
+Maintainer: Hauke Sonnenberg <hauke.sonnenberg@kompetenz-wasser.de>
+Author: Hauke Sonnenberg
+Version: 0.3.0
+License: GPL
+Imports: kwb.utils
+Title: Functions for date/time objects
+Description: Functions for date/time objects, e.g. functions to convert timestamps between
+          different time zones. Correctness for some functions still to be verified! 
+RoxygenNote: 6.0.1
