@@ -554,6 +554,20 @@ utcOffset <- function(LocalDateTime, DateTimeUTC)
 #' 
 #' @export
 #' 
+#' @examples 
+#' 
+#' # Create a timestamp in the time zone that is set on the local machine
+#' time <- as.POSIXct("2017-11-01 01:16")
+#' 
+#' # Convert time zone to UTC
+#' time_utc <- toUTC(time)
+#' 
+#' # The new time zone "UTC" is set in the attribute "tz"
+#' attr(time_utc, "tz")
+#' 
+#' # The times mean the same, just expressed in another time zone!
+#' time_utc == time
+#' 
 toUTC <- function(x)
 {
   toTimezone(x, "UTC")
