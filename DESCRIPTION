@@ -1,7 +1,7 @@
 Package: kwb.datetime
 Maintainer: Hauke Sonnenberg <hauke.sonnenberg@kompetenz-wasser.de>
 Author: Hauke Sonnenberg
-Version: 0.3.0
+Version: 0.3.99
 License: GPL
 Imports: kwb.utils
 Title: Functions for date/time objects

@@ -124,7 +124,8 @@ timestampIn <- function(
     # If tsFirst (tsLast) is given set isIn vector at positions of timestamps 
     # before tsFirst (after tsLast) to FALSE
     
-    limit <- ifelse(first, tsFirst, tsLast)
+    limit <- if (first) tsFirst else tsLast
+    
     included <- ifelse(first, firstIncluded, lastIncluded)
     
     if (! is.null(limit)) {
