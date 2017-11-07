@@ -8,30 +8,29 @@
 # expect it to mean 4 hours ahead of UTC (i.e. east of Greenwich)."
 #
 
-# iso_to_localtime ----------------------------------------------------------------
+# iso_to_localtime -------------------------------------------------------------
 
 #' Text Timestamps to POSIXct
 #' 
 #' Convert text timestamps in a format according to ISO 8601 to POSIXct objects 
 #' 
-#' @param timestamps vector of character timestamps of format \code{yyyy-mm-dd
-#'   HH:MM[:SS]<utc_offset>} with the seconds being optional and
-#'   \code{<utc_offset>} being one of '+01' (UTC offset in Berlin in winter) or
-#'   '+02' (UTC offset in Berlin in summer)
+#' @param timestamps vector of character timestamps of format \code{yyyy-mm-dd 
+#'   HH:MM:SS+[01|02]}, i.e. ending either in '+01' (UTC offset in Berlin in
+#'   winter) or '+02' (UTC offset in Berlin in summer)
 #' @param dbg if \code{TRUE} debug messages are shown
 #' 
 #' @export
 #' 
 #' @examples
 #' times <- iso_to_localtime(c(
-#'   "2017-10-29 01:00+02", 
-#'   "2017-10-29 01:30+02", 
-#'   "2017-10-29 02:00+02",
-#'   "2017-10-29 02:30+02",
-#'   "2017-10-29 02:00+01", 
-#'   "2017-10-29 02:30+01", 
-#'   "2017-10-29 03:00+01", 
-#'   "2017-10-29 03:30+01"
+#'   "2017-10-29 01:00:00+02", 
+#'   "2017-10-29 01:30:00+02", 
+#'   "2017-10-29 02:00:00+02",
+#'   "2017-10-29 02:30:00+02",
+#'   "2017-10-29 02:00:00+01", 
+#'   "2017-10-29 02:30:00+01", 
+#'   "2017-10-29 03:00:00+01", 
+#'   "2017-10-29 03:30:00+01"
 #' ))
 #' 
 #' class(times)
@@ -44,41 +43,18 @@ iso_to_localtime <- function(timestamps, dbg = TRUE)
     stop("timestamps are expected to be of mode character")
   }
   
-  pattern <- timeFormatToRegex("%Y-%m-%d %H:%M")
-  
-  pattern <- paste0(pattern, "([:]\\d\\d)?[+-]\\d+$")
-  
-  if (! all(grepl(pattern, timestamps))) {
+  if (! all(hasTimeFormat(timestamps, "^%Y-%m-%d %H:%M:%S[+](01|02)$"))) {
     
     stop(
-      "Not all timestamps are in the expected format\n", 
-      "  'yyyy-mm-dd HH:MM[:SS]<utc_offset>'\n", 
-      "with the seconds being optional and <utc_offset> being one of '+01'", 
-      "(UTC offset in winter) or '+02' (UTC offset in summer)!"
+      'Not all timestamps are in the expected format\n', 
+      '"yyyy-mm-dd HH:MM:SS+[01|02]", i.e. ending either in\n',
+      '  "+01" (UTC offset in winter) or\n', 
+      '  "+02" (UTC offset in summer)!'
     )
   }
   
-  localtimes <- as.POSIXct(rep(NA, length(timestamps)))
-  
-  in_winter <- grep("\\+01$", timestamps)
-  in_summer <- grep("\\+02$", timestamps)
-  
-  (n_winter <- length(in_winter))
-  (n_summer <- length(in_summer))
-
-  # Find the length of the "pure" timestamp (without suffix "+01" or "+02")
-  match_info <- regexec("^\\s*(.*)[+-]\\d+$", timestamps[1])[[1]]
-  stop_index <- kwb.utils::getAttribute(match_info, "match.length")[2]
-  
-  # Extract the "pure" timestamp
-  timestamps <- substr(timestamps, 1, stop_index)
-  
-  kwb.utils::catIf(dbg, "Converting", n_winter, "timestamps in CET ... ")
-  localtimes[in_winter] <- as.POSIXct(timestamps[in_winter], tz = "Etc/GMT-1")
-  kwb.utils::catIf(dbg, "ok.\n")
-  
-  kwb.utils::catIf(dbg, "Converting", n_summer, "timestamps in CEST ... ")
-  localtimes[in_summer] <- as.POSIXct(timestamps[in_summer], tz = "Etc/GMT-2")
+  kwb.utils::catIf(dbg, "Converting", length(timestamps), "timestamps ... ")
+  localtimes <- as.POSIXct(paste0(timestamps, "00"), format = "%F %T%z")
   kwb.utils::catIf(dbg, "ok.\n")
   
   localtimes
@@ -136,11 +112,11 @@ to.GMT.plus.1 <- function(timestamp)
 toGmtRelativePosix <- function(timestamp, GMT.offset = 1, format = NULL)
 {
   stopifnot(is.character(timestamp))
-
+  
   # set default time format (it seems that inlinedocs does not like the default
   # assignment in the argument definition above)
   format <- kwb.utils::defaultIfNULL(format, "%Y-%m-%d %H:%M:%S")
-
+  
   as.POSIXct(timestamp, tz = sprintf("Etc/GMT%+d", GMT.offset), format = format)
 }
 
@@ -190,7 +166,7 @@ stringToPosix <- function(
   isMatching <- sapply(formats, kwb.datetime::hasTimeFormat, timestamps = x)
   
   if (sum(isMatching) == 0) {
-
+    
     formats <- kwb.utils::stringList(formats)
     
     stop("Timestamp '", x, "' does not match any of these formats: ", formats)
@@ -298,7 +274,7 @@ hsToPosix <- function(
   
   # Default time zone is Coordinated Universal Time (UTC)
   tzone <- kwb.utils::defaultIfNULL(tzone, "UTC")
-
+  
   # Use as.POSIXct or as.POSIXlt as the conversion function
   functionName <- paste0("as.POSIX", ifelse(lt, "lt", "ct"))
   

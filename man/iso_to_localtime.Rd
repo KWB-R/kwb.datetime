@@ -7,10 +7,9 @@
 iso_to_localtime(timestamps, dbg = TRUE)
 }
 \arguments{
-\item{timestamps}{vector of character timestamps of format \code{yyyy-mm-dd
-HH:MM[:SS]<utc_offset>} with the seconds being optional and
-\code{<utc_offset>} being one of '+01' (UTC offset in Berlin in winter) or
-'+02' (UTC offset in Berlin in summer)}
+\item{timestamps}{vector of character timestamps of format \code{yyyy-mm-dd 
+HH:MM:SS+[01|02]}, i.e. ending either in '+01' (UTC offset in Berlin in
+winter) or '+02' (UTC offset in Berlin in summer)}
 
 \item{dbg}{if \code{TRUE} debug messages are shown}
 }
@@ -19,14 +18,14 @@ Convert text timestamps in a format according to ISO 8601 to POSIXct objects
 }
 \examples{
 times <- iso_to_localtime(c(
-  "2017-10-29 01:00+02", 
-  "2017-10-29 01:30+02", 
-  "2017-10-29 02:00+02",
-  "2017-10-29 02:30+02",
-  "2017-10-29 02:00+01", 
-  "2017-10-29 02:30+01", 
-  "2017-10-29 03:00+01", 
-  "2017-10-29 03:30+01"
+  "2017-10-29 01:00:00+02", 
+  "2017-10-29 01:30:00+02", 
+  "2017-10-29 02:00:00+02",
+  "2017-10-29 02:30:00+02",
+  "2017-10-29 02:00:00+01", 
+  "2017-10-29 02:30:00+01", 
+  "2017-10-29 03:00:00+01", 
+  "2017-10-29 03:30:00+01"
 ))
 
 class(times)
