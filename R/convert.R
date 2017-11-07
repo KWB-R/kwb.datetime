@@ -334,51 +334,6 @@ hsToPosix <- function(
   stopifnot(identical(hsToPosix(lt), ct))
 }
 
-# hsDateTimeToPosix2 -----------------------------------------------------------
-
-#' Date and Seconds to POSIXct
-#' 
-#' Returns POSIXct object representing given date and time. In myExampPosix an
-#' example POSIXct object must be given in order to calculate the correct 
-#' origin.
-#' 
-#' @param myDate character string representing a date in format yyyy-mm-dd
-#' @param myTime_min time since midnight of the day given in \code{myDate}
-#' @param myExampPosix example POSIXct object from which the origin is 
-#'   determined
-#' 
-#' @keywords internal
-#' 
-hsDateTimeToPosix2 <- function(myDate, myTime_min, myExampPosix)
-{
-  # Calculate origin of example posix
-  t0 <- (myExampPosix - as.integer(myExampPosix))
-  
-  # Add time to date  
-  d1 <- as.integer(myDate) + round(60 * myTime_min)
-  
-  # Convert number of seconds to POSIXct  
-  as.POSIXct(d1, origin = t0)
-}
-
-# hsDateTimeToPosix ------------------------------------------------------------
-
-#' Date and minutes to POSIXct
-#' 
-#' Converts date given as string and time since midnight in seconds into POSIXct
-#' object in GMT time zone.
-#' 
-#' @param strDate character string representing a date in format yyyy-mm-dd
-#' @param intTime_min time since midnight of the day given in \code{strDate}
-#' 
-#' @keywords internal
-#' 
-hsDateTimeToPosix <- function(strDate, intTime_min)
-{
-  # Convert Date to POSIXct (GMT!) and add time in seconds
-  as.POSIXct(as.Date(strDate), tz = "GMT") + round(60 * intTime_min)
-}
-
 # berlinNormalTimeToUTC --------------------------------------------------------
 
 #' berlinNormalTimeToUTC
