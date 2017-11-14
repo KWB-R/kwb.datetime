@@ -12,4 +12,3 @@ Current year as four digit number (numeric)
 \description{
 Current Year (as numeric)
 }
-\keyword{internal}

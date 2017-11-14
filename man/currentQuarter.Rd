@@ -12,4 +12,3 @@ number of current quarter (1, 2, 3 or 4)
 \description{
 Number of current Quarter
 }
-\keyword{internal}

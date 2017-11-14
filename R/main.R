@@ -102,8 +102,7 @@ currentDateString <- function(format = "%d %B %Y")
 #' Number of current Quarter
 #' 
 #' @return number of current quarter (1, 2, 3 or 4)
-#' 
-#' @keywords internal
+#' @export
 #' 
 currentQuarter <- function()
 {
@@ -116,7 +115,7 @@ currentQuarter <- function()
 #' 
 #' @return Current year as four digit number (numeric)
 #' 
-#' @keywords internal
+#' @export
 #' 
 currentYear <- function()
 {
