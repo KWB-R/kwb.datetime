@@ -4,6 +4,7 @@ Author: Hauke Sonnenberg
 Version: 0.3.99
 License: GPL
 Imports: kwb.utils
+Remotes: github::kwb-r/kwb.utils
 Title: Functions for date/time objects
 Description: Functions for date/time objects, e.g. functions to convert timestamps between
           different time zones. Correctness for some functions still to be verified! 
