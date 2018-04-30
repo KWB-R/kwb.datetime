@@ -58,7 +58,7 @@ attributes(lt)
 # These are all available pieces of information 
 # (isdst = is daylight savings time in effect)
 sapply(attr(lt, "names"), function(part) {
-  if (part %in% names(lt)) lt[[part]] else cat("No such element:", part, "\n")
+  if (part \%in\% names(lt)) lt[[part]] else cat("No such element:", part, "\n")
 })
   
 # You may use hsToPosix to convert between lt and ct
