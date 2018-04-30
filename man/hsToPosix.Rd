@@ -52,7 +52,9 @@ class(lt) # "POSIXlt" "POSIXt"
 sprintf("\%d hours, \%d minutes, \%d seconds", lt$hour, lt$min, lt$sec)
   
 capture.output(str(lt))
-  
+
+attributes(lt)
+
 # These are all available pieces of information 
 # (isdst = is daylight savings time in effect)
 sapply(attr(lt, "names"), function(part) lt[[part]])
