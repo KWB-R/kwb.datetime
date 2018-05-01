@@ -218,10 +218,10 @@ stringToPosix <- function(
 #'   
 #' # With a POSIXlt object you can access the different parts of the timestamp
 #' sprintf("%d hours, %d minutes, %d seconds", lt$hour, lt$min, lt$sec)
-#' capture.output(str(lt))  
+#' 
 #' # These are all available pieces of information 
 #' # (isdst = is daylight savings time in effect)
-#' sapply(attr(lt, "names"), function(part) lt[[part]])
+#' sapply(attr(lt, "names"), function(name) try(lt[[name]]))
 #'   
 #' # You may use hsToPosix to convert between lt and ct
 #' identical(hsToPosix(ct, lt = TRUE), lt)

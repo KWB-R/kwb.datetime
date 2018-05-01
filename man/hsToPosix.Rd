@@ -50,16 +50,10 @@ class(lt) # "POSIXlt" "POSIXt"
   
 # With a POSIXlt object you can access the different parts of the timestamp
 sprintf("\%d hours, \%d minutes, \%d seconds", lt$hour, lt$min, lt$sec)
-  
-capture.output(str(lt))
-
-attributes(lt)
 
 # These are all available pieces of information 
 # (isdst = is daylight savings time in effect)
-sapply(attr(lt, "names"), function(part) {
-  if (part \%in\% names(lt)) lt[[part]] else cat("No such element:", part, "\n")
-})
+sapply(attr(lt, "names"), function(name) try(lt[[name]]))
   
 # You may use hsToPosix to convert between lt and ct
 identical(hsToPosix(ct, lt = TRUE), lt)
