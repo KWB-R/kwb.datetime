@@ -7,3 +7,8 @@
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/kwb.datetime)](http://cran.r-project.org/package=kwb.datetime)
 
 R Package with Functions for Date Time Handling
+
+## Documentation
+
+Development version: [https://kwb-r.github.io/kwb.datetime/dev](https://kwb-r.github.io/kwb.datetime/dev)
+Latest release: [https://kwb-r.github.io/kwb.datetime](https://kwb-r.github.io/kwb.datetime)
