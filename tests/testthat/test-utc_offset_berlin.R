@@ -1,0 +1,15 @@
+test_that("utc_offset_Berlin_time() works", {
+
+  expect_error(kwb.datetime:::utc_offset_Berlin_time())
+})
+
+test_that("utc_offset_Berlin_time_1d() works", {
+
+  expect_error(kwb.datetime:::utc_offset_Berlin_time_1d())
+})
+
+test_that("utc_offset_Berlin_day() works", {
+
+  expect_error(kwb.datetime:::utc_offset_Berlin_day())
+})
+
