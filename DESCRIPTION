@@ -11,3 +11,5 @@ Description: Functions for date/time objects, e.g. functions to convert timestam
 RoxygenNote: 6.0.1
 URL: https://github.com/kwb-r/kwb.datetime
 BugReports: https://github.com/kwb-r/kwb.datetime/issues
+Suggests: 
+    testthat
