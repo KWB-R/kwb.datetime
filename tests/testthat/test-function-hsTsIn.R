@@ -5,14 +5,6 @@
 test_that("hsTsIn() works", {
 
   expect_error(
-    kwb.datetime:::hsTsIn(... = NULL)
-    # unused argument (... = NULL)
-  )
-   expect_error(
-    kwb.datetime:::hsTsIn(... = numeric())
-    # unused argument (... = numeric(0))
-  )
-   expect_error(
     kwb.datetime:::hsTsIn(... = 1)
     # unused argument (... = 1)
   )
@@ -21,20 +13,12 @@ test_that("hsTsIn() works", {
     # unused argument (... = 1:2)
   )
    expect_error(
-    kwb.datetime:::hsTsIn(... = character())
-    # unused argument (... = character(0))
-  )
-   expect_error(
-    kwb.datetime:::hsTsIn(... = 'a')
+    kwb.datetime:::hsTsIn(... = "a")
     # unused argument (... = "a")
   )
    expect_error(
-    kwb.datetime:::hsTsIn(... = c('a', 'b'))
+    kwb.datetime:::hsTsIn(... = c("a", "b"))
     # unused argument (... = c("a", "b"))
-  )
-   expect_error(
-    kwb.datetime:::hsTsIn(... = logical())
-    # unused argument (... = logical(0))
   )
    expect_error(
     kwb.datetime:::hsTsIn(... = TRUE)
@@ -43,6 +27,14 @@ test_that("hsTsIn() works", {
    expect_error(
     kwb.datetime:::hsTsIn(... = FALSE)
     # unused argument (... = FALSE)
+  )
+   expect_error(
+    kwb.datetime:::hsTsIn(... = as.POSIXct("2018-06-03 23:50:00"))
+    # unused argument (... = 1528062600)
+  )
+   expect_error(
+    kwb.datetime:::hsTsIn(... = list(key = c("a", "b"), value = 1:2))
+    # unused argument (... = list(key = c("a", "b"), value = 1:2))
   )
 
 })

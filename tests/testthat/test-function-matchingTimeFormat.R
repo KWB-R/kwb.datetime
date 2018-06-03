@@ -4,19 +4,17 @@
 
 test_that("matchingTimeFormat() works", {
 
-  kwb.datetime:::matchingTimeFormat(timestamp = 'a', timeFormats = 1)
-   kwb.datetime:::matchingTimeFormat(timestamp = 'a', timeFormats = 1:2)
-   kwb.datetime:::matchingTimeFormat(timestamp = 'a', timeFormats = 'a')
-   kwb.datetime:::matchingTimeFormat(timestamp = 'a', timeFormats = c('a', 'b'))
-   kwb.datetime:::matchingTimeFormat(timestamp = 'a', timeFormats = TRUE)
-   kwb.datetime:::matchingTimeFormat(timestamp = 'a', timeFormats = FALSE)
+  kwb.datetime:::matchingTimeFormat(timestamp = "a", timeFormats = 1)
+   kwb.datetime:::matchingTimeFormat(timestamp = "a", timeFormats = 1:2)
+   kwb.datetime:::matchingTimeFormat(timestamp = "a", timeFormats = "a")
+   kwb.datetime:::matchingTimeFormat(timestamp = "a", timeFormats = c("a", "b"))
+   kwb.datetime:::matchingTimeFormat(timestamp = "a", timeFormats = TRUE)
+   kwb.datetime:::matchingTimeFormat(timestamp = "a", timeFormats = FALSE)
+   kwb.datetime:::matchingTimeFormat(timestamp = "a", timeFormats = as.POSIXct("2018-06-03 23:50:00"))
+   kwb.datetime:::matchingTimeFormat(timestamp = "a", timeFormats = list(key = c("a", "b"), value = 1:2))
    expect_error(
-    kwb.datetime:::matchingTimeFormat(timestamp = NULL, timeFormats = NULL)
+    kwb.datetime:::matchingTimeFormat(timestamp = 1, timeFormats = 1)
     # Exactly one character timestamp expected!
-  )
-   expect_error(
-    kwb.datetime:::matchingTimeFormat(timestamp = 'a', timeFormats = NULL)
-    # argument to 'which' is not logical
   )
 
 })

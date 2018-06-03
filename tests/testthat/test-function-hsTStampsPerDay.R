@@ -4,12 +4,9 @@
 
 test_that("hsTStampsPerDay() works", {
 
-  expect_error(
-    kwb.datetime:::hsTStampsPerDay(tstamps = NULL)
-    # no rows to aggregate
-  )
+  kwb.datetime:::hsTStampsPerDay(tstamps = as.POSIXct("2018-06-03 23:50:00"))
    expect_error(
-    kwb.datetime:::hsTStampsPerDay(tstamps = numeric())
+    kwb.datetime:::hsTStampsPerDay(tstamps = 1)
     # invalid 'trim' argument
   )
 

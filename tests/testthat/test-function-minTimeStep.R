@@ -5,14 +5,14 @@
 test_that("minTimeStep() works", {
 
   kwb.datetime:::minTimeStep(tstamps = 1:2)
-   kwb.datetime:::minTimeStep(tstamps = c('a', 'b'))
-   expect_error(
-    kwb.datetime:::minTimeStep(tstamps = NULL)
-    # At least two timestamps needed, tstamps has only0
-  )
+   kwb.datetime:::minTimeStep(tstamps = c("a", "b"))
    expect_error(
     kwb.datetime:::minTimeStep(tstamps = 1)
     # At least two timestamps needed, tstamps has only1
+  )
+   expect_error(
+    kwb.datetime:::minTimeStep(tstamps = list(key = c("a", "b"), value = 1:2))
+    # (list) object cannot be coerced to type 'integer'
   )
 
 })

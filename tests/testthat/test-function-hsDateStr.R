@@ -4,9 +4,9 @@
 
 test_that("hsDateStr() works", {
 
-  kwb.datetime:::hsDateStr(tstamp = NULL)
+  kwb.datetime:::hsDateStr(tstamp = as.POSIXct("2018-06-03 23:50:00"))
    expect_error(
-    kwb.datetime:::hsDateStr(tstamp = numeric())
+    kwb.datetime:::hsDateStr(tstamp = 1)
     # invalid 'trim' argument
   )
 

@@ -4,16 +4,14 @@
 
 test_that("timestampIn() works", {
 
-  kwb.datetime:::timestampIn(tstamps = NULL)
-   kwb.datetime:::timestampIn(tstamps = numeric())
-   kwb.datetime:::timestampIn(tstamps = 1)
+  kwb.datetime:::timestampIn(tstamps = 1)
    kwb.datetime:::timestampIn(tstamps = 1:2)
-   kwb.datetime:::timestampIn(tstamps = character())
-   kwb.datetime:::timestampIn(tstamps = 'a')
-   kwb.datetime:::timestampIn(tstamps = c('a', 'b'))
-   kwb.datetime:::timestampIn(tstamps = logical())
+   kwb.datetime:::timestampIn(tstamps = "a")
+   kwb.datetime:::timestampIn(tstamps = c("a", "b"))
    kwb.datetime:::timestampIn(tstamps = TRUE)
    kwb.datetime:::timestampIn(tstamps = FALSE)
+   kwb.datetime:::timestampIn(tstamps = as.POSIXct("2018-06-03 23:50:00"))
+   kwb.datetime:::timestampIn(tstamps = list(key = c("a", "b"), value = 1:2))
 
 })
 

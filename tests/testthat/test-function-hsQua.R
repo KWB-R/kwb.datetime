@@ -4,16 +4,17 @@
 
 test_that("hsQua() works", {
 
-  kwb.datetime:::hsQua(month = NULL)
-   kwb.datetime:::hsQua(month = numeric())
-   kwb.datetime:::hsQua(month = 1)
+  kwb.datetime:::hsQua(month = 1)
    kwb.datetime:::hsQua(month = 1:2)
-   kwb.datetime:::hsQua(month = logical())
    kwb.datetime:::hsQua(month = TRUE)
    kwb.datetime:::hsQua(month = FALSE)
    expect_error(
-    kwb.datetime:::hsQua(month = character())
+    kwb.datetime:::hsQua(month = "a")
     # non-numeric argument to binary operator
+  )
+   expect_error(
+    kwb.datetime:::hsQua(month = as.POSIXct("2018-06-03 23:50:00"))
+    # '/' not defined for "POSIXt" objects
   )
 
 })

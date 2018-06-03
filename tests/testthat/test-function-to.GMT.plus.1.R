@@ -4,11 +4,10 @@
 
 test_that("to.GMT.plus.1() works", {
 
-  kwb.datetime:::to.GMT.plus.1(timestamp = character())
-   kwb.datetime:::to.GMT.plus.1(timestamp = 'a')
-   kwb.datetime:::to.GMT.plus.1(timestamp = c('a', 'b'))
+  kwb.datetime:::to.GMT.plus.1(timestamp = "a")
+   kwb.datetime:::to.GMT.plus.1(timestamp = c("a", "b"))
    expect_error(
-    kwb.datetime:::to.GMT.plus.1(timestamp = NULL)
+    kwb.datetime:::to.GMT.plus.1(timestamp = 1)
     # is.character(timestamp) is not TRUE
   )
 

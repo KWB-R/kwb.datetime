@@ -4,23 +4,12 @@
 
 test_that("localNormalTimeToLocalTime() works", {
 
-  kwb.datetime:::localNormalTimeToLocalTime(x = character(), UTCOffset = NULL)
-   kwb.datetime:::localNormalTimeToLocalTime(x = character(), UTCOffset = numeric())
-   kwb.datetime:::localNormalTimeToLocalTime(x = character(), UTCOffset = 1)
-   kwb.datetime:::localNormalTimeToLocalTime(x = character(), UTCOffset = 1:2)
-   kwb.datetime:::localNormalTimeToLocalTime(x = character(), UTCOffset = logical())
-   kwb.datetime:::localNormalTimeToLocalTime(x = character(), UTCOffset = TRUE)
-   kwb.datetime:::localNormalTimeToLocalTime(x = character(), UTCOffset = FALSE)
-   expect_error(
-    kwb.datetime:::localNormalTimeToLocalTime(x = NULL, UTCOffset = NULL)
+  expect_error(
+    kwb.datetime:::localNormalTimeToLocalTime(x = 1, UTCOffset = 1)
     # is.character(x) is not TRUE
   )
    expect_error(
-    kwb.datetime:::localNormalTimeToLocalTime(x = character(), UTCOffset = character())
-    # non-numeric argument to binary operator
-  )
-   expect_error(
-    kwb.datetime:::localNormalTimeToLocalTime(x = 'a', UTCOffset = NULL)
+    kwb.datetime:::localNormalTimeToLocalTime(x = "a", UTCOffset = 1)
     # character string is not in a standard unambiguous format
   )
 

@@ -4,11 +4,10 @@
 
 test_that("reformatTimestamp() works", {
 
-  kwb.datetime:::reformatTimestamp(x = character())
-   kwb.datetime:::reformatTimestamp(x = 'a')
-   kwb.datetime:::reformatTimestamp(x = c('a', 'b'))
+  kwb.datetime:::reformatTimestamp(x = "a")
+   kwb.datetime:::reformatTimestamp(x = c("a", "b"))
    expect_error(
-    kwb.datetime:::reformatTimestamp(x = NULL)
+    kwb.datetime:::reformatTimestamp(x = 1)
     # is.character(x) is not TRUE
   )
 

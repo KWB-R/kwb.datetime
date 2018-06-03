@@ -4,16 +4,14 @@
 
 test_that("timeFormatToRegex() works", {
 
-  kwb.datetime:::timeFormatToRegex(timeformat = NULL)
-   kwb.datetime:::timeFormatToRegex(timeformat = numeric())
-   kwb.datetime:::timeFormatToRegex(timeformat = 1)
+  kwb.datetime:::timeFormatToRegex(timeformat = 1)
    kwb.datetime:::timeFormatToRegex(timeformat = 1:2)
-   kwb.datetime:::timeFormatToRegex(timeformat = character())
-   kwb.datetime:::timeFormatToRegex(timeformat = 'a')
-   kwb.datetime:::timeFormatToRegex(timeformat = c('a', 'b'))
-   kwb.datetime:::timeFormatToRegex(timeformat = logical())
+   kwb.datetime:::timeFormatToRegex(timeformat = "a")
+   kwb.datetime:::timeFormatToRegex(timeformat = c("a", "b"))
    kwb.datetime:::timeFormatToRegex(timeformat = TRUE)
    kwb.datetime:::timeFormatToRegex(timeformat = FALSE)
+   kwb.datetime:::timeFormatToRegex(timeformat = as.POSIXct("2018-06-03 23:50:00"))
+   kwb.datetime:::timeFormatToRegex(timeformat = list(key = c("a", "b"), value = 1:2))
 
 })
 

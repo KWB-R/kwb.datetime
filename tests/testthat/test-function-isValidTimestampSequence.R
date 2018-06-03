@@ -4,8 +4,9 @@
 
 test_that("isValidTimestampSequence() works", {
 
-  expect_error(
-    kwb.datetime:::isValidTimestampSequence(timestamps = NULL)
+  kwb.datetime:::isValidTimestampSequence(timestamps = as.POSIXct("2018-06-03 23:50:00"))
+   expect_error(
+    kwb.datetime:::isValidTimestampSequence(timestamps = 1)
     # "POSIXt" %in% class(timestamps) is not TRUE
   )
 

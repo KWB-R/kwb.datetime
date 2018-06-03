@@ -5,16 +5,16 @@
 test_that("date_range_CEST() works", {
 
   expect_error(
-    kwb.datetime:::date_range_CEST(year = NULL)
+    kwb.datetime:::date_range_CEST(year = 1)
+    # all(year >= 1980) is not TRUE
+  )
+   expect_error(
+    kwb.datetime:::date_range_CEST(year = "a")
     # is.numeric(year) is not TRUE
   )
    expect_error(
-    kwb.datetime:::date_range_CEST(year = numeric())
-    # character string is not in a standard unambiguous format
-  )
-   expect_error(
-    kwb.datetime:::date_range_CEST(year = 1)
-    # all(year >= 1980) is not TRUE
+    kwb.datetime:::date_range_CEST(year = list(key = c("a", "b"), value = 1:2))
+    # (list) object cannot be coerced to type 'double'
   )
 
 })

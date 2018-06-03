@@ -4,16 +4,14 @@
 
 test_that("hasTimeFormat() works", {
 
-  kwb.datetime:::hasTimeFormat(timestamps = NULL)
-   kwb.datetime:::hasTimeFormat(timestamps = numeric())
-   kwb.datetime:::hasTimeFormat(timestamps = 1)
+  kwb.datetime:::hasTimeFormat(timestamps = 1)
    kwb.datetime:::hasTimeFormat(timestamps = 1:2)
-   kwb.datetime:::hasTimeFormat(timestamps = character())
-   kwb.datetime:::hasTimeFormat(timestamps = 'a')
-   kwb.datetime:::hasTimeFormat(timestamps = c('a', 'b'))
-   kwb.datetime:::hasTimeFormat(timestamps = logical())
+   kwb.datetime:::hasTimeFormat(timestamps = "a")
+   kwb.datetime:::hasTimeFormat(timestamps = c("a", "b"))
    kwb.datetime:::hasTimeFormat(timestamps = TRUE)
    kwb.datetime:::hasTimeFormat(timestamps = FALSE)
+   kwb.datetime:::hasTimeFormat(timestamps = as.POSIXct("2018-06-03 23:50:00"))
+   kwb.datetime:::hasTimeFormat(timestamps = list(key = c("a", "b"), value = 1:2))
 
 })
 

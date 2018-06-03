@@ -5,11 +5,11 @@
 test_that("stringToPosix() works", {
 
   expect_error(
-    kwb.datetime:::stringToPosix(x = NULL, ... = NULL)
+    kwb.datetime:::stringToPosix(x = 1, ... = 1)
     # x must be a character vector of length one.
   )
    expect_error(
-    kwb.datetime:::stringToPosix(x = 'a', ... = NULL)
+    kwb.datetime:::stringToPosix(x = "a", ... = 1)
     # Timestamp 'a' does not match any of these formats: '%Y-%m-%d %H:%M:%S', '%Y-%m-%d %H:%M', '%Y-%m-%d'
   )
 

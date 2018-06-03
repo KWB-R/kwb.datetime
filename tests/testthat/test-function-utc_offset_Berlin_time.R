@@ -4,10 +4,7 @@
 
 test_that("utc_offset_Berlin_time() works", {
 
-  expect_error(
-    kwb.datetime:::utc_offset_Berlin_time(timestamps = NULL)
-    # character string is not in a standard unambiguous format
-  )
+  kwb.datetime:::utc_offset_Berlin_time(timestamps = as.POSIXct("2018-06-03 23:50:00"))
    expect_error(
     kwb.datetime:::utc_offset_Berlin_time(timestamps = 1)
     # all(hasTimeFormat(timestamps, "%Y-%m-%d %H:%M:%S")) is not TRUE

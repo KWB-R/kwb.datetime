@@ -4,13 +4,12 @@
 
 test_that("utcOffset() works", {
 
-  kwb.datetime:::utcOffset(LocalDateTime = character(), DateTimeUTC = character())
-   expect_error(
-    kwb.datetime:::utcOffset(LocalDateTime = NULL, DateTimeUTC = NULL)
+  expect_error(
+    kwb.datetime:::utcOffset(LocalDateTime = 1, DateTimeUTC = 1)
     # is.character(LocalDateTime) && is.character(DateTimeUTC) is not TRUE
   )
    expect_error(
-    kwb.datetime:::utcOffset(LocalDateTime = character(), DateTimeUTC = 'a')
+    kwb.datetime:::utcOffset(LocalDateTime = "a", DateTimeUTC = "a")
     # character string is not in a standard unambiguous format
   )
 

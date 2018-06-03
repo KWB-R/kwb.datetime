@@ -4,9 +4,14 @@
 
 test_that("toTimezone() works", {
 
-  expect_error(
-    kwb.datetime:::toTimezone(x = NULL, tz = NULL)
+  kwb.datetime:::toTimezone(x = as.POSIXct("2018-06-03 23:50:00"), tz = "a")
+   expect_error(
+    kwb.datetime:::toTimezone(x = 1, tz = 1)
     # inherits(x, "POSIXt") is not TRUE
+  )
+   expect_error(
+    kwb.datetime:::toTimezone(x = as.POSIXct("2018-06-03 23:50:00"), tz = 1)
+    # invalid 'tz' value
   )
 
 })

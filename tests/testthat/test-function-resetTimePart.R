@@ -4,13 +4,23 @@
 
 test_that("resetTimePart() works", {
 
-  expect_error(
-    kwb.datetime:::resetTimePart(tstamp = NULL, resetHour = NULL)
-    # character string is not in a standard unambiguous format
+  kwb.datetime:::resetTimePart(tstamp = as.POSIXct("2018-06-03 23:50:00"), resetHour = 1)
+   kwb.datetime:::resetTimePart(tstamp = as.POSIXct("2018-06-03 23:50:00"), resetHour = 1:2)
+   kwb.datetime:::resetTimePart(tstamp = as.POSIXct("2018-06-03 23:50:00"), resetHour = "a")
+   kwb.datetime:::resetTimePart(tstamp = as.POSIXct("2018-06-03 23:50:00"), resetHour = c("a", "b"))
+   kwb.datetime:::resetTimePart(tstamp = as.POSIXct("2018-06-03 23:50:00"), resetHour = TRUE)
+   kwb.datetime:::resetTimePart(tstamp = as.POSIXct("2018-06-03 23:50:00"), resetHour = FALSE)
+   expect_error(
+    kwb.datetime:::resetTimePart(tstamp = 1, resetHour = 1)
+    # invalid 'trim' argument
   )
    expect_error(
-    kwb.datetime:::resetTimePart(tstamp = numeric(), resetHour = NULL)
-    # invalid 'trim' argument
+    kwb.datetime:::resetTimePart(tstamp = 1, resetHour = as.POSIXct("2018-06-03 23:50:00"))
+    # 'any' not defined for "POSIXt" objects
+  )
+   expect_error(
+    kwb.datetime:::resetTimePart(tstamp = 1, resetHour = list(key = c("a", "b"), value = 1:2))
+    # (list) object cannot be coerced to type 'logical'
   )
 
 })

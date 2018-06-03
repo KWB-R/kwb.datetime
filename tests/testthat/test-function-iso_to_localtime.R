@@ -4,13 +4,12 @@
 
 test_that("iso_to_localtime() works", {
 
-  kwb.datetime:::iso_to_localtime(timestamps = character())
-   expect_error(
-    kwb.datetime:::iso_to_localtime(timestamps = NULL)
+  expect_error(
+    kwb.datetime:::iso_to_localtime(timestamps = 1)
     # timestamps are expected to be of mode character
   )
    expect_error(
-    kwb.datetime:::iso_to_localtime(timestamps = 'a')
+    kwb.datetime:::iso_to_localtime(timestamps = "a")
     # Not all timestamps are in the expected format
 # "yyyy-mm-dd HH:MM:SS+[01|02]", i.e. ending either in
 #   "+01" (UTC offset in winter) or

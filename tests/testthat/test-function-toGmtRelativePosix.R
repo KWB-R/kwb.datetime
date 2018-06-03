@@ -4,11 +4,10 @@
 
 test_that("toGmtRelativePosix() works", {
 
-  kwb.datetime:::toGmtRelativePosix(timestamp = character())
-   kwb.datetime:::toGmtRelativePosix(timestamp = 'a')
-   kwb.datetime:::toGmtRelativePosix(timestamp = c('a', 'b'))
+  kwb.datetime:::toGmtRelativePosix(timestamp = "a")
+   kwb.datetime:::toGmtRelativePosix(timestamp = c("a", "b"))
    expect_error(
-    kwb.datetime:::toGmtRelativePosix(timestamp = NULL)
+    kwb.datetime:::toGmtRelativePosix(timestamp = 1)
     # is.character(timestamp) is not TRUE
   )
 

@@ -4,27 +4,17 @@
 
 test_that("hsTsAfter() works", {
 
-  kwb.datetime:::hsTsAfter(tstamps = NULL, tsLimit = NULL)
-   kwb.datetime:::hsTsAfter(tstamps = numeric(), tsLimit = NULL)
-   kwb.datetime:::hsTsAfter(tstamps = 1, tsLimit = NULL)
-   kwb.datetime:::hsTsAfter(tstamps = 1:2, tsLimit = NULL)
-   kwb.datetime:::hsTsAfter(tstamps = character(), tsLimit = NULL)
-   kwb.datetime:::hsTsAfter(tstamps = 'a', tsLimit = NULL)
-   kwb.datetime:::hsTsAfter(tstamps = c('a', 'b'), tsLimit = NULL)
-   kwb.datetime:::hsTsAfter(tstamps = logical(), tsLimit = NULL)
-   kwb.datetime:::hsTsAfter(tstamps = TRUE, tsLimit = NULL)
-   kwb.datetime:::hsTsAfter(tstamps = FALSE, tsLimit = NULL)
-   expect_error(
-    kwb.datetime:::hsTsAfter(tstamps = NULL, tsLimit = numeric())
+  expect_error(
+    kwb.datetime:::hsTsAfter(tstamps = 1, tsLimit = 1)
     # datetime is not of one of the supported classes 'character', 'Date', 'POSIXt'
   )
    expect_error(
-    kwb.datetime:::hsTsAfter(tstamps = character(), tsLimit = character())
-    # replacement has length zero
+    kwb.datetime:::hsTsAfter(tstamps = "a", tsLimit = 1)
+    # character string is not in a standard unambiguous format
   )
    expect_error(
-    kwb.datetime:::hsTsAfter(tstamps = character(), tsLimit = 'a')
-    # character string is not in a standard unambiguous format
+    kwb.datetime:::hsTsAfter(tstamps = as.POSIXct("2018-06-03 23:50:00"), tsLimit = as.POSIXct("2018-06-03 23:50:00"))
+    # replacement has length zero
   )
 
 })

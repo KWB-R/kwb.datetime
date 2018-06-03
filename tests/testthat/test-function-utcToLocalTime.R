@@ -4,18 +4,12 @@
 
 test_that("utcToLocalTime() works", {
 
-  kwb.datetime:::utcToLocalTime(x = character(), tz = NULL)
-   kwb.datetime:::utcToLocalTime(x = character(), tz = 'a')
-   expect_error(
-    kwb.datetime:::utcToLocalTime(x = NULL, tz = NULL)
+  expect_error(
+    kwb.datetime:::utcToLocalTime(x = 1, tz = 1)
     # is.character(x) is not TRUE
   )
    expect_error(
-    kwb.datetime:::utcToLocalTime(x = character(), tz = numeric())
-    # invalid 'tz' value
-  )
-   expect_error(
-    kwb.datetime:::utcToLocalTime(x = 'a', tz = NULL)
+    kwb.datetime:::utcToLocalTime(x = "a", tz = 1)
     # character string is not in a standard unambiguous format
   )
 

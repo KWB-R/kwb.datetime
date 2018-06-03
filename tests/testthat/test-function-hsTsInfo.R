@@ -4,19 +4,18 @@
 
 test_that("hsTsInfo() works", {
 
-  kwb.datetime:::hsTsInfo(tstamp = character())
-   kwb.datetime:::hsTsInfo(tstamp = logical())
+  kwb.datetime:::hsTsInfo(tstamp = as.POSIXct("2018-06-03 23:50:00"))
    expect_error(
-    kwb.datetime:::hsTsInfo(tstamp = NULL)
-    # do not know how to convert 'tstamp' to class “POSIXct”
-  )
-   expect_error(
-    kwb.datetime:::hsTsInfo(tstamp = numeric())
+    kwb.datetime:::hsTsInfo(tstamp = 1)
     # 'origin' must be supplied
   )
    expect_error(
-    kwb.datetime:::hsTsInfo(tstamp = 'a')
+    kwb.datetime:::hsTsInfo(tstamp = "a")
     # character string is not in a standard unambiguous format
+  )
+   expect_error(
+    kwb.datetime:::hsTsInfo(tstamp = TRUE)
+    # do not know how to convert 'tstamp' to class “POSIXct”
   )
 
 })

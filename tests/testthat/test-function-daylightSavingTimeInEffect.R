@@ -4,8 +4,9 @@
 
 test_that("daylightSavingTimeInEffect() works", {
 
-  expect_error(
-    kwb.datetime:::daylightSavingTimeInEffect(x = NULL)
+  kwb.datetime:::daylightSavingTimeInEffect(x = as.POSIXct("2018-06-03 23:50:00"))
+   expect_error(
+    kwb.datetime:::daylightSavingTimeInEffect(x = 1)
     # "POSIXt" %in% class(x) is not TRUE
   )
 

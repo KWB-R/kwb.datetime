@@ -4,13 +4,12 @@
 
 test_that("berlinNormalTimeToUTC() works", {
 
-  kwb.datetime:::berlinNormalTimeToUTC(x = character())
-   expect_error(
-    kwb.datetime:::berlinNormalTimeToUTC(x = NULL)
+  expect_error(
+    kwb.datetime:::berlinNormalTimeToUTC(x = 1)
     # is.character(x) is not TRUE
   )
    expect_error(
-    kwb.datetime:::berlinNormalTimeToUTC(x = 'a')
+    kwb.datetime:::berlinNormalTimeToUTC(x = "a")
     # character string is not in a standard unambiguous format
   )
 

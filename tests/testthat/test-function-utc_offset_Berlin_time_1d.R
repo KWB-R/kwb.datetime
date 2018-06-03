@@ -5,15 +5,11 @@
 test_that("utc_offset_Berlin_time_1d() works", {
 
   expect_error(
-    kwb.datetime:::utc_offset_Berlin_time_1d(x = NULL)
+    kwb.datetime:::utc_offset_Berlin_time_1d(x = 1)
     # is.character(x) is not TRUE
   )
    expect_error(
-    kwb.datetime:::utc_offset_Berlin_time_1d(x = character())
-    # kwb.utils::allAreEqual(substr(x, 1, 10)) is not TRUE
-  )
-   expect_error(
-    kwb.datetime:::utc_offset_Berlin_time_1d(x = 'a')
+    kwb.datetime:::utc_offset_Berlin_time_1d(x = "a")
     # all(hasTimeFormat(x, "%Y-%m-%d %H:%M:%S")) is not TRUE
   )
 

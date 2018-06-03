@@ -4,22 +4,20 @@
 
 test_that("hsToPosix() works", {
 
-  kwb.datetime:::hsToPosix(datetime = character(), ... = NULL)
-   kwb.datetime:::hsToPosix(datetime = character(), ... = numeric())
-   kwb.datetime:::hsToPosix(datetime = character(), ... = 1)
-   kwb.datetime:::hsToPosix(datetime = character(), ... = 1:2)
-   kwb.datetime:::hsToPosix(datetime = character(), ... = character())
-   kwb.datetime:::hsToPosix(datetime = character(), ... = 'a')
-   kwb.datetime:::hsToPosix(datetime = character(), ... = c('a', 'b'))
-   kwb.datetime:::hsToPosix(datetime = character(), ... = logical())
-   kwb.datetime:::hsToPosix(datetime = character(), ... = TRUE)
-   kwb.datetime:::hsToPosix(datetime = character(), ... = FALSE)
+  kwb.datetime:::hsToPosix(datetime = as.POSIXct("2018-06-03 23:50:00"), ... = 1)
+   kwb.datetime:::hsToPosix(datetime = as.POSIXct("2018-06-03 23:50:00"), ... = 1:2)
+   kwb.datetime:::hsToPosix(datetime = as.POSIXct("2018-06-03 23:50:00"), ... = "a")
+   kwb.datetime:::hsToPosix(datetime = as.POSIXct("2018-06-03 23:50:00"), ... = c("a", "b"))
+   kwb.datetime:::hsToPosix(datetime = as.POSIXct("2018-06-03 23:50:00"), ... = TRUE)
+   kwb.datetime:::hsToPosix(datetime = as.POSIXct("2018-06-03 23:50:00"), ... = FALSE)
+   kwb.datetime:::hsToPosix(datetime = as.POSIXct("2018-06-03 23:50:00"), ... = as.POSIXct("2018-06-03 23:50:00"))
+   kwb.datetime:::hsToPosix(datetime = as.POSIXct("2018-06-03 23:50:00"), ... = list(key = c("a", "b"), value = 1:2))
    expect_error(
-    kwb.datetime:::hsToPosix(datetime = NULL, ... = NULL)
+    kwb.datetime:::hsToPosix(datetime = 1, ... = 1)
     # datetime is not of one of the supported classes 'character', 'Date', 'POSIXt'
   )
    expect_error(
-    kwb.datetime:::hsToPosix(datetime = 'a', ... = NULL)
+    kwb.datetime:::hsToPosix(datetime = "a", ... = 1)
     # character string is not in a standard unambiguous format
   )
 

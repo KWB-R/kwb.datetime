@@ -5,15 +5,11 @@
 test_that("sequenceOfTimestamps() works", {
 
   expect_error(
-    kwb.datetime:::sequenceOfTimestamps(from = NULL, to = NULL)
+    kwb.datetime:::sequenceOfTimestamps(from = 1, to = 1)
     # is.character(from) && is.character(to) is not TRUE
   )
    expect_error(
-    kwb.datetime:::sequenceOfTimestamps(from = character(), to = character())
-    # 'from' must be of length 1
-  )
-   expect_error(
-    kwb.datetime:::sequenceOfTimestamps(from = 'a', to = character())
+    kwb.datetime:::sequenceOfTimestamps(from = "a", to = "a")
     # character string is not in a standard unambiguous format
   )
 

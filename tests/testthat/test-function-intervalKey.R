@@ -5,11 +5,7 @@
 test_that("intervalKey() works", {
 
   expect_error(
-    kwb.datetime:::intervalKey(tstamps = NULL, itype = NULL)
-    # argument is of length zero
-  )
-   expect_error(
-    kwb.datetime:::intervalKey(tstamps = NULL, itype = 1)
+    kwb.datetime:::intervalKey(tstamps = 1, itype = 1)
     # itype must be one of
 #   'y' (year),
 #   'q' (quarter in year),

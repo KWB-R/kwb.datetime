@@ -4,8 +4,9 @@
 
 test_that("getTimestepInSeconds() works", {
 
-  expect_error(
-    kwb.datetime:::getTimestepInSeconds(timestamps = NULL)
+  kwb.datetime:::getTimestepInSeconds(timestamps = as.POSIXct("2018-06-03 23:50:00"))
+   expect_error(
+    kwb.datetime:::getTimestepInSeconds(timestamps = 1)
     # "POSIXt" %in% class(timestamps) is not TRUE
   )
 

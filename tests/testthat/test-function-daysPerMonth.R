@@ -4,19 +4,18 @@
 
 test_that("daysPerMonth() works", {
 
-  kwb.datetime:::daysPerMonth(date = character())
-   kwb.datetime:::daysPerMonth(date = logical())
+  kwb.datetime:::daysPerMonth(date = as.POSIXct("2018-06-03 23:50:00"))
    expect_error(
-    kwb.datetime:::daysPerMonth(date = NULL)
-    # do not know how to convert 'date' to class “POSIXlt”
-  )
-   expect_error(
-    kwb.datetime:::daysPerMonth(date = numeric())
+    kwb.datetime:::daysPerMonth(date = 1)
     # 'origin' must be supplied
   )
    expect_error(
-    kwb.datetime:::daysPerMonth(date = 'a')
+    kwb.datetime:::daysPerMonth(date = "a")
     # character string is not in a standard unambiguous format
+  )
+   expect_error(
+    kwb.datetime:::daysPerMonth(date = TRUE)
+    # do not know how to convert 'date' to class “POSIXlt”
   )
 
 })

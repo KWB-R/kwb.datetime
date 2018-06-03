@@ -4,11 +4,10 @@
 
 test_that("decade() works", {
 
-  kwb.datetime:::decade(year = numeric())
-   kwb.datetime:::decade(year = 1)
+  kwb.datetime:::decade(year = 1)
    kwb.datetime:::decade(year = 1:2)
    expect_error(
-    kwb.datetime:::decade(year = NULL)
+    kwb.datetime:::decade(year = "a")
     # is.numeric(year) is not TRUE
   )
 

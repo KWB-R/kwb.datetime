@@ -4,12 +4,9 @@
 
 test_that("hsQuaStr() works", {
 
-  expect_error(
-    kwb.datetime:::hsQuaStr(tstamp = NULL)
-    # invalid format '%d'; use format %f, %e, %g or %a for numeric objects
-  )
+  kwb.datetime:::hsQuaStr(tstamp = as.POSIXct("2018-06-03 23:50:00"))
    expect_error(
-    kwb.datetime:::hsQuaStr(tstamp = numeric())
+    kwb.datetime:::hsQuaStr(tstamp = 1)
     # invalid 'trim' argument
   )
 
