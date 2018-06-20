@@ -66,7 +66,7 @@ hsTsAfter <- function(tstamps, tsLimit, limIncluded = TRUE)
 #' 
 hsTsIn <- function(...)
 {
-  kwb.utils::.warningDeprecated("hsTsIn", "timestampIn")
+  kwb.utils::warningDeprecated("hsTsIn", "timestampIn")
   timestampIn(...)
 } 
 
