@@ -14,4 +14,3 @@ utcOffset(LocalDateTime, DateTimeUTC)
 \description{
 Get UTC Offset from Local and UTC Timestamp (Character)
 }
-\keyword{internal}

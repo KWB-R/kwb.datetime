@@ -318,7 +318,7 @@ hsToPosix <- function(
 #'   adjusting time during the summer period, i.e. keeping the normal (= winter) 
 #'   time (= UTC+1)
 #' 
-#' @keywords internal
+#' @export
 #' 
 berlinNormalTimeToUTC <- function(x) 
 {
@@ -414,7 +414,7 @@ utcToLocalTime  <- function(x, tz)
 #' @param LocalDateTime character string representing a local timestamp
 #' @param DateTimeUTC character string representing a time stamp in UTC
 #' 
-#' @keywords internal
+#' @export
 #' 
 utcOffset <- function(LocalDateTime, DateTimeUTC)
 {

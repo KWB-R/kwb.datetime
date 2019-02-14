@@ -14,4 +14,3 @@ time (= UTC+1)}
 \description{
 berlinNormalTimeToUTC
 }
-\keyword{internal}
