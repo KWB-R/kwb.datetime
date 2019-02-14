@@ -4,8 +4,8 @@
 \alias{stringToPosix}
 \title{Convert a Time String to a POSIXct Object}
 \usage{
-stringToPosix(x, formats = c("\%Y-\%m-\%d \%H:\%M:\%S", "\%Y-\%m-\%d \%H:\%M",
-  "\%Y-\%m-\%d"), ...)
+stringToPosix(x, formats = c("\%Y-\%m-\%d \%H:\%M:\%S",
+  "\%Y-\%m-\%d \%H:\%M", "\%Y-\%m-\%d"), ...)
 }
 \arguments{
 \item{x}{character vector of length one representing a timestamp}

@@ -4,8 +4,8 @@
 \alias{hsToPosix}
 \title{Conversion to POSIXt}
 \usage{
-hsToPosix(datetime, keepTZ = is.null(tzone), tzone = NULL, lt = FALSE,
-  ...)
+hsToPosix(datetime, keepTZ = is.null(tzone), tzone = NULL,
+  lt = FALSE, ...)
 }
 \arguments{
 \item{datetime}{object of class POSIXt or Date or character representing date

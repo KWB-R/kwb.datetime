@@ -4,8 +4,8 @@
 \alias{timestampIn}
 \title{Timestamps within Time Interval?}
 \usage{
-timestampIn(tstamps, tsFirst = NULL, tsLast = NULL, firstIncluded = TRUE,
-  lastIncluded = FALSE, dbg = FALSE)
+timestampIn(tstamps, tsFirst = NULL, tsLast = NULL,
+  firstIncluded = TRUE, lastIncluded = FALSE, dbg = FALSE)
 }
 \arguments{
 \item{tstamps}{vector of timestamps, either as character strings in 
