@@ -333,7 +333,7 @@ berlinNormalTimeToUTC <- function(x)
 #'   adjusting time during the summer period, i.e. keeping the normal (= winter) 
 #'   time (= UTC+1)
 #'   
-#' @keywords internal
+#' @export
 #' 
 berlinNormalTimeToBerlinLocalTime <- function(x) 
 {
