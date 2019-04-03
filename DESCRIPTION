@@ -3,7 +3,7 @@ Authors@R: c(
     person("Hauke", "Sonnenberg", , "hauke.sonnenberg@kompetenz-wasser.de", 
            role = c("aut", "cre"), comment = c(ORCID = "0000-0001-9134-2871")),
     person("Kompetenzzentrum Wasser Berlin gGmbH", role = c("cph")))
-Version: 0.3.0.9000
+Version: 0.3.1.9000
 License: MIT + file LICENSE
 Imports: kwb.utils
 Remotes: github::kwb-r/kwb.utils
@@ -14,4 +14,7 @@ RoxygenNote: 6.1.1
 URL: https://github.com/kwb-r/kwb.datetime
 BugReports: https://github.com/kwb-r/kwb.datetime/issues
 Suggests: 
-    testthat
+    testthat,
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
