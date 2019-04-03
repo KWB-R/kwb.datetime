@@ -1,0 +1,134 @@
+---
+title: "Exkurs Zeitzonen"
+author: "Hauke Sonnenberg"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+`POSIXct`-Objekte haben eine Zeitzone als Attribut gespeichert:
+
+```{r}
+now <- as.POSIXct("2019-04-08 12:34:56")
+attributes(now)
+```
+
+Wenn, wie hier, keine Zeitzone angegeben ist (`tzone = ""`) , wird diejenige
+angenommen, die auf dem Rechner eingestellt ist. Diese kann wie folgt ermittelt
+werden:
+
+```{r}
+Sys.timezone()
+```
+
+Das sollte bei Ihnen die Zeitzone "Europe/Berlin" sein. In dieser Zeitzone gibt
+es (noch, die EU hat die Abschaffung der Zeitumstellung beschlossen) eine 
+Umstellung zwischen Sommer- und Winterzeit und umgekehrt. Erst vor kurzem,
+am 31.03.2019, wurde die Uhr wieder von Winterzeit (bzw. Normalzeit) auf 
+Sommerzeit umgestellt. Wie sieht das in R aus?
+
+```{r}
+(before_switch <- as.POSIXct("2019-03-31 01:59:00"))
+
+# eine Minute spaeter... 
+before_switch + 60 
+```
+
+Wir setzen uns mit der Variablen `before_switch` auf den Zeitpunkt, der eine
+Minute vor der Zeitumstellung liegt. Geben wir den Zeitpunkt aus, so wird uns
+angezeigt, dass wir uns in "CET = Central European Time" befinden. Eine Minute,
+also 60 Sekunden später ist es bereits 03:00 Uhr, da die Uhr um 02:00 auf 03:00
+vorgestellt wird. Es wird angezeigt, dass wir uns nun in "CEST = Central
+European Summer Time" befinden.
+
+**Achtung**: Wenn ein Zeitstempel angegeben wird, der in der gegebenen Zeitzone
+nicht exisitert, passieren unerwartete Dinge. Das muss
+unbedingt beachtet werden, wenn mit Zeitreihen gearbeitet wird! Zum Beispiel
+existieren in der Zeitzone "Europe/Berlin" diejenigen Zeitstempel nicht, die am
+Tag der Umstellung auf Sommerzeit in der Stunde zwischen zwei und drei Uhr
+morgens liegen (genauer die Zeitstempel zwischen 02:00:01 und 02:59:59). Zum
+Beispiel gibt es an diesem Tag nicht die Uhrzeit "halb drei":
+
+```{r}
+(non_existing_time <- as.POSIXct("2019-03-31 02:30:00"))
+```
+
+Welche Zeit wird hier angezeigt? Das scheint vom Betriebssystem abzuhängen! Auf
+meinem Ubuntu-Rechner wird die Uhrzeit um eine Stunde zurückgesetzt und es wird
+"2019-03-31 01:30:00 CET" angezeigt. In Windows hingegen würde die Uhrzeit
+einfach "abgeschnitten", also intern auf "00:00:00" gesetzt und entsprechend
+"2019-03-31 CET" angezeigt.
+
+Um die Zeitumstellung zu unterbinden "zwinge" ich R gerne dazu, die Zeitzone 
+"UTC" (Coordinated Universal Time) zu verwenden. Dazu:
+
+```{r}
+(before_switch <- as.POSIXct("2019-03-31 01:59:00", tz = "UTC"))
+
+# eine Minute spaeter... 
+(after_switch <- before_switch + 60)
+```
+
+Die Zeitzone ist und bleibt "UTC". Das Attribut "tzone" ist entsprechend auf 
+"UTC" gesetzt.
+
+```{r}
+attributes(before_switch)
+attributes(after_switch)
+```
+
+Ich habe sehr lange gebraucht, bis ich herausgefunden habe, wie ich in R 
+angeben kann, dass ich zwar in Berlin bin, aber keine Umstellung von 
+Sommer- auf Winterzeit vornehme. Wir versuchen zum Beispiel unsere Messgeräte so
+einzustellen, dass sie den Zeitstempel immer in Normalzeit (Winterzeit) 
+aufzeichnen und die Uhr weder vor- noch zurückstellen. Wir tun dies, um zu 
+vermeiden, dass doppelte Zeitstempel, nämlich in der Stunde, in der die Uhr
+von Sommer- auf Winterzeit zurückgestellt wird, zu vermeiden.
+
+Der entscheidende Hinweis findet sich in der Hilfe zu "timezones":
+
+```{r eval = FALSE}
+help("timezones")
+```
+
+> "Most platforms support time zones of the form Etc/GMT+n and Etc/GMT-n 
+> (possibly also without prefix Etc/), which assume a fixed offset from UTC 
+> (hence no DST). Contrary to some expectations (but consistent with names such 
+> as PST8PDT), negative offsets are times ahead of (east of) UTC, positive 
+> offsets are times behind (west of) UTC."
+
+Um also R mitzuteilen, dass wir in Berlin durchgängig in Winterzeit messen, 
+müssen wir die Zeitzone auf "Etc/GMT-1" stellen.
+
+```{r}
+(before_switch_normal <- as.POSIXct("2019-03-31 01:59:00", tz = "Etc/GMT-1"))
+(after_switch_normal <- before_switch_normal + 60)
+```
+
+Um diese zwei Zeitpunkte nun wieder in der Zeitzone "Europe/Berlin" anzeigen zu lassen, nutzen wir die `format()` Funktion:
+
+```{r}
+format(before_switch_normal, tz = "Europe/Berlin")
+format(after_switch_normal, tz = "Europe/Berlin")
+```
+
+Nanu, die Angaben "CET" bzw. "CEST" werden nun nicht mehr angegeben, wie das
+oben noch der Fall war. Das liegt daran, dass die `format()` Funktion diesen
+Zusatz standardmäßig nicht anzeigt. Wir können die Anzeige wieder erreichen,
+indem wir (hier nur temporär) das Attribut "tzone" mit Hilfe der Funktion
+`structure()` wieder auf "Europe/Berlin" setzen:
+
+```{r}
+structure(before_switch_normal, tzone = "Europe/Berlin")
+structure(after_switch_normal, tzone = "Europe/Berlin")
+```
