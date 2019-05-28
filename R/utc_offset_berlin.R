@@ -125,12 +125,61 @@ utc_offset_Berlin_time <- function(timestamps)
 #' 
 utc_offset_Berlin_time_1d <- function(x)
 {
+  #cest_begin_end <- kwb.datetime::date_range_CEST(2019)
+  #tz <- "Europe/Berlin"
+  #seq(as.POSIXct(paste0(cest_begin_end[1], " 01:00:00")),
+  #    as.POSIXct(paste0(cest_begin_end[1], " 04:00:00")), 
+  #    by = 900)
+      
+  # x <- c(
+  #   "2019-03-31 01:00:00", # CET
+  #   "2019-03-31 01:15:00", # CET
+  #   "2019-03-31 01:30:00", # CET
+  #   "2019-03-31 02:05:00", # -> error
+  #   "2019-03-31 01:45:00", # CET
+  #   "2019-03-31 03:00:00", # CEST
+  #   "2019-03-31 03:15:00", # CEST
+  #   "2019-03-31 03:30:00"  # CEST
+  # )
+  # 
+  # seq(as.POSIXct(paste0(cest_begin_end[2], " 01:00:00"), tz = tz),
+  #    as.POSIXct(paste0(cest_begin_end[2], " 04:00:00"), tz = tz),
+  #    by = 1800)
+  # 
+  # x <- c(
+  #   "2019-10-27 01:00:00", # CEST
+  #   "2019-10-27 01:30:00", # CEST
+  #   "2019-10-27 02:00:00", # CEST
+  #   "2019-10-27 02:30:00", # CEST
+  #   "2019-10-27 02:00:00", # CET
+  #   "2019-10-27 02:30:00", # CET
+  #   "2019-10-27 03:00:00", # CET
+  #   "2019-10-27 03:30:00", # CET 
+  #   "2019-10-27 04:00:00"  # CET
+  # )
+    
   # all timestamps are expected to belong to the same day
-  stopifnot(
-    is.character(x), 
-    all(hasTimeFormat(x, "%Y-%m-%d %H:%M:%S")),
-    kwb.utils::allAreEqual(substr(x, 1, 10))
-  )
+  stopifnot(is.character(x))
+  stopifnot(all(hasTimeFormat(x, "%Y-%m-%d %H:%M:%S")))
+            
+  unique_daystrings <- unique(substr(x, 1, 10))
+  
+  stopifnot(length(unique_daystrings) == 1)
+
+  # Do we switch from summer to winter or from winter to summer?
+  utc_offset_day <- utc_offset_Berlin_day(unique_daystrings)
+  
+  # If the day is the day of switching from summer to winter or winter to 
+  # summer (utc_offset_day is NA in that case), ask for the day before
+  if (is.na(utc_offset_day)) {
+    utc_offset_day <- utc_offset_Berlin_day(
+      as.character(as.Date(unique_daystrings) -1)
+    )
+  }
+  
+  stopifnot(! is.na(utc_offset_day))
+  
+  summer_to_winter <- utc_offset_day == "+0200"
   
   # Extract the hour as a number
   hours <- as.integer(substr(x, 12, 13))
@@ -139,12 +188,28 @@ utc_offset_Berlin_time_1d <- function(x)
   offsets <- character(length(x))
   
   # Set the offsets for times before 02:00 or after 02:59
-  offsets[hours < 2] <- "+0200"
-  offsets[hours > 2] <- "+0100"
+  offsets[hours < 2] <- ifelse(summer_to_winter, "+0200", "+0100")
+  offsets[hours > 2] <- ifelse(summer_to_winter, "+0100", "+0200")
   
   # Timestamps within 02:00 and 02:59 can occur as CEST and as CET. Their offset
   # is initially unknown
   unknown <- (hours == 2)
+  
+  # Return if there are no unknown timestamps
+  if (! any(unknown)) {
+    return(offsets)
+  }
+  
+  # We do not expect times between 02:00 and 03:00 if we switch from winter to
+  # summer time (when we jump from 01:59 directly to 03:00)
+  if (! summer_to_winter) {
+    stop(
+      "The following timestamps do not exist in Europe/Berlin on ", 
+      unique_daystrings, ":\n", 
+      kwb.utils::stringList(utils::head(x[unknown]), collapse = "\n"), 
+      call. = FALSE
+    )
+  }
   
   # Extract the minutes part of the timestamps of unknown offset as a number
   minutes <- as.integer(substr(x[unknown], 15, 16))
@@ -211,7 +276,7 @@ utc_offset_Berlin_day <- function(x)
 {
   stopifnot(is.character(x), all(hasTimeFormat(x, "%Y-%m-%d")))
 
-  get_offset <- function(x) format(as.POSIXct(x, tz = "CET"), "%z")
+  get_offset <- function(x) format(as.POSIXct(x, tz = "Europe/Berlin"), "%z")
 
   offset_1 <- get_offset(paste(x, "00:00:00"))
   offset_2 <- get_offset(paste(x, "12:00:00"))
