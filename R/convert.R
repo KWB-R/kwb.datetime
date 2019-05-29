@@ -15,22 +15,22 @@
 #' Convert text timestamps in a format according to ISO 8601 to POSIXct objects 
 #' 
 #' @param timestamps vector of character timestamps of format \code{yyyy-mm-dd 
-#'   HH:MM:SS+[01|02]}, i.e. ending either in '+01' (UTC offset in Berlin in
-#'   winter) or '+02' (UTC offset in Berlin in summer)
+#'   HH:MM:SS+[01|02]}, i.e. ending either in '+0100' (UTC offset in Berlin in
+#'   winter) or '+0200' (UTC offset in Berlin in summer)
 #' @param dbg if \code{TRUE} debug messages are shown
 #' 
 #' @export
 #' 
 #' @examples
 #' times <- iso_to_localtime(c(
-#'   "2017-10-29 01:00:00+02", 
-#'   "2017-10-29 01:30:00+02", 
-#'   "2017-10-29 02:00:00+02",
-#'   "2017-10-29 02:30:00+02",
-#'   "2017-10-29 02:00:00+01", 
-#'   "2017-10-29 02:30:00+01", 
-#'   "2017-10-29 03:00:00+01", 
-#'   "2017-10-29 03:30:00+01"
+#'   "2017-10-29 01:00:00+0200", 
+#'   "2017-10-29 01:30:00+0200", 
+#'   "2017-10-29 02:00:00+0200",
+#'   "2017-10-29 02:30:00+0200",
+#'   "2017-10-29 02:00:00+0100", 
+#'   "2017-10-29 02:30:00+0100", 
+#'   "2017-10-29 03:00:00+0100", 
+#'   "2017-10-29 03:30:00+0100"
 #' ))
 #' 
 #' class(times)
@@ -43,18 +43,18 @@ iso_to_localtime <- function(timestamps, dbg = TRUE)
     stop("timestamps are expected to be of mode character")
   }
   
-  if (! all(hasTimeFormat(timestamps, "^%Y-%m-%d %H:%M:%S[+](01|02)$"))) {
+  if (! all(hasTimeFormat(timestamps, "^%Y-%m-%d %H:%M:%S[+](0100|0200)$"))) {
     
     stop(
       'Not all timestamps are in the expected format\n', 
-      '"yyyy-mm-dd HH:MM:SS+[01|02]", i.e. ending either in\n',
-      '  "+01" (UTC offset in winter) or\n', 
-      '  "+02" (UTC offset in summer)!'
+      '"yyyy-mm-dd HH:MM:SS+[0100|0200]", i.e. ending either in\n',
+      '  "+0100" (UTC offset in winter) or\n', 
+      '  "+0200" (UTC offset in summer)!'
     )
   }
   
   kwb.utils::catIf(dbg, "Converting", length(timestamps), "timestamps ... ")
-  localtimes <- as.POSIXct(paste0(timestamps, "00"), format = "%F %T%z")
+  localtimes <- as.POSIXct(timestamps, format = "%F %T%z")
   kwb.utils::catIf(dbg, "ok.\n")
   
   localtimes

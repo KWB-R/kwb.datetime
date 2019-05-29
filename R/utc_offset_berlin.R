@@ -5,7 +5,7 @@
 #' For local timestamps (character) in the format \code{"yyyy-mm-dd HH:MM:SS"},
 #' of which is known that they are recorded in time zone Europe/Berlin, i.e. CET
 #' in winter and CEST in summer, the UTC offset (i.e. \code{"+0100"} in winter
-#' and \code{"+0200"} in summer) is determined. Therfore, it is required that
+#' and \code{"+0200"} in summer) is determined. Therefore, it is required that
 #' the \code{timestamps} are ordered by time, which should be the case if they 
 #' were recorded by a measuring device. Use this function to create unique 
 #' timestamps by adding their UTC offset.
@@ -31,14 +31,15 @@
 #'   
 #' #> "+0200" "+0200" "+0100" "+0100" "+0100"
 #' 
-#' # Note that the following timestamps do in fact not exist but do
-#' # nevertheless result in "+0200"
+#' # Note that the following timestamps do not exist in Europe/Berlin timezone
+#' # and would result in an error
+#' \dontrun{
 #' utc_offset_Berlin_time(c(
 #'   "2017-03-26 02:00:00",
 #'   "2017-03-26 02:15:00",
 #'   "2017-03-26 02:30:00",
 #'   "2017-03-26 02:45:00"
-#' ))
+#' ))}
 #' 
 #' #> "+0200" "+0200" "+0200" "+0200"
 #' 
@@ -108,60 +109,55 @@ utc_offset_Berlin_time <- function(timestamps)
 #' @keywords internal
 #' 
 #' @examples
-#' kwb.datetime:::utc_offset_Berlin_time_1d(c(
-#'   "2017-10-29 00:00:00",
-#'   "2017-10-29 01:00:00",
-#'   "2017-10-29 02:00:00",
-#'   "2017-10-29 02:00:00",
-#'   "2017-10-29 03:00:00"
-#' ))
 #' 
-#' # The following results in an error because the timestamps 
-#' # belong to diffeernt days
-#' # kwb.datetime:::utc_offset_Berlin_time_1d(c(
-#' #   "2017-10-29 00:00:00", 
-#' #   "2017-10-30 00:00:00"
-#' # ))
+#' # At what days does Central European Summer Time (CEST) start/end?
+#' cest_begin_end <- kwb.datetime::date_range_CEST(2019)
+#' 
+#' # Provide text timestamps "around" the switch from CET to CEST
+#' times_cet_cest <- c(
+#'   "2019-03-31 01:00:00", # CET
+#'   "2019-03-31 01:15:00", # CET
+#'   "2019-03-31 01:30:00", # CET
+#'   "2019-03-31 01:45:00", # CET
+#'   "2019-03-31 03:00:00", # CEST
+#'   "2019-03-31 03:15:00", # CEST
+#'   "2019-03-31 03:30:00"  # CEST
+#' )
+#' 
+#' # Provide text timestamps "around" the switch from CEST to CET
+#' times_cest_cet <- c(
+#'   "2019-10-27 01:00:00", # CEST
+#'   "2019-10-27 01:30:00", # CEST
+#'   "2019-10-27 02:00:00", # CEST
+#'   "2019-10-27 02:30:00", # CEST
+#'   "2019-10-27 02:00:00", # CET
+#'   "2019-10-27 02:30:00", # CET
+#'   "2019-10-27 03:00:00", # CET
+#'   "2019-10-27 03:30:00", # CET
+#'   "2019-10-27 04:00:00"  # CET
+#' )
+#' 
+#' # Get the offset strings
+#' offsets_cet_cest <- kwb.datetime:::utc_offset_Berlin_time_1d(times_cet_cest)
+#' offsets_cest_cet <- kwb.datetime:::utc_offset_Berlin_time_1d(times_cest_cet)
+#' 
+#' # Create ISO norm timestamps including the offset
+#' iso_cet_cest <- paste0(times_cet_cest, offsets_cet_cest)
+#' iso_cest_cet <- paste0(times_cest_cet, offsets_cest_cet)
+#' 
+#' # Use the function iso_to_localtime() to create POSIXct-objects in Europe/Berlin
+#' kwb.datetime:::iso_to_localtime(iso_cet_cest)
+#' kwb.datetime:::iso_to_localtime(iso_cest_cet)
 #' 
 utc_offset_Berlin_time_1d <- function(x)
 {
-  #cest_begin_end <- kwb.datetime::date_range_CEST(2019)
-  #tz <- "Europe/Berlin"
-  #seq(as.POSIXct(paste0(cest_begin_end[1], " 01:00:00")),
-  #    as.POSIXct(paste0(cest_begin_end[1], " 04:00:00")), 
-  #    by = 900)
-      
-  # x <- c(
-  #   "2019-03-31 01:00:00", # CET
-  #   "2019-03-31 01:15:00", # CET
-  #   "2019-03-31 01:30:00", # CET
-  #   "2019-03-31 02:05:00", # -> error
-  #   "2019-03-31 01:45:00", # CET
-  #   "2019-03-31 03:00:00", # CEST
-  #   "2019-03-31 03:15:00", # CEST
-  #   "2019-03-31 03:30:00"  # CEST
-  # )
-  # 
-  # seq(as.POSIXct(paste0(cest_begin_end[2], " 01:00:00"), tz = tz),
-  #    as.POSIXct(paste0(cest_begin_end[2], " 04:00:00"), tz = tz),
-  #    by = 1800)
-  # 
-  # x <- c(
-  #   "2019-10-27 01:00:00", # CEST
-  #   "2019-10-27 01:30:00", # CEST
-  #   "2019-10-27 02:00:00", # CEST
-  #   "2019-10-27 02:30:00", # CEST
-  #   "2019-10-27 02:00:00", # CET
-  #   "2019-10-27 02:30:00", # CET
-  #   "2019-10-27 03:00:00", # CET
-  #   "2019-10-27 03:30:00", # CET 
-  #   "2019-10-27 04:00:00"  # CET
-  # )
-    
   # all timestamps are expected to belong to the same day
   stopifnot(is.character(x))
   stopifnot(all(hasTimeFormat(x, "%Y-%m-%d %H:%M:%S")))
-            
+  
+  # Helper function to provide the offset string
+  offset_string <- function(i) sprintf("+\02d00", i)
+  
   unique_daystrings <- unique(substr(x, 1, 10))
   
   stopifnot(length(unique_daystrings) == 1)
@@ -179,17 +175,17 @@ utc_offset_Berlin_time_1d <- function(x)
   
   stopifnot(! is.na(utc_offset_day))
   
-  summer_to_winter <- utc_offset_day == "+0200"
+  summer_to_winter <- utc_offset_day == offset_string(2)
   
-  # Extract the hour as a number
+  # Extract the hours as numbers
   hours <- as.integer(substr(x, 12, 13))
   
   # Initialise the result vector
-  offsets <- character(length(x))
+  offsets <- integer(length(x))
   
   # Set the offsets for times before 02:00 or after 02:59
-  offsets[hours < 2] <- ifelse(summer_to_winter, "+0200", "+0100")
-  offsets[hours > 2] <- ifelse(summer_to_winter, "+0100", "+0200")
+  offsets[hours < 2] <- ifelse(summer_to_winter, 2, 1)
+  offsets[hours > 2] <- ifelse(summer_to_winter, 1, 2)
   
   # Timestamps within 02:00 and 02:59 can occur as CEST and as CET. Their offset
   # is initially unknown
@@ -204,43 +200,39 @@ utc_offset_Berlin_time_1d <- function(x)
   # summer time (when we jump from 01:59 directly to 03:00)
   if (! summer_to_winter) {
     stop(
-      "The following timestamps do not exist in Europe/Berlin on ", 
-      unique_daystrings, ":\n", 
+      "The following timestamps do not exist in time zone 'Europe/Berlin':\n", 
       kwb.utils::stringList(utils::head(x[unknown]), collapse = "\n"), 
       call. = FALSE
     )
   }
   
-  # Extract the minutes part of the timestamps of unknown offset as a number
+  # Extract the number of minutes from the timestamps of unknown offset
   minutes <- as.integer(substr(x[unknown], 15, 16))
   
   # Find the index where the next minute is smaller than or equal to the 
   # current minute
   split_index <- which(diff(minutes) <= 0)
+
+  if (length(split_index) > 1) stop(
+    "More than one negative time difference within the same hour ",
+    "'02:00--02:59'!"
+  )
   
   if (length(split_index) > 0) {
     
-    if (length(split_index) > 1) {
-      
-      stop(
-        "More than one negative time difference within the same hour ",
-        "'02:00-02:59'!"
-      )
-    }
-    
     # Set the offset for the second half to "+0100" (CET)
-    offsets[unknown][(split_index + 1):sum(unknown)] <- "+0100"
+    offsets[unknown][(split_index + 1):sum(unknown)] <- 1
     
   } else {
     
     # Set the split index to the last index
-    split_index <- length(unknown)
+    split_index <- sum(unknown)
   }
   
   # Set the offset for the first half to "+0200" (CEST)
-  offsets[unknown][seq_len(split_index)] <- "+0200"
+  offsets[unknown][seq_len(split_index)] <- 2
   
-  offsets  
+  offset_string(offsets)
 }
 
 # utc_offset_Berlin_day --------------------------------------------------------
@@ -250,7 +242,7 @@ utc_offset_Berlin_time_1d <- function(x)
 #' @param x vector of character representing date strings in the format
 #'   \code{yyyy-mm-dd}
 #'
-#' @return vector of elements \code{"+0100"} or \code{"+0200"}, depending on 
+#' @return vector of elements \code{"+01"} or \code{"+02"}, depending on 
 #'   whether all timestamps of the days at corresponding positions in \code{x}
 #'   are in winter (CET) or summer (CEST), respectively. For days at which the
 #'   time is adjusted from CET to CEST or vice versa, \code{NA} is returned.
@@ -260,17 +252,17 @@ utc_offset_Berlin_time_1d <- function(x)
 #' @keywords internal
 #' 
 #' @examples
-#' kwb.datetime:::utc_offset_Berlin_day("2017-11-04") #> "+0100" -> CET
+#' kwb.datetime:::utc_offset_Berlin_day("2017-11-04") #> "+01" -> CET
 #' 
 #' # The offset is not unique at the days of clock change CEST -> CET
-#' kwb.datetime:::utc_offset_Berlin_day("2017-10-28") #> "+0200" -> CEST
+#' kwb.datetime:::utc_offset_Berlin_day("2017-10-28") #> "+02" -> CEST
 #' kwb.datetime:::utc_offset_Berlin_day("2017-10-29") #> NA -> offset not unique!
-#' kwb.datetime:::utc_offset_Berlin_day("2017-10-30") #> "+0100" -> CET
+#' kwb.datetime:::utc_offset_Berlin_day("2017-10-30") #> "+01" -> CET
 #' 
 #' # The offset is not unique at the days of clock change CET -> CEST
-#' kwb.datetime:::utc_offset_Berlin_day("2017-03-25") #> "+0100" -> CET
+#' kwb.datetime:::utc_offset_Berlin_day("2017-03-25") #> "+01" -> CET
 #' kwb.datetime:::utc_offset_Berlin_day("2017-03-26") #> NA -> offset not unique!
-#' kwb.datetime:::utc_offset_Berlin_day("2017-03-27") #> "+0200" -> CEST
+#' kwb.datetime:::utc_offset_Berlin_day("2017-03-27") #> "+02" -> CEST
 #' 
 utc_offset_Berlin_day <- function(x)
 {

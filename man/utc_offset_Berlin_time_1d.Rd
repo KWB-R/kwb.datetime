@@ -20,20 +20,45 @@ vector of elements \code{"+0100"} or \code{"+0200"}, depending on
 UTC Offsets of Berlin Local Timestamps within one Day
 }
 \examples{
-kwb.datetime:::utc_offset_Berlin_time_1d(c(
-  "2017-10-29 00:00:00",
-  "2017-10-29 01:00:00",
-  "2017-10-29 02:00:00",
-  "2017-10-29 02:00:00",
-  "2017-10-29 03:00:00"
-))
 
-# The following results in an error because the timestamps 
-# belong to diffeernt days
-# kwb.datetime:::utc_offset_Berlin_time_1d(c(
-#   "2017-10-29 00:00:00", 
-#   "2017-10-30 00:00:00"
-# ))
+# At what days does Central European Summer Time (CEST) start/end?
+cest_begin_end <- kwb.datetime::date_range_CEST(2019)
+
+# Provide text timestamps "around" the switch from CET to CEST
+times_cet_cest <- c(
+  "2019-03-31 01:00:00", # CET
+  "2019-03-31 01:15:00", # CET
+  "2019-03-31 01:30:00", # CET
+  "2019-03-31 01:45:00", # CET
+  "2019-03-31 03:00:00", # CEST
+  "2019-03-31 03:15:00", # CEST
+  "2019-03-31 03:30:00"  # CEST
+)
+
+# Provide text timestamps "around" the switch from CEST to CET
+times_cest_cet <- c(
+  "2019-10-27 01:00:00", # CEST
+  "2019-10-27 01:30:00", # CEST
+  "2019-10-27 02:00:00", # CEST
+  "2019-10-27 02:30:00", # CEST
+  "2019-10-27 02:00:00", # CET
+  "2019-10-27 02:30:00", # CET
+  "2019-10-27 03:00:00", # CET
+  "2019-10-27 03:30:00", # CET
+  "2019-10-27 04:00:00"  # CET
+)
+
+# Get the offset strings
+offsets_cet_cest <- kwb.datetime:::utc_offset_Berlin_time_1d(times_cet_cest)
+offsets_cest_cet <- kwb.datetime:::utc_offset_Berlin_time_1d(times_cest_cet)
+
+# Create ISO norm timestamps including the offset
+iso_cet_cest <- paste0(times_cet_cest, offsets_cet_cest)
+iso_cest_cet <- paste0(times_cest_cet, offsets_cest_cet)
+
+# Use the function iso_to_localtime() to create POSIXct-objects in Europe/Berlin
+kwb.datetime:::iso_to_localtime(iso_cet_cest)
+kwb.datetime:::iso_to_localtime(iso_cest_cet)
 
 }
 \seealso{

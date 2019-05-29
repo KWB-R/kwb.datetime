@@ -19,7 +19,7 @@ vector of elements \code{"+0100"} or \code{"+0200"}, depending on
 For local timestamps (character) in the format \code{"yyyy-mm-dd HH:MM:SS"},
 of which is known that they are recorded in time zone Europe/Berlin, i.e. CET
 in winter and CEST in summer, the UTC offset (i.e. \code{"+0100"} in winter
-and \code{"+0200"} in summer) is determined. Therfore, it is required that
+and \code{"+0200"} in summer) is determined. Therefore, it is required that
 the \code{timestamps} are ordered by time, which should be the case if they 
 were recorded by a measuring device. Use this function to create unique 
 timestamps by adding their UTC offset.
@@ -36,14 +36,15 @@ utc_offset_Berlin_time(c(
   
 #> "+0200" "+0200" "+0100" "+0100" "+0100"
 
-# Note that the following timestamps do in fact not exist but do
-# nevertheless result in "+0200"
+# Note that the following timestamps do not exist in Europe/Berlin timezone
+# and would result in an error
+\dontrun{
 utc_offset_Berlin_time(c(
   "2017-03-26 02:00:00",
   "2017-03-26 02:15:00",
   "2017-03-26 02:30:00",
   "2017-03-26 02:45:00"
-))
+))}
 
 #> "+0200" "+0200" "+0200" "+0200"
 
