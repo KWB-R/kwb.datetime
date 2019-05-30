@@ -165,20 +165,20 @@ to CET):
 
 ```{r}
 # Create ISO 8601 timestamps and print them
-(iso <- kwb.datetime::append_utc_offset_string(timestamps, offsets))
+(iso_timestamps <- kwb.datetime::append_utc_offset_string(timestamps, offsets))
 ```
 
-Finally, you can use `iso_to_localtime()` to convert these character strings
-to `POSIXct` objects:
+Finally, use `iso_to_localtime()` to convert these character strings to 
+`POSIXct` objects:
 
 ```{r}
 # Create POSIXct-objects in time zone "Europe/Berlin" and print them
-(kwb.datetime:::iso_to_localtime(iso))
+(kwb.datetime:::iso_to_localtime(iso_timestamps))
 ```
 
 ### What is the solution (one step)?
 
-These three steps are performed in the function
+The three steps presented above are performed in the function
 `berlin_local_timestamps_to_POSIXct()` so that you can do the conversion of the
 original `timestamps` by calling:
 
