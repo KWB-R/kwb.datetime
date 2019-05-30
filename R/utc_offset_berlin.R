@@ -4,8 +4,8 @@
 #' 
 #' For local timestamps (character) in the format \code{"yyyy-mm-dd HH:MM:SS"},
 #' of which is known that they are recorded in time zone Europe/Berlin, i.e. CET
-#' in winter and CEST in summer, the UTC offset (i.e. \code{"+0100"} in winter
-#' and \code{"+0200"} in summer) is determined. Therefore, it is required that
+#' in winter and CEST in summer, the UTC offset (i.e. \code{"+1"} in winter
+#' and \code{"+2"} in summer) is determined. Therefore, it is required that
 #' the \code{timestamps} are ordered by time, which should be the case if they 
 #' were recorded by a measuring device. Use this function to create unique 
 #' timestamps by adding their UTC offset.
@@ -69,7 +69,7 @@ utc_offset_Berlin_time <- function(timestamps)
   unique_offsets <- utc_offset_Berlin_day(unique_days)
   
   # Initialise the output vector
-  offsets <- character(length(timestamps))
+  offsets <- integer(length(timestamps))
   
   # For which days the offset is known?
   is_known <- ! is.na(unique_offsets)
@@ -182,12 +182,12 @@ utc_offset_Berlin_one_day <- function(x)
   offsets <- integer(length(x))
   
   # Set the offsets for times before 02:00 or after 02:59
-  offsets[hours < 2] <- ifelse(summer_to_winter, 2, 1)
-  offsets[hours > 2] <- ifelse(summer_to_winter, 1, 2)
+  offsets[hours < 2L] <- ifelse(summer_to_winter, 2L, 1L)
+  offsets[hours > 2L] <- ifelse(summer_to_winter, 1L, 2L)
   
   # Timestamps within 02:00 and 02:59 can occur as CEST and as CET. Their offset
   # is initially unknown
-  unknown <- (hours == 2)
+  unknown <- (hours == 2L)
   
   # Return if there are no unknown timestamps
   if (! any(unknown)) {
@@ -218,7 +218,7 @@ utc_offset_Berlin_one_day <- function(x)
   
   if (length(split_index) > 0) {
     # Set the offset for the second half to "+0100" (CET)
-    offsets[unknown][(split_index + 1):sum(unknown)] <- 1
+    offsets[unknown][(split_index + 1):sum(unknown)] <- 1L
     
   } else {
     # Set the split index to the last index
@@ -226,7 +226,7 @@ utc_offset_Berlin_one_day <- function(x)
   }
   
   # Set the offset for the first half to "+0200" (CEST)
-  offsets[unknown][seq_len(split_index)] <- 2
+  offsets[unknown][seq_len(split_index)] <- 2L
   
   offsets
 }

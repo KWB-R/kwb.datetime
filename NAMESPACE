@@ -3,6 +3,7 @@
 export(append_utc_offset_string)
 export(berlinNormalTimeToBerlinLocalTime)
 export(berlinNormalTimeToUTC)
+export(berlin_local_timestamps_to_POSIXct)
 export(currentDateString)
 export(currentQuarter)
 export(currentYear)

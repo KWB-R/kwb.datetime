@@ -8,6 +8,41 @@
 # expect it to mean 4 hours ahead of UTC (i.e. east of Greenwich)."
 #
 
+# berlin_local_timestamps_to_POSIXct -------------------------------------------
+
+#' Convert Berlin Local Timestamps (Text) to POSIXct
+#' 
+#' This function creates POSIXct objects from local timestamps (character) in 
+#' the format \code{"yyyy-mm-dd HH:MM:SS"}, of which is known that they are 
+#' recorded in time zone "Europe/Berlin", i.e. CET in winter and CEST in summer. 
+#' It is required that the \code{timestamps} are ordered by time, which should 
+#' be the case if they  were recorded by a measuring device.
+#' 
+#' @param timestamps vector of character representing timestamps in format
+#'   \code{"yyyy-mm-dd HH:MM:SS"}
+#' @export
+#' @examples 
+#' timestamps <- c(
+#'   "2017-10-29 01:30:00", # 1: CEST
+#'   "2017-10-29 02:00:00", # 2: CEST
+#'   "2017-10-29 02:30:00", # 3: CEST
+#'   "2017-10-29 02:00:00", # 4: CET
+#'   "2017-10-29 02:30:00", # 5: CET
+#'   "2017-10-29 03:00:00"  # 6: CET
+#' )
+#' 
+#' berlin_local_timestamps_to_POSIXct(timestamps)
+#' 
+berlin_local_timestamps_to_POSIXct <- function(timestamps)
+{
+  iso_to_localtime(
+    append_utc_offset_string(
+      timestamps, 
+      utc_offset_Berlin_time(timestamps)
+    )
+  )
+}
+
 # iso_to_localtime -------------------------------------------------------------
 
 #' Text Timestamps to POSIXct

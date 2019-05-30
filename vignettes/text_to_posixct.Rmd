@@ -1,0 +1,186 @@
+---
+title: "Converting Text to Time Objects"
+author: "Hauke Sonnenberg"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Text to Time Objects}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+print_times <- function(x) {
+  old_pars <- par(mar = c(2.5, 4.5, 0.5, 0.5))
+  plot(x, seq_along(x), las = 1, xlab = "", ylab = "Index", ylim = c(length(x) + 0.4, 0.6))
+  par(old_pars)
+}
+```
+
+In R, time information are stored in objects of class `POSIXct`. The function
+`as.POSIXct()` is used to convert character strings representing points in 
+time into the corresponding `POSIXct` objects. This tutorial demonstrates
+some important details about this function.
+
+Problems may arise with times recorded in time zones that change for Daylight
+Saving. This is the case for the time zone "Europe/Berlin" that will be used
+in the following two examples. In this time zone, the time is given in 
+Central European Time (CET) in winter and in Central European Summer Time (CEST)
+in summer. 
+
+## When does Summer Time start/end?
+
+Use the function `date_range_CEST()` to find out at what days summer time starts
+and ends, respectively:
+
+```{r}
+kwb.datetime::date_range_CEST(2017:2019)
+```
+Note that this function returns character strings and not, for example, `Date`
+objects.
+
+## Example 1: Reading local timestamps in Berlin, Germany
+
+Imagine a measuring device taking measurements every 30 minutes at some location
+in Berlin, Germany. The clock of the device switches between standard time and
+daylight saving time (summer time) and vice versa. In 2017, on 29 of October,
+the day when summer time is reverted back to standard time, the recorded
+timestamps are:
+
+```{r}
+# Define timestamps (character)
+timestamps <- c(
+  "2017-10-29 01:30:00", # 1: CEST
+  "2017-10-29 02:00:00", # 2: CEST
+  "2017-10-29 02:30:00", # 3: CEST
+  "2017-10-29 02:00:00", # 4: CET
+  "2017-10-29 02:30:00", # 5: CET
+  "2017-10-29 03:00:00"  # 6: CET
+)
+```
+
+The timestamps "02:00" and "02:30" appear twice, at indices 2 and 3,
+respectively, first and at indices 4 and 5, respectively, second. This is
+because at 03:00 (CEST) the clock is set back to 02:00 (CET). The first
+occurrences of the two timestamps refer to summer time (CEST) whereas the second
+occurrences refer to standard time (CET).
+
+### What is the problem?
+
+What happens if we convert these timestamps to time objects? Using 
+`as.POSIXct()` and the (correct) time zone "Europe/Berlin", we get the following
+vector of time objects:
+
+```{r}
+# Convert timestamps to POSIXct and print them
+(times <- as.POSIXct(timestamps, tz = "Europe/Berlin"))
+``` 
+The function cannot distinguish between the first and second occurrences of the
+times 02:00 and  02:30. The output and the following plot reveal that the
+timestamps between 02:00 and 03:00 (exclusive) are always interpreted as being
+in summer time (CEST).
+
+```{r fig.width = 7, fig.height = 2, echo = FALSE}
+print_times(times)
+```
+
+### What is the solution (step by step)?
+
+How can we tell R that the first occurrences of 02:00 and 02:30 refer to CEST
+and the second ocurrences refer to CET? We could try the following:
+
+```{r}
+as.POSIXct(tz = "Europe/Berlin", c(
+  "2017-10-29 01:30:00 CEST",
+  "2017-10-29 02:00:00 CEST",
+  "2017-10-29 02:30:00 CEST",
+  "2017-10-29 02:00:00 CET",
+  "2017-10-29 02:30:00 CET",
+  "2017-10-29 03:00:00 CET"
+))
+```
+
+Unfortunately, this does not work. Again, everything between 02:00 and 03:00
+(exclusive) is assumed to refer to CEST, as the output above indicates. However,
+we can add the number of hours ahead of Coordinated Universal Time (UTC), the so
+called UTC Offset, to the timestamps, as in the following:
+
+```{r}
+iso_timestamps <- c(
+  "2017-10-29 01:30:00+0200",
+  "2017-10-29 02:00:00+0200",
+  "2017-10-29 02:30:00+0200",
+  "2017-10-29 02:00:00+0100",
+  "2017-10-29 02:30:00+0100",
+  "2017-10-29 03:00:00+0100"
+)
+```
+
+Timestamps of this form can be converted to POSIXct objects by setting the 
+`format` argument of the `as.POSIXct()` function to `"%F %T%z"`:
+
+```{r}
+as.POSIXct(iso_timestamps, tz = "Europe/Berlin", format = "%F %T%z")
+```
+
+The package kwb.datetime provides a function `iso_to_localtime()` that does
+the same:
+
+```{r}
+kwb.datetime::iso_to_localtime(iso_timestamps)
+```
+
+In both cases, the timestamps are interpreted correctly, as also shown in this 
+plot:
+
+```{r fig.width = 7, fig.height = 2, echo = FALSE}
+out <- capture.output(
+  print_times(kwb.datetime::iso_to_localtime(iso_timestamps))
+)
+```
+
+Unfortunately, the timestamps logged by measuring devices often do not contain
+the additional information of the UTC offset. For this case the package
+kwb.datetime provides a function `utc_offset_Berlin_time()` that returns the
+UTC offset for times in time zone "Europe/Berlin":
+
+```{r}
+# Guess and print the UTC offsets from the timestamps
+(offsets <- kwb.datetime::utc_offset_Berlin_time(timestamps))
+```
+
+These offsets can then be used to create timestamps in ISO 8601 format, i.e.
+ending in either "+0200" (when referring to CEST) or in "+0100" (when referring 
+to CET):
+
+```{r}
+# Create ISO 8601 timestamps and print them
+(iso <- kwb.datetime::append_utc_offset_string(timestamps, offsets))
+```
+
+Finally, you can use `iso_to_localtime()` to convert these character strings
+to `POSIXct` objects:
+
+```{r}
+# Create POSIXct-objects in time zone "Europe/Berlin" and print them
+(kwb.datetime:::iso_to_localtime(iso))
+```
+
+### What is the solution (one step)?
+
+These three steps are performed in the function
+`berlin_local_timestamps_to_POSIXct()` so that you can do the conversion of the
+original `timestamps` by calling:
+
+```{r}
+kwb.datetime::berlin_local_timestamps_to_POSIXct(timestamps)
+```
+
+## Example 2: Reading timestamps in UTC+01
+
+See vignette ["Exkurs Zeitzonen"](timezones.html) (in German).

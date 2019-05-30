@@ -18,8 +18,8 @@ vector of elements \code{"+0100"} or \code{"+0200"}, depending on
 \description{
 For local timestamps (character) in the format \code{"yyyy-mm-dd HH:MM:SS"},
 of which is known that they are recorded in time zone Europe/Berlin, i.e. CET
-in winter and CEST in summer, the UTC offset (i.e. \code{"+0100"} in winter
-and \code{"+0200"} in summer) is determined. Therefore, it is required that
+in winter and CEST in summer, the UTC offset (i.e. \code{"+1"} in winter
+and \code{"+2"} in summer) is determined. Therefore, it is required that
 the \code{timestamps} are ordered by time, which should be the case if they 
 were recorded by a measuring device. Use this function to create unique 
 timestamps by adding their UTC offset.
