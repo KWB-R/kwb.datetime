@@ -85,7 +85,7 @@ times 02:00 and  02:30. The output and the following plot reveal that the
 timestamps between 02:00 and 03:00 (exclusive) are always interpreted as being
 in summer time (CEST).
 
-```{r fig.width = 7, fig.height = 2, echo = FALSE}
+```{r fig.width = 5, fig.height = 2, echo = FALSE}
 print_times(times)
 ```
 
@@ -138,7 +138,7 @@ kwb.datetime::iso_to_localtime(iso_timestamps)
 In both cases, the timestamps are interpreted correctly, as also shown in this 
 plot:
 
-```{r fig.width = 7, fig.height = 2, echo = FALSE}
+```{r fig.width = 5, fig.height = 2, echo = FALSE}
 out <- capture.output(
   print_times(kwb.datetime::iso_to_localtime(iso_timestamps))
 )
@@ -154,8 +154,13 @@ UTC offset for times in time zone "Europe/Berlin":
 (offsets <- kwb.datetime::utc_offset_Berlin_time(timestamps))
 ```
 
-These offsets can then be used to create timestamps in ISO 8601 format, i.e.
-ending in either "+0200" (when referring to CEST) or in "+0100" (when referring 
+The function requires that the timestamps are sorted in increasing order. 
+Otherwise it could not decide between CEST and CET for possibly unambiguous 
+timestamps between 02:00 and 03:00 at the day of reverting time from CEST back
+to CET.
+
+The offsets can then be used to create timestamps in ISO 8601 format, i.e.
+ending in either "+0200" (when referring to CEST) or in "+0100" (when referring
 to CET):
 
 ```{r}
