@@ -56,6 +56,7 @@
 #'
 utc_offset_Berlin_time <- function(timestamps)
 {
+  # kwb.utils::assignPackageObjects("kwb.datetime")
   stopifnot(all(hasTimeFormat(timestamps, "%Y-%m-%d %H:%M:%S")))
   
   # Extract the day strings
@@ -81,18 +82,18 @@ utc_offset_Berlin_time <- function(timestamps)
   
   # Set the offset for timestamps belonging to the days of unknown offset
   for (i in which(! is_known)) {
-    #i <- 2
+    #i <- 1
     
     # Indices of timestamps belonging to the current day
     indices <- which(days == unique_days[i])
     
-    offsets[indices] <- utc_offset_Berlin_time_1d(x = timestamps[indices])
+    offsets[indices] <- utc_offset_Berlin_one_day(x = timestamps[indices])
   }
   
   offsets
 }
 
-# utc_offset_Berlin_time_1d ----------------------------------------------------
+# utc_offset_Berlin_one_day ----------------------------------------------------
 
 #' UTC Offsets of Berlin Local Timestamps within one Day
 #' 
@@ -100,9 +101,9 @@ utc_offset_Berlin_time <- function(timestamps)
 #'   \code{"yyyy-mm-dd HH:MM:SS"}. All timestamps must belong to one and the
 #'   same day.
 #'
-#' @return vector of elements \code{"+0100"} or \code{"+0200"}, depending on 
-#'   whether the timestamps at corresponding positions in \code{x} are
-#'   in CET or CEST, respectively.
+#' @return vector of integer with elements 1 or 2, depending on whether the 
+#'   timestamps at corresponding positions in \code{x} represent Central 
+#'   European Time (CET) or Central European Summer Time (CEST).
 #'
 #' @seealso \code{\link{utc_offset_Berlin_time}}
 #' 
@@ -138,25 +139,22 @@ utc_offset_Berlin_time <- function(timestamps)
 #' )
 #' 
 #' # Get the offset strings
-#' offsets_cet_cest <- kwb.datetime:::utc_offset_Berlin_time_1d(times_cet_cest)
-#' offsets_cest_cet <- kwb.datetime:::utc_offset_Berlin_time_1d(times_cest_cet)
+#' offsets_cet_cest <- kwb.datetime:::utc_offset_Berlin_one_day(times_cet_cest)
+#' offsets_cest_cet <- kwb.datetime:::utc_offset_Berlin_one_day(times_cest_cet)
 #' 
 #' # Create ISO norm timestamps including the offset
-#' iso_cet_cest <- paste0(times_cet_cest, offsets_cet_cest)
-#' iso_cest_cet <- paste0(times_cest_cet, offsets_cest_cet)
+#' iso_cet_cest <- append_utc_offset_string(times_cet_cest, offsets_cet_cest)
+#' iso_cest_cet <- append_utc_offset_string(times_cest_cet, offsets_cest_cet)
 #' 
-#' # Use the function iso_to_localtime() to create POSIXct-objects in Europe/Berlin
+#' # Use iso_to_localtime() to create POSIXct-objects in Europe/Berlin
 #' kwb.datetime:::iso_to_localtime(iso_cet_cest)
 #' kwb.datetime:::iso_to_localtime(iso_cest_cet)
 #' 
-utc_offset_Berlin_time_1d <- function(x)
+utc_offset_Berlin_one_day <- function(x)
 {
   # all timestamps are expected to belong to the same day
   stopifnot(is.character(x))
   stopifnot(all(hasTimeFormat(x, "%Y-%m-%d %H:%M:%S")))
-  
-  # Helper function to provide the offset string
-  offset_string <- function(i) sprintf("+\02d00", i)
   
   unique_daystrings <- unique(substr(x, 1, 10))
   
@@ -175,7 +173,7 @@ utc_offset_Berlin_time_1d <- function(x)
   
   stopifnot(! is.na(utc_offset_day))
   
-  summer_to_winter <- utc_offset_day == offset_string(2)
+  summer_to_winter <- utc_offset_day == 2L
   
   # Extract the hours as numbers
   hours <- as.integer(substr(x, 12, 13))
@@ -219,12 +217,10 @@ utc_offset_Berlin_time_1d <- function(x)
   )
   
   if (length(split_index) > 0) {
-    
     # Set the offset for the second half to "+0100" (CET)
     offsets[unknown][(split_index + 1):sum(unknown)] <- 1
     
   } else {
-    
     # Set the split index to the last index
     split_index <- sum(unknown)
   }
@@ -232,7 +228,7 @@ utc_offset_Berlin_time_1d <- function(x)
   # Set the offset for the first half to "+0200" (CEST)
   offsets[unknown][seq_len(split_index)] <- 2
   
-  offset_string(offsets)
+  offsets
 }
 
 # utc_offset_Berlin_day --------------------------------------------------------
@@ -242,38 +238,71 @@ utc_offset_Berlin_time_1d <- function(x)
 #' @param x vector of character representing date strings in the format
 #'   \code{yyyy-mm-dd}
 #'
-#' @return vector of elements \code{"+01"} or \code{"+02"}, depending on 
-#'   whether all timestamps of the days at corresponding positions in \code{x}
-#'   are in winter (CET) or summer (CEST), respectively. For days at which the
-#'   time is adjusted from CET to CEST or vice versa, \code{NA} is returned.
+#' @return vector of integers \code{1} or \code{2}, depending on whether all 
+#'   timestamps of the days at corresponding positions in \code{x}
+#'   are in Central European Time (CET) or in Central European Summer Time 
+#'   (CEST), respectively. For days at which the time is adjusted from CET to 
+#'   CEST or vice versa, \code{NA} is returned.
 #'
 #' @seealso \code{\link{utc_offset_Berlin_time}}
 #' 
 #' @keywords internal
 #' 
 #' @examples
-#' kwb.datetime:::utc_offset_Berlin_day("2017-11-04") #> "+01" -> CET
+#' kwb.datetime:::utc_offset_Berlin_day("2017-11-04") #> 1 -> CET
 #' 
 #' # The offset is not unique at the days of clock change CEST -> CET
-#' kwb.datetime:::utc_offset_Berlin_day("2017-10-28") #> "+02" -> CEST
+#' kwb.datetime:::utc_offset_Berlin_day("2017-10-28") #> 2 -> CEST
 #' kwb.datetime:::utc_offset_Berlin_day("2017-10-29") #> NA -> offset not unique!
-#' kwb.datetime:::utc_offset_Berlin_day("2017-10-30") #> "+01" -> CET
+#' kwb.datetime:::utc_offset_Berlin_day("2017-10-30") #> 1 -> CET
 #' 
 #' # The offset is not unique at the days of clock change CET -> CEST
-#' kwb.datetime:::utc_offset_Berlin_day("2017-03-25") #> "+01" -> CET
+#' kwb.datetime:::utc_offset_Berlin_day("2017-03-25") #> 1 -> CET
 #' kwb.datetime:::utc_offset_Berlin_day("2017-03-26") #> NA -> offset not unique!
-#' kwb.datetime:::utc_offset_Berlin_day("2017-03-27") #> "+02" -> CEST
+#' kwb.datetime:::utc_offset_Berlin_day("2017-03-27") #> 2 -> CEST
 #' 
 utc_offset_Berlin_day <- function(x)
 {
   stopifnot(is.character(x), all(hasTimeFormat(x, "%Y-%m-%d")))
 
-  get_offset <- function(x) format(as.POSIXct(x, tz = "Europe/Berlin"), "%z")
+  get_offset <- function(x) {
+    offset_string <- format(as.POSIXct(x, tz = "Europe/Berlin"), "%z")
+    as.integer(as.integer(offset_string) / 100)
+  }
 
-  offset_1 <- get_offset(paste(x, "00:00:00"))
-  offset_2 <- get_offset(paste(x, "12:00:00"))
+  offset_midnight <- get_offset(paste(x, "00:00:00"))
+  offset_noon <- get_offset(paste(x, "12:00:00"))
   
-  offset_1[offset_1 != offset_2] <- NA
+  offset_midnight[offset_midnight != offset_noon] <- NA
   
-  offset_1
+  offset_midnight
+}
+
+# Helper function to provide the offset string
+offset_string <- function(i) sprintf("%+03d00", i)
+
+# append_utc_offset_string -----------------------------------------------------
+
+#' Append UTC Offset String to Character Timestamps
+#' 
+#' @param x vector of character timestamps in format yyyy-mm-dd HH:MM:SS
+#' @param offsets vector of UTC offsets
+#' @return vector of character resulting from pasting UTC offset strings such
+#'   as "+0100" for UTC+1 to the input strings in \code{x}
+#' @export
+#' @examples
+#' # Timestamp in CET -> UTC+1
+#' append_utc_offset_string("2019-01-30 10:34:00", 1)
+#' 
+#' # Timestamp in CEST -> UTC+2
+#' append_utc_offset_string("2019-05-30 10:34:00", 2)
+#' 
+append_utc_offset_string <- function(x, offsets)
+{
+  stopifnot(is.character(x))
+  stopifnot(all(hasTimeFormat(x, "%Y-%m-%d %H:%M:%S")))
+  stopifnot(is.numeric(offsets))
+  stopifnot(length(x) == length(offsets) || length(offsets) == 1)
+  
+  sprintf("%s%+03d00", x, offsets)
 }
