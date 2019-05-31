@@ -28,10 +28,9 @@ time into the corresponding `POSIXct` objects. This tutorial demonstrates
 some important details about this function.
 
 Problems may arise with times recorded in time zones that change for Daylight
-Saving. This is the case for the time zone "Europe/Berlin" that will be used
-in the following two examples. In this time zone, the time is given in 
-Central European Time (CET) in winter and in Central European Summer Time (CEST)
-in summer. 
+Saving. This is the case for the time zone "Europe/Berlin" that are used in the
+following examples. In this time zone, the time is given in Central European
+Time (CET) in winter and in Central European Summer Time (CEST) in summer.
 
 ## When does Summer Time start/end?
 
@@ -47,10 +46,10 @@ objects.
 ## Example 1: Reading local timestamps in Berlin, Germany
 
 Imagine a measuring device taking measurements every 30 minutes at some location
-in Berlin, Germany. The clock of the device switches between standard time and
-daylight saving time (summer time) and vice versa. In 2017, on 29 of October,
-the day when summer time is reverted back to standard time, the recorded
-timestamps are:
+in Berlin, Germany. The clock of the device is configured to switch between
+standard time and daylight saving time (summer time) and vice versa. In 2017, on
+October 29, when summer time is reverted back to standard time, the recorded
+timestamps around the time shift are:
 
 ```{r}
 # Define timestamps (character)
@@ -105,10 +104,10 @@ as.POSIXct(tz = "Europe/Berlin", c(
 ))
 ```
 
-Unfortunately, this does not work. Again, everything between 02:00 and 03:00
+**Unfortunately, this does not work!** Again, everything between 02:00 and 03:00
 (exclusive) is assumed to refer to CEST, as the output above indicates. However,
-we can add the number of hours ahead of Coordinated Universal Time (UTC), the so
-called UTC Offset, to the timestamps, as in the following:
+R accepts a format in which the number of hours ahead of Coordinated Universal
+Time (UTC) is indicated in the timestamps. In our example this looks as follows:
 
 ```{r}
 iso_timestamps <- c(
@@ -121,12 +120,18 @@ iso_timestamps <- c(
 )
 ```
 
-Timestamps of this form can be converted to POSIXct objects by setting the 
-`format` argument of the `as.POSIXct()` function to `"%F %T%z"`:
+Timestamps in CEST are two hours (and zero minutes) ahead of UTC. This is 
+indicated in the timestamp by the ending *+0200*. Timestamps in CET are only one 
+hour ahead of UTC and thus indicated by *+0100*. Timestamps given in this format 
+can be converted to POSIXct objects by setting the `format` argument of the 
+`as.POSIXct()` function to `"%F %T%z"`:
 
 ```{r}
 as.POSIXct(iso_timestamps, tz = "Europe/Berlin", format = "%F %T%z")
 ```
+
+For the meaning of the placeholders %F, %T and %z, respectively, in the
+format string, see `?strftime`. 
 
 The package kwb.datetime provides a function `iso_to_localtime()` that does
 the same:
@@ -145,31 +150,34 @@ out <- capture.output(
 ```
 
 Unfortunately, the timestamps logged by measuring devices often do not contain
-the additional information of the UTC offset. For this case the package
-kwb.datetime provides a function `utc_offset_Berlin_time()` that returns the
-UTC offset for times in time zone "Europe/Berlin":
+the additional information on the UTC offset. For this case the package
+kwb.datetime provides three functions that can be applied in a chain to perform
+a three step process:
+
+**Step 1:** Use the function `utc_offset_Berlin_time()` to determine the UTC 
+offsets (for timestamps given in time zone "Europe/Berlin"):
 
 ```{r}
-# Guess and print the UTC offsets from the timestamps
+# Guess and print the UTC offsets for the given timestamps
 (offsets <- kwb.datetime::utc_offset_Berlin_time(timestamps))
 ```
 
-The function requires that the timestamps are sorted in increasing order. 
-Otherwise it could not decide between CEST and CET for possibly unambiguous 
+This function requires the timestamps to be sorted in increasing order. 
+Otherwise it cannot decide between CEST and CET for possibly unambiguous 
 timestamps between 02:00 and 03:00 at the day of reverting time from CEST back
 to CET.
 
-The offsets can then be used to create timestamps in ISO 8601 format, i.e.
-ending in either "+0200" (when referring to CEST) or in "+0100" (when referring
-to CET):
+**Step 2:** Use these offsets and the function `append_utc_offset_string()` to 
+create timestamps in ISO 8601 format, i.e. ending in either *+0200* (when 
+referring to CEST) or in *+0100* (when referring to CET):
 
 ```{r}
 # Create ISO 8601 timestamps and print them
 (iso_timestamps <- kwb.datetime::append_utc_offset_string(timestamps, offsets))
 ```
 
-Finally, use `iso_to_localtime()` to convert these character strings to 
-`POSIXct` objects:
+**Step 3:** Use the function `iso_to_localtime()` to convert these new 
+timestamps from `character` into their corresponding `POSIXct` objects:
 
 ```{r}
 # Create POSIXct-objects in time zone "Europe/Berlin" and print them
