@@ -86,7 +86,13 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/text_to_posixct.html">Converting Text to Time Objects</a>
+    </li>
+    <li>
       <a href="../articles/timezones.html">Exkurs Zeitzonen</a>
+    </li>
+    <li>
+      <a href="../articles/use_case.html">Use Case: Importing Timestamps</a>
     </li>
   </ul>
 </li>
@@ -130,8 +136,8 @@
     <tr>
       <th>timestamps</th>
       <td><p>vector of character timestamps of format <code>yyyy-mm-dd 
-HH:MM:SS+[01|02]</code>, i.e. ending either in '+01' (UTC offset in Berlin in
-winter) or '+02' (UTC offset in Berlin in summer)</p></td>
+HH:MM:SS+[01|02]</code>, i.e. ending either in '+0100' (UTC offset in Berlin in
+winter) or '+0200' (UTC offset in Berlin in summer)</p></td>
     </tr>
     <tr>
       <th>dbg</th>
@@ -142,14 +148,14 @@ winter) or '+02' (UTC offset in Berlin in summer)</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>times</span> <span class='kw'>&lt;-</span> <span class='fu'>iso_to_localtime</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(
-  <span class='st'>"2017-10-29 01:00:00+02"</span>,
-  <span class='st'>"2017-10-29 01:30:00+02"</span>,
-  <span class='st'>"2017-10-29 02:00:00+02"</span>,
-  <span class='st'>"2017-10-29 02:30:00+02"</span>,
-  <span class='st'>"2017-10-29 02:00:00+01"</span>,
-  <span class='st'>"2017-10-29 02:30:00+01"</span>,
-  <span class='st'>"2017-10-29 03:00:00+01"</span>,
-  <span class='st'>"2017-10-29 03:30:00+01"</span>
+  <span class='st'>"2017-10-29 01:00:00+0200"</span>,
+  <span class='st'>"2017-10-29 01:30:00+0200"</span>,
+  <span class='st'>"2017-10-29 02:00:00+0200"</span>,
+  <span class='st'>"2017-10-29 02:30:00+0200"</span>,
+  <span class='st'>"2017-10-29 02:00:00+0100"</span>,
+  <span class='st'>"2017-10-29 02:30:00+0100"</span>,
+  <span class='st'>"2017-10-29 03:00:00+0100"</span>,
+  <span class='st'>"2017-10-29 03:30:00+0100"</span>
 ))</div><div class='output co'>#&gt; Converting 8 timestamps ... ok.</div><div class='input'>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/class'>class</a></span>(<span class='no'>times</span>)</div><div class='output co'>#&gt; [1] "POSIXct" "POSIXt" </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='no'>times</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/rep'>rep</a></span>(<span class='fl'>1</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/length'>length</a></span>(<span class='no'>times</span>)), <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"LocalTime"</span>)</div><div class='img'><img src='iso_to_localtime-1.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>

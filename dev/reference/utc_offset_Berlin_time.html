@@ -34,8 +34,8 @@
 
 <meta property="og:description" content="For local timestamps (character) in the format &quot;yyyy-mm-dd HH:MM:SS&quot;,
 of which is known that they are recorded in time zone Europe/Berlin, i.e. CET
-in winter and CEST in summer, the UTC offset (i.e. &quot;+0100&quot; in winter
-and &quot;+0200&quot; in summer) is determined. Therfore, it is required that
+in winter and CEST in summer, the UTC offset (i.e. &quot;+1&quot; in winter
+and &quot;+2&quot; in summer) is determined. Therefore, it is required that
 the timestamps are ordered by time, which should be the case if they 
 were recorded by a measuring device. Use this function to create unique 
 timestamps by adding their UTC offset." />
@@ -92,7 +92,13 @@ timestamps by adding their UTC offset." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/text_to_posixct.html">Converting Text to Time Objects</a>
+    </li>
+    <li>
       <a href="../articles/timezones.html">Exkurs Zeitzonen</a>
+    </li>
+    <li>
+      <a href="../articles/use_case.html">Use Case: Importing Timestamps</a>
     </li>
   </ul>
 </li>
@@ -126,8 +132,8 @@ timestamps by adding their UTC offset." />
     
     <p>For local timestamps (character) in the format <code>"yyyy-mm-dd HH:MM:SS"</code>,
 of which is known that they are recorded in time zone Europe/Berlin, i.e. CET
-in winter and CEST in summer, the UTC offset (i.e. <code>"+0100"</code> in winter
-and <code>"+0200"</code> in summer) is determined. Therfore, it is required that
+in winter and CEST in summer, the UTC offset (i.e. <code>"+1"</code> in winter
+and <code>"+2"</code> in summer) is determined. Therefore, it is required that
 the <code>timestamps</code> are ordered by time, which should be the case if they 
 were recorded by a measuring device. Use this function to create unique 
 timestamps by adding their UTC offset.</p>
@@ -161,17 +167,19 @@ timestamps by adding their UTC offset.</p>
   <span class='st'>"2017-03-26 03:00:00"</span>, <span class='co'># jump from 02:00 to 03:00</span>
   <span class='st'>"2017-03-26 03:01:00"</span>,
   <span class='st'>"2017-03-26 03:02:00"</span>
-))</div><div class='output co'>#&gt; [1] "+0200" "+0200" "+0100" "+0100" "+0100"</div><div class='input'>
-<span class='co'>#&gt; "+0200" "+0200" "+0100" "+0100" "+0100"</span>
+))</div><div class='output co'>#&gt; [1] 1 1 2 2 2</div><div class='input'>  
+#> "+0200" "+0200" "+0100" "+0100" "+0100"
 
-<span class='co'># Note that the following timestamps do in fact not exist but do</span>
-<span class='co'># nevertheless result in "+0200"</span>
+# Note that the following timestamps do not exist in Europe/Berlin timezone
+# and would result in an error
+</div><span class='co'># NOT RUN {</span>
 <span class='fu'>utc_offset_Berlin_time</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(
   <span class='st'>"2017-03-26 02:00:00"</span>,
   <span class='st'>"2017-03-26 02:15:00"</span>,
   <span class='st'>"2017-03-26 02:30:00"</span>,
   <span class='st'>"2017-03-26 02:45:00"</span>
-))</div><div class='output co'>#&gt; [1] "+0200" "+0200" "+0200" "+0200"</div><div class='input'>
+))
+<span class='co'># }</span><div class='input'>
 <span class='co'>#&gt; "+0200" "+0200" "+0200" "+0200"</span>
 
 <span class='co'># Change from CEST to CET</span>
@@ -181,7 +189,7 @@ timestamps by adding their UTC offset.</p>
   <span class='st'>"2017-10-29 02:30:00"</span>, <span class='co'># first time: CEST</span>
   <span class='st'>"2017-10-29 02:00:00"</span>, <span class='co'># second time: CET</span>
   <span class='st'>"2017-10-29 02:30:00"</span>  <span class='co'># second time: CET</span>
-))</div><div class='output co'>#&gt; [1] "+0200" "+0200" "+0200" "+0100" "+0100"</div><div class='input'>  
+))</div><div class='output co'>#&gt; [1] 2 2 2 1 1</div><div class='input'>  
  #> "+0200" "+0200" "+0200" "+0100" "+0100"
 
 </div></pre>

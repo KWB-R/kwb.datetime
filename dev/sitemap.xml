@@ -4,10 +4,16 @@
     <loc>https://kwb-r.github.io/kwb.datetime/index.html</loc>
   </url>
   <url>
+    <loc>https://kwb-r.github.io/kwb.datetime/reference/append_utc_offset_string.html</loc>
+  </url>
+  <url>
     <loc>https://kwb-r.github.io/kwb.datetime/reference/berlinNormalTimeToBerlinLocalTime.html</loc>
   </url>
   <url>
     <loc>https://kwb-r.github.io/kwb.datetime/reference/berlinNormalTimeToUTC.html</loc>
+  </url>
+  <url>
+    <loc>https://kwb-r.github.io/kwb.datetime/reference/berlin_local_timestamps_to_POSIXct.html</loc>
   </url>
   <url>
     <loc>https://kwb-r.github.io/kwb.datetime/reference/currentDateString.html</loc>
@@ -130,12 +136,18 @@
     <loc>https://kwb-r.github.io/kwb.datetime/reference/utc_offset_Berlin_day.html</loc>
   </url>
   <url>
+    <loc>https://kwb-r.github.io/kwb.datetime/reference/utc_offset_Berlin_one_day.html</loc>
+  </url>
+  <url>
     <loc>https://kwb-r.github.io/kwb.datetime/reference/utc_offset_Berlin_time.html</loc>
   </url>
   <url>
-    <loc>https://kwb-r.github.io/kwb.datetime/reference/utc_offset_Berlin_time_1d.html</loc>
+    <loc>https://kwb-r.github.io/kwb.datetime/articles/text_to_posixct.html</loc>
   </url>
   <url>
     <loc>https://kwb-r.github.io/kwb.datetime/articles/timezones.html</loc>
+  </url>
+  <url>
+    <loc>https://kwb-r.github.io/kwb.datetime/articles/use_case.html</loc>
   </url>
 </urlset>

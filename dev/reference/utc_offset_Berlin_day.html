@@ -86,7 +86,13 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/text_to_posixct.html">Converting Text to Time Objects</a>
+    </li>
+    <li>
       <a href="../articles/timezones.html">Exkurs Zeitzonen</a>
+    </li>
+    <li>
+      <a href="../articles/use_case.html">Use Case: Importing Timestamps</a>
     </li>
   </ul>
 </li>
@@ -136,10 +142,11 @@
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>vector of elements <code>"+0100"</code> or <code>"+0200"</code>, depending on 
-  whether all timestamps of the days at corresponding positions in <code>x</code>
-  are in winter (CET) or summer (CEST), respectively. For days at which the
-  time is adjusted from CET to CEST or vice versa, <code>NA</code> is returned.</p>
+    <p>vector of integers <code>1</code> or <code>2</code>, depending on whether all 
+  timestamps of the days at corresponding positions in <code>x</code>
+  are in Central European Time (CET) or in Central European Summer Time 
+  (CEST), respectively. For days at which the time is adjusted from CET to 
+  CEST or vice versa, <code>NA</code> is returned.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -147,11 +154,11 @@
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw pkg'>kwb.datetime</span><span class='kw ns'>:::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/kwb.datetime/topics/utc_offset_Berlin_day'>utc_offset_Berlin_day</a></span>(<span class='st'>"2017-11-04"</span>) <span class='co'>#&gt; "+0100" -&gt; CET</span></div><div class='output co'>#&gt; [1] "+0100"</div><div class='input'>
+    <pre class="examples"><div class='input'><span class='kw pkg'>kwb.datetime</span><span class='kw ns'>:::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/kwb.datetime/topics/utc_offset_Berlin_day'>utc_offset_Berlin_day</a></span>(<span class='st'>"2017-11-04"</span>) <span class='co'>#&gt; 1 -&gt; CET</span></div><div class='output co'>#&gt; [1] 1</div><div class='input'>
 <span class='co'># The offset is not unique at the days of clock change CEST -&gt; CET</span>
-<span class='kw pkg'>kwb.datetime</span><span class='kw ns'>:::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/kwb.datetime/topics/utc_offset_Berlin_day'>utc_offset_Berlin_day</a></span>(<span class='st'>"2017-10-28"</span>) <span class='co'>#&gt; "+0200" -&gt; CEST</span></div><div class='output co'>#&gt; [1] "+0200"</div><div class='input'><span class='kw pkg'>kwb.datetime</span><span class='kw ns'>:::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/kwb.datetime/topics/utc_offset_Berlin_day'>utc_offset_Berlin_day</a></span>(<span class='st'>"2017-10-29"</span>) <span class='co'>#&gt; NA -&gt; offset not unique!</span></div><div class='output co'>#&gt; [1] NA</div><div class='input'><span class='kw pkg'>kwb.datetime</span><span class='kw ns'>:::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/kwb.datetime/topics/utc_offset_Berlin_day'>utc_offset_Berlin_day</a></span>(<span class='st'>"2017-10-30"</span>) <span class='co'>#&gt; "+0100" -&gt; CET</span></div><div class='output co'>#&gt; [1] "+0100"</div><div class='input'>
+<span class='kw pkg'>kwb.datetime</span><span class='kw ns'>:::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/kwb.datetime/topics/utc_offset_Berlin_day'>utc_offset_Berlin_day</a></span>(<span class='st'>"2017-10-28"</span>) <span class='co'>#&gt; 2 -&gt; CEST</span></div><div class='output co'>#&gt; [1] 2</div><div class='input'><span class='kw pkg'>kwb.datetime</span><span class='kw ns'>:::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/kwb.datetime/topics/utc_offset_Berlin_day'>utc_offset_Berlin_day</a></span>(<span class='st'>"2017-10-29"</span>) <span class='co'>#&gt; NA -&gt; offset not unique!</span></div><div class='output co'>#&gt; [1] NA</div><div class='input'><span class='kw pkg'>kwb.datetime</span><span class='kw ns'>:::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/kwb.datetime/topics/utc_offset_Berlin_day'>utc_offset_Berlin_day</a></span>(<span class='st'>"2017-10-30"</span>) <span class='co'>#&gt; 1 -&gt; CET</span></div><div class='output co'>#&gt; [1] 1</div><div class='input'>
 <span class='co'># The offset is not unique at the days of clock change CET -&gt; CEST</span>
-<span class='kw pkg'>kwb.datetime</span><span class='kw ns'>:::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/kwb.datetime/topics/utc_offset_Berlin_day'>utc_offset_Berlin_day</a></span>(<span class='st'>"2017-03-25"</span>) <span class='co'>#&gt; "+0100" -&gt; CET</span></div><div class='output co'>#&gt; [1] "+0100"</div><div class='input'><span class='kw pkg'>kwb.datetime</span><span class='kw ns'>:::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/kwb.datetime/topics/utc_offset_Berlin_day'>utc_offset_Berlin_day</a></span>(<span class='st'>"2017-03-26"</span>) <span class='co'>#&gt; NA -&gt; offset not unique!</span></div><div class='output co'>#&gt; [1] NA</div><div class='input'><span class='kw pkg'>kwb.datetime</span><span class='kw ns'>:::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/kwb.datetime/topics/utc_offset_Berlin_day'>utc_offset_Berlin_day</a></span>(<span class='st'>"2017-03-27"</span>) <span class='co'>#&gt; "+0200" -&gt; CEST</span></div><div class='output co'>#&gt; [1] "+0200"</div><div class='input'>
+<span class='kw pkg'>kwb.datetime</span><span class='kw ns'>:::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/kwb.datetime/topics/utc_offset_Berlin_day'>utc_offset_Berlin_day</a></span>(<span class='st'>"2017-03-25"</span>) <span class='co'>#&gt; 1 -&gt; CET</span></div><div class='output co'>#&gt; [1] 1</div><div class='input'><span class='kw pkg'>kwb.datetime</span><span class='kw ns'>:::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/kwb.datetime/topics/utc_offset_Berlin_day'>utc_offset_Berlin_day</a></span>(<span class='st'>"2017-03-26"</span>) <span class='co'>#&gt; NA -&gt; offset not unique!</span></div><div class='output co'>#&gt; [1] NA</div><div class='input'><span class='kw pkg'>kwb.datetime</span><span class='kw ns'>:::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/kwb.datetime/topics/utc_offset_Berlin_day'>utc_offset_Berlin_day</a></span>(<span class='st'>"2017-03-27"</span>) <span class='co'>#&gt; 2 -&gt; CEST</span></div><div class='output co'>#&gt; [1] 2</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
