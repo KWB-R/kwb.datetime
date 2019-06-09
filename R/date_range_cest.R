@@ -42,36 +42,27 @@ date_range_CEST <- function(year)
   stopifnot(is.numeric(year), all(year >= 1980), all(year <= 2100))
   
   if (length(year) > 1) {
-    
     result <- do.call(rbind, lapply(year, date_range_CEST))
     rownames(result) <- year
-    
     return (result)
   }
   
   # Range of days in which to expect the begin / end of summer time (seems
   # to be valid at least between 1980 and 2100)
-  day_range <- list(
-    begin = c("03-25", "04-07"),
-    end = c("09-24", "11-01")
-  )
+  day_range <- list(begin = c("03-25", "04-07"), end = c("09-24", "11-01"))
   
   # Sequences of days in which to expect the begin / end of summer time
   candidates <- lapply(day_range, function(x) {
-    from <- as.Date(paste0(year, "-", x[1]))
-    to <- as.Date(paste0(year, "-", x[2]))
-    seq(from, to, by = 1)
+    date_range  <- as.Date(paste0(year, "-", x))
+    seq.Date(date_range[1], date_range[2], by = 1)
   })
   
   # First for the "begin", then for the "end" of summer time, convert the
   # candidate days to POSIXct and evaluate the first / last occurrence of 
   # UTC offset "+0200" (summer time)
   sapply(names(candidates), function(key) {
-    
     days <- paste0(year, "-", substr(as.character(candidates[[key]]), 6, 10))
-    
     indices <- grep("\\+0200", format(as.POSIXct(days, tz = "CET"), "%z"))
-    
     days[ifelse(key == "begin", indices[1] - 1, indices[length(indices)])]
   })
 }
