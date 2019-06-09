@@ -118,7 +118,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Do Timestamps have the expected Format?</h1>
-    <small class="dont-index">Source: <a href='https://github.com/kwb-r/kwb.datetime/blob/master/R/main.R'><code>R/main.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/kwb-r/kwb.datetime/blob/master/R/matchingTimeFormat.R'><code>R/matchingTimeFormat.R</code></a></small>
     <div class="hidden name"><code>hasTimeFormat.Rd</code></div>
     </div>
 
@@ -128,7 +128,7 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>hasTimeFormat</span>(<span class='no'>timestamps</span>, <span class='kw'>timeformat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>hasTimeFormat</span>(<span class='no'>timestamps</span>, <span class='kw'>timeformat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='fl'>1L</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -141,6 +141,13 @@
       <th>timeformat</th>
       <td><p>character string giving a date-time format as used by 
 <code><a href='https://www.rdocumentation.org/packages/base/topics/strptime'>strptime</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>method</th>
+      <td><p>Method used to do the check. 1: Check based on pattern matching
+2: Check whether <code><a href='https://www.rdocumentation.org/packages/base/topics/as.POSIXlt'>as.POSIXct</a></code> returns valid time objects and if
+re-formatting these objects are identical to the original timestamps. The
+simple check should be much faster for many timestamps to be checked.</p></td>
     </tr>
     </table>
     

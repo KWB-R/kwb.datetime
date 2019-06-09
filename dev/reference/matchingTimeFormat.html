@@ -118,7 +118,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Find Time Format matching a Timestamp</h1>
-    <small class="dont-index">Source: <a href='https://github.com/kwb-r/kwb.datetime/blob/master/R/main.R'><code>R/main.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/kwb-r/kwb.datetime/blob/master/R/matchingTimeFormat.R'><code>R/matchingTimeFormat.R</code></a></small>
     <div class="hidden name"><code>matchingTimeFormat.Rd</code></div>
     </div>
 
@@ -128,7 +128,8 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>matchingTimeFormat</span>(<span class='no'>timestamp</span>, <span class='no'>timeFormats</span>)</pre>
+    <pre class="usage"><span class='fu'>matchingTimeFormat</span>(<span class='no'>timestamp</span>, <span class='kw'>timeFormats</span> <span class='kw'>=</span> <span class='fu'>getTimeFormats</span>(),
+  <span class='kw'>method</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='kw'>warn</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>failureValue</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -143,6 +144,20 @@ timstamp formats</p></td>
       <td><p>vector of possible time formats with placeholders <!-- %Y -->
 (year), <!-- %m (month), %d (day), %H (hours), %M (minutes), %S (seconds) as -->
 described for <code>format.POSIXct</code></p></td>
+    </tr>
+    <tr>
+      <th>method</th>
+      <td><p>passed to <code><a href='hasTimeFormat.html'>hasTimeFormat</a></code></p></td>
+    </tr>
+    <tr>
+      <th>warn</th>
+      <td><p>if <code>TRUE</code> an R warning is issued if no matching format was
+found. Otherwise a message is given.</p></td>
+    </tr>
+    <tr>
+      <th>failureValue</th>
+      <td><p>value returned in case that no matching format was found.
+Default: <code>NULL</code></p></td>
     </tr>
     </table>
     
@@ -166,7 +181,9 @@ described for <code>format.POSIXct</code></p></td>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/stopifnot'>stopifnot</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identical'>identical</a></span>(<span class='no'>t1</span>, <span class='no'>t2</span>))
 
 <span class='co'># You get a warning if none of the possible formats matches</span>
-<span class='fu'>matchingTimeFormat</span>(<span class='st'>"01.14.2015"</span>, <span class='no'>possibleFormats</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: The timestamp '01.14.2015' does not comply with any of theassumed timestamp formats ('%d.%m.%Y', '%d/%m/%Y')</span></div><div class='output co'>#&gt; NULL</div><div class='input'>
+<span class='fu'>matchingTimeFormat</span>(<span class='st'>"01.14.2015"</span>, <span class='no'>possibleFormats</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: No matching format found for timestamp '01.14.2015'. Considered formats:</span>
+#&gt; <span class='warning'>  '%d.%m.%Y',</span>
+#&gt; <span class='warning'>  '%d/%m/%Y'</span></div><div class='output co'>#&gt; NULL</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
