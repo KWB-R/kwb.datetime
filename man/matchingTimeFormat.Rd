@@ -4,7 +4,8 @@
 \alias{matchingTimeFormat}
 \title{Find Time Format matching a Timestamp}
 \usage{
-matchingTimeFormat(timestamp, timeFormats)
+matchingTimeFormat(timestamp, timeFormats = getTimeFormats(),
+  method = 1L, warn = TRUE, failureValue = NULL)
 }
 \arguments{
 \item{timestamp}{character timestamp to be checked against different possible
@@ -13,6 +14,14 @@ timstamp formats}
 \item{timeFormats}{vector of possible time formats with placeholders %Y
 (year), %m (month), %d (day), %H (hours), %M (minutes), %S (seconds) as
 described for \code{format.POSIXct}}
+
+\item{method}{passed to \code{\link{hasTimeFormat}}}
+
+\item{warn}{if \code{TRUE} an R warning is issued if no matching format was
+found. Otherwise a message is given.}
+
+\item{failureValue}{value returned in case that no matching format was found.
+Default: \code{NULL}}
 }
 \value{
 first time format in \emph{timeformats} that matches the given 

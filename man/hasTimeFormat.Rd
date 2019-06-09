@@ -4,13 +4,18 @@
 \alias{hasTimeFormat}
 \title{Do Timestamps have the expected Format?}
 \usage{
-hasTimeFormat(timestamps, timeformat = NULL)
+hasTimeFormat(timestamps, timeformat = NULL, method = 1L)
 }
 \arguments{
 \item{timestamps}{character strings representing timestamps.}
 
 \item{timeformat}{character string giving a date-time format as used by 
 \code{\link{strptime}}.}
+
+\item{method}{Method used to do the check. 1: Check based on pattern matching
+2: Check whether \code{\link{as.POSIXct}} returns valid time objects and if
+re-formatting these objects are identical to the original timestamps. The
+simple check should be much faster for many timestamps to be checked.}
 }
 \description{
 Checks if timestamps are formatted according to timeformat
