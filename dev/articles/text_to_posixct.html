@@ -87,7 +87,7 @@
       <h1>Converting Text to Time Objects</h1>
                         <h4 class="author">Hauke Sonnenberg</h4>
             
-            <h4 class="date">2019-06-10</h4>
+            <h4 class="date">2019-06-11</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/kwb-r/kwb.datetime/blob/master/vignettes/text_to_posixct.Rmd"><code>vignettes/text_to_posixct.Rmd</code></a></small>
       <div class="hidden name"><code>text_to_posixct.Rmd</code></div>
@@ -96,155 +96,227 @@
 
     
     
-<p>In R, time information are stored in objects of class <code>POSIXct</code>. The function <code><a href="https://www.rdocumentation.org/packages/base/topics/as.POSIXlt">as.POSIXct()</a></code> is used to convert character strings representing points in time into the corresponding <code>POSIXct</code> objects. This tutorial demonstrates some important details about this function.</p>
-<p>Problems may arise with times recorded in time zones that change for Daylight Saving. This is the case for the time zone “Europe/Berlin” that are used in the following examples. In this time zone, the time is given in Central European Time (CET) in winter and in Central European Summer Time (CEST) in summer.</p>
+<p>This tutorial describes how to convert text timestamps to <code>POSIXct</code> objects. The conversion becomes necessary when time differences are to be calculated. We treat two use cases in both of which timestamps were written by a measurement device. The cases differ in the way that the clock of the device was operating in.</p>
+<ul>
+<li>Case 1: the clock switches between standard (winter) time and summer time.</li>
+<li>Case 2: the clock does not switch between standard (winter) time and summer time but always stays in standard time.</li>
+</ul>
+<div id="creation-of-example-timestamps" class="section level2">
+<h2 class="hasAnchor">
+<a href="#creation-of-example-timestamps" class="anchor"></a>Creation of example timestamps</h2>
+<p>We start by creating text timestamps as they could have been recorded by a measurement device.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># Define first and last timestamps</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">from &lt;-<span class="st"> "2019-01-01"</span></a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">to &lt;-<span class="st"> "2020-01-01"</span></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4">step &lt;-<span class="st"> </span><span class="dv">3600</span> <span class="co"># seconds, i.e. one timestamp per hour</span></a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="co"># Case 1: local time, i.e. standard time in winter, summer time in summer</span></a>
+<a class="sourceLine" id="cb1-7" data-line-number="7">tz &lt;-<span class="st"> "Europe/Berlin"</span></a>
+<a class="sourceLine" id="cb1-8" data-line-number="8">times_local &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/as.POSIXlt">as.POSIXct</a></span>(from, tz), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/as.POSIXlt">as.POSIXct</a></span>(to, tz), <span class="dt">by =</span> step)</a>
+<a class="sourceLine" id="cb1-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="co"># Case 2: always standard time (Note that GMT-1 refers to UTC+1!)</span></a>
+<a class="sourceLine" id="cb1-11" data-line-number="11">tz &lt;-<span class="st"> "Etc/GMT-1"</span></a>
+<a class="sourceLine" id="cb1-12" data-line-number="12">times_standard &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/as.POSIXlt">as.POSIXct</a></span>(from, tz), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/as.POSIXlt">as.POSIXct</a></span>(to, tz), <span class="dt">by =</span> step)</a></code></pre></div>
+<p>We use <code><a href="https://www.rdocumentation.org/packages/base/topics/format">format()</a></code> to simulate that the timestamps were written in a certain local format:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">format &lt;-<span class="st"> "%d.%m.%y %H:%M"</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">timestamps_local &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/format">format</a></span>(times_local, <span class="dt">format =</span> format)</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3">timestamps_standard &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/format">format</a></span>(times_standard, <span class="dt">format =</span> format)</a></code></pre></div>
+<p>Show the first three timestamps in each case:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/writeLines">writeLines</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(timestamps_local, <span class="dv">3</span>))</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt; 01.01.19 00:00</span></a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt; 01.01.19 01:00</span></a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt; 01.01.19 02:00</span></a>
+<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/writeLines">writeLines</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(timestamps_standard, <span class="dv">3</span>))</a>
+<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co">#&gt; 01.01.19 00:00</span></a>
+<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co">#&gt; 01.01.19 01:00</span></a>
+<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co">#&gt; 01.01.19 02:00</span></a></code></pre></div>
+</div>
+<div id="case-1-clock-switches-between-standard-time-and-summer-time" class="section level2">
+<h2 class="hasAnchor">
+<a href="#case-1-clock-switches-between-standard-time-and-summer-time" class="anchor"></a>Case 1: Clock switches between standard time and summer time</h2>
+<p>In this case, it is not enough to run the function <code><a href="https://www.rdocumentation.org/packages/base/topics/as.POSIXlt">as.POSIXct()</a></code> on the timestamps, even though the time zone and the format are set correctly:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">times &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/as.POSIXlt">as.POSIXct</a></span>(timestamps_local, <span class="dt">tz =</span> <span class="st">"Europe/Berlin"</span>, <span class="dt">format =</span> format)</a></code></pre></div>
+<div id="problem" class="section level3">
+<h3 class="hasAnchor">
+<a href="#problem" class="anchor"></a>Problem</h3>
+<p>What is the problem? We can understand the problem when looking at the time differences:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/table">table</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/diff">diff</a></span>(times))</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt;    0 3600 7200 </span></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt;    1 8758    1</span></a></code></pre></div>
+<p>Not all time differences are one hour (3600 seconds) anymore! Read further down for the reason and for a function allowing to further investigate the problem.</p>
+</div>
+<div id="solution" class="section level3">
+<h3 class="hasAnchor">
+<a href="#solution" class="anchor"></a>Solution</h3>
+<p>The package kwb.datetime provides a function that can handle the case correctly (see below for details). It requires the timestamps to be given in ISO-format, i.e. in “yyyy-mm-dd HH:MM:SS”.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="co"># Format the local timestamps to timestamps in ISO format</span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">iso &lt;-<span class="st"> </span>kwb.datetime<span class="op">::</span><span class="kw">reformatTimestamp</span>(timestamps_local, <span class="dt">old.format =</span> format)</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co"># Convert text timestamps to POSIXct objects</span></a>
+<a class="sourceLine" id="cb6-5" data-line-number="5">times_local_from_text &lt;-<span class="st"> </span>kwb.datetime<span class="op">::</span><span class="kw">berlin_local_timestamps_to_POSIXct</span>(iso)</a>
+<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="co">#&gt; Converting 8761 timestamps ... ok.</span></a>
+<a class="sourceLine" id="cb6-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co"># Set the time zone (do not rely on tz = "" representing "Europe/Berlin")</span></a>
+<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/attr">attr</a></span>(times_local_from_text, <span class="st">"tzone"</span>) &lt;-<span class="st"> "Europe/Berlin"</span></a></code></pre></div>
+<p>The created <code>POSIXct</code>-objects are now identical to the original ones:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/identical">identical</a></span>(times_local, times_local_from_text)</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co">#&gt; [1] TRUE</span></a></code></pre></div>
+</div>
+</div>
+<div id="case-2-clock-always-stays-in-standard-time" class="section level2">
+<h2 class="hasAnchor">
+<a href="#case-2-clock-always-stays-in-standard-time" class="anchor"></a>Case 2: Clock always stays in standard time</h2>
+<p>In this case it is enough to set the time zone and the format correctly when calling <code><a href="https://www.rdocumentation.org/packages/base/topics/as.POSIXlt">as.POSIXct()</a></code>:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="co"># Convert text timestamps to POSIXct objects</span></a>
+<a class="sourceLine" id="cb8-2" data-line-number="2">times_standard_from_text &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/as.POSIXlt">as.POSIXct</a></span>(</a>
+<a class="sourceLine" id="cb8-3" data-line-number="3">  timestamps_standard, <span class="dt">tz =</span> <span class="st">"Etc/GMT-1"</span>, <span class="dt">format =</span> format</a>
+<a class="sourceLine" id="cb8-4" data-line-number="4">)</a></code></pre></div>
+<p>The created <code>POSIXct</code>-objects are now identical to the original ones:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/identical">identical</a></span>(times_standard, times_standard_from_text)</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="co">#&gt; [1] TRUE</span></a></code></pre></div>
+<p>See vignette <a href="timezones.html">“Exkurs Zeitzonen”</a> for details on this case.</p>
+</div>
+<div id="background" class="section level1">
+<h1 class="hasAnchor">
+<a href="#background" class="anchor"></a>Background</h1>
+<p>In R, time information are stored in objects of class <code>POSIXct</code>. The function <code><a href="https://www.rdocumentation.org/packages/base/topics/as.POSIXlt">as.POSIXct()</a></code> is used to convert character strings representing points in time into the corresponding <code>POSIXct</code> objects. This chapter points out some important details about this function.</p>
+<p>Problems may arise with times recorded in time zones that change for Daylight Saving. This is the case for the time zone “Europe/Berlin” that is used in the following example. In this time zone, the time is given in Central European Time (CET) in winter and in Central European Summer Time (CEST) in summer.</p>
 <div id="when-does-summer-time-startend" class="section level2">
 <h2 class="hasAnchor">
 <a href="#when-does-summer-time-startend" class="anchor"></a>When does Summer Time start/end?</h2>
 <p>Use the function <code><a href="../reference/date_range_CEST.html">date_range_CEST()</a></code> to find out at what days summer time starts and ends, respectively:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">kwb.datetime<span class="op">::</span><span class="kw">date_range_CEST</span>(<span class="dv">2017</span><span class="op">:</span><span class="dv">2019</span>)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="co">#&gt;      begin        end         </span></a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="co">#&gt; 2017 "2017-03-26" "2017-10-29"</span></a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="co">#&gt; 2018 "2018-03-25" "2018-10-28"</span></a>
-<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co">#&gt; 2019 "2019-03-31" "2019-10-27"</span></a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">kwb.datetime<span class="op">::</span><span class="kw">date_range_CEST</span>(<span class="dv">2017</span><span class="op">:</span><span class="dv">2019</span>)</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="co">#&gt;      begin        end         </span></a>
+<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="co">#&gt; 2017 "2017-03-26" "2017-10-29"</span></a>
+<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="co">#&gt; 2018 "2018-03-25" "2018-10-28"</span></a>
+<a class="sourceLine" id="cb10-5" data-line-number="5"><span class="co">#&gt; 2019 "2019-03-31" "2019-10-27"</span></a></code></pre></div>
 <p>Note that this function returns character strings and not, for example, <code>Date</code> objects.</p>
 </div>
-<div id="example-1-reading-local-timestamps-in-berlin-germany" class="section level2">
+<div id="example-reading-local-timestamps-in-berlin-germany" class="section level2">
 <h2 class="hasAnchor">
-<a href="#example-1-reading-local-timestamps-in-berlin-germany" class="anchor"></a>Example 1: Reading local timestamps in Berlin, Germany</h2>
+<a href="#example-reading-local-timestamps-in-berlin-germany" class="anchor"></a>Example: Reading local timestamps in Berlin, Germany</h2>
 <p>Imagine a measuring device taking measurements every 30 minutes at some location in Berlin, Germany. The clock of the device is configured to switch between standard time and daylight saving time (summer time) and vice versa. In 2017, on October 29, when summer time is reverted back to standard time, the recorded timestamps around the time shift are:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># Define timestamps (character)</span></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">timestamps &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">  <span class="st">"2017-10-29 01:30:00"</span>, <span class="co"># 1: CEST</span></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4">  <span class="st">"2017-10-29 02:00:00"</span>, <span class="co"># 2: CEST</span></a>
-<a class="sourceLine" id="cb2-5" data-line-number="5">  <span class="st">"2017-10-29 02:30:00"</span>, <span class="co"># 3: CEST</span></a>
-<a class="sourceLine" id="cb2-6" data-line-number="6">  <span class="st">"2017-10-29 02:00:00"</span>, <span class="co"># 4: CET</span></a>
-<a class="sourceLine" id="cb2-7" data-line-number="7">  <span class="st">"2017-10-29 02:30:00"</span>, <span class="co"># 5: CET</span></a>
-<a class="sourceLine" id="cb2-8" data-line-number="8">  <span class="st">"2017-10-29 03:00:00"</span>  <span class="co"># 6: CET</span></a>
-<a class="sourceLine" id="cb2-9" data-line-number="9">)</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="co"># Define timestamps (character)</span></a>
+<a class="sourceLine" id="cb11-2" data-line-number="2">timestamps &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(</a>
+<a class="sourceLine" id="cb11-3" data-line-number="3">  <span class="st">"2017-10-29 01:30:00"</span>, <span class="co"># 1: CEST</span></a>
+<a class="sourceLine" id="cb11-4" data-line-number="4">  <span class="st">"2017-10-29 02:00:00"</span>, <span class="co"># 2: CEST</span></a>
+<a class="sourceLine" id="cb11-5" data-line-number="5">  <span class="st">"2017-10-29 02:30:00"</span>, <span class="co"># 3: CEST</span></a>
+<a class="sourceLine" id="cb11-6" data-line-number="6">  <span class="st">"2017-10-29 02:00:00"</span>, <span class="co"># 4: CET</span></a>
+<a class="sourceLine" id="cb11-7" data-line-number="7">  <span class="st">"2017-10-29 02:30:00"</span>, <span class="co"># 5: CET</span></a>
+<a class="sourceLine" id="cb11-8" data-line-number="8">  <span class="st">"2017-10-29 03:00:00"</span>  <span class="co"># 6: CET</span></a>
+<a class="sourceLine" id="cb11-9" data-line-number="9">)</a></code></pre></div>
 <p>The timestamps “02:00” and “02:30” appear twice, at indices 2 and 3, respectively, first and at indices 4 and 5, respectively, second. This is because at 03:00 (CEST) the clock is set back to 02:00 (CET). The first occurrences of the two timestamps refer to summer time (CEST) whereas the second occurrences refer to standard time (CET).</p>
 <div id="what-is-the-problem" class="section level3">
 <h3 class="hasAnchor">
 <a href="#what-is-the-problem" class="anchor"></a>What is the problem?</h3>
 <p>What happens if we convert these timestamps to time objects? Using <code><a href="https://www.rdocumentation.org/packages/base/topics/as.POSIXlt">as.POSIXct()</a></code> and the (correct) time zone “Europe/Berlin”, we get the following vector of time objects:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># Convert timestamps to POSIXct and print them</span></a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">(times &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/as.POSIXlt">as.POSIXct</a></span>(timestamps, <span class="dt">tz =</span> <span class="st">"Europe/Berlin"</span>))</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt; [1] "2017-10-29 01:30:00 CEST" "2017-10-29 02:00:00 CEST"</span></a>
-<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt; [3] "2017-10-29 02:30:00 CEST" "2017-10-29 02:00:00 CEST"</span></a>
-<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt; [5] "2017-10-29 02:30:00 CEST" "2017-10-29 03:00:00 CET"</span></a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="co"># Convert timestamps to POSIXct and print them</span></a>
+<a class="sourceLine" id="cb12-2" data-line-number="2">(times &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/as.POSIXlt">as.POSIXct</a></span>(timestamps, <span class="dt">tz =</span> <span class="st">"Europe/Berlin"</span>))</a>
+<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="co">#&gt; [1] "2017-10-29 01:30:00 CEST" "2017-10-29 02:00:00 CEST"</span></a>
+<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="co">#&gt; [3] "2017-10-29 02:30:00 CEST" "2017-10-29 02:00:00 CEST"</span></a>
+<a class="sourceLine" id="cb12-5" data-line-number="5"><span class="co">#&gt; [5] "2017-10-29 02:30:00 CEST" "2017-10-29 03:00:00 CET"</span></a></code></pre></div>
 <p>The function cannot distinguish between the first and second occurrences of the times 02:00 and 02:30. The output and the following plot reveal that the timestamps between 02:00 and 03:00 (exclusive) are always interpreted as being in summer time (CEST).</p>
-<p><img src="text_to_posixct_files/figure-html/unnamed-chunk-4-1.png" width="480"></p>
+<p><img src="text_to_posixct_files/figure-html/unnamed-chunk-13-1.png" width="480"></p>
 </div>
 <div id="what-is-the-solution-step-by-step" class="section level3">
 <h3 class="hasAnchor">
 <a href="#what-is-the-solution-step-by-step" class="anchor"></a>What is the solution (step by step)?</h3>
 <p>How can we tell R that the first occurrences of 02:00 and 02:30 refer to CEST and the second ocurrences refer to CET? We could try the following:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/as.POSIXlt">as.POSIXct</a></span>(<span class="dt">tz =</span> <span class="st">"Europe/Berlin"</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2">  <span class="st">"2017-10-29 01:30:00 CEST"</span>,</a>
-<a class="sourceLine" id="cb4-3" data-line-number="3">  <span class="st">"2017-10-29 02:00:00 CEST"</span>,</a>
-<a class="sourceLine" id="cb4-4" data-line-number="4">  <span class="st">"2017-10-29 02:30:00 CEST"</span>,</a>
-<a class="sourceLine" id="cb4-5" data-line-number="5">  <span class="st">"2017-10-29 02:00:00 CET"</span>,</a>
-<a class="sourceLine" id="cb4-6" data-line-number="6">  <span class="st">"2017-10-29 02:30:00 CET"</span>,</a>
-<a class="sourceLine" id="cb4-7" data-line-number="7">  <span class="st">"2017-10-29 03:00:00 CET"</span></a>
-<a class="sourceLine" id="cb4-8" data-line-number="8">))</a>
-<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#&gt; [1] "2017-10-29 01:30:00 CEST" "2017-10-29 02:00:00 CEST"</span></a>
-<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co">#&gt; [3] "2017-10-29 02:30:00 CEST" "2017-10-29 02:00:00 CEST"</span></a>
-<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="co">#&gt; [5] "2017-10-29 02:30:00 CEST" "2017-10-29 03:00:00 CET"</span></a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/as.POSIXlt">as.POSIXct</a></span>(<span class="dt">tz =</span> <span class="st">"Europe/Berlin"</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(</a>
+<a class="sourceLine" id="cb13-2" data-line-number="2">  <span class="st">"2017-10-29 01:30:00 CEST"</span>,</a>
+<a class="sourceLine" id="cb13-3" data-line-number="3">  <span class="st">"2017-10-29 02:00:00 CEST"</span>,</a>
+<a class="sourceLine" id="cb13-4" data-line-number="4">  <span class="st">"2017-10-29 02:30:00 CEST"</span>,</a>
+<a class="sourceLine" id="cb13-5" data-line-number="5">  <span class="st">"2017-10-29 02:00:00 CET"</span>,</a>
+<a class="sourceLine" id="cb13-6" data-line-number="6">  <span class="st">"2017-10-29 02:30:00 CET"</span>,</a>
+<a class="sourceLine" id="cb13-7" data-line-number="7">  <span class="st">"2017-10-29 03:00:00 CET"</span></a>
+<a class="sourceLine" id="cb13-8" data-line-number="8">))</a>
+<a class="sourceLine" id="cb13-9" data-line-number="9"><span class="co">#&gt; [1] "2017-10-29 01:30:00 CEST" "2017-10-29 02:00:00 CEST"</span></a>
+<a class="sourceLine" id="cb13-10" data-line-number="10"><span class="co">#&gt; [3] "2017-10-29 02:30:00 CEST" "2017-10-29 02:00:00 CEST"</span></a>
+<a class="sourceLine" id="cb13-11" data-line-number="11"><span class="co">#&gt; [5] "2017-10-29 02:30:00 CEST" "2017-10-29 03:00:00 CET"</span></a></code></pre></div>
 <p><strong>Unfortunately, this does not work!</strong> Again, everything between 02:00 and 03:00 (exclusive) is assumed to refer to CEST, as the output above indicates. However, R accepts a format in which the number of hours ahead of Coordinated Universal Time (UTC) is indicated in the timestamps. In our example this looks as follows:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">iso_timestamps &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2">  <span class="st">"2017-10-29 01:30:00+0200"</span>,</a>
-<a class="sourceLine" id="cb5-3" data-line-number="3">  <span class="st">"2017-10-29 02:00:00+0200"</span>,</a>
-<a class="sourceLine" id="cb5-4" data-line-number="4">  <span class="st">"2017-10-29 02:30:00+0200"</span>,</a>
-<a class="sourceLine" id="cb5-5" data-line-number="5">  <span class="st">"2017-10-29 02:00:00+0100"</span>,</a>
-<a class="sourceLine" id="cb5-6" data-line-number="6">  <span class="st">"2017-10-29 02:30:00+0100"</span>,</a>
-<a class="sourceLine" id="cb5-7" data-line-number="7">  <span class="st">"2017-10-29 03:00:00+0100"</span></a>
-<a class="sourceLine" id="cb5-8" data-line-number="8">)</a></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">iso_timestamps &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(</a>
+<a class="sourceLine" id="cb14-2" data-line-number="2">  <span class="st">"2017-10-29 01:30:00+0200"</span>,</a>
+<a class="sourceLine" id="cb14-3" data-line-number="3">  <span class="st">"2017-10-29 02:00:00+0200"</span>,</a>
+<a class="sourceLine" id="cb14-4" data-line-number="4">  <span class="st">"2017-10-29 02:30:00+0200"</span>,</a>
+<a class="sourceLine" id="cb14-5" data-line-number="5">  <span class="st">"2017-10-29 02:00:00+0100"</span>,</a>
+<a class="sourceLine" id="cb14-6" data-line-number="6">  <span class="st">"2017-10-29 02:30:00+0100"</span>,</a>
+<a class="sourceLine" id="cb14-7" data-line-number="7">  <span class="st">"2017-10-29 03:00:00+0100"</span></a>
+<a class="sourceLine" id="cb14-8" data-line-number="8">)</a></code></pre></div>
 <p>Timestamps in CEST are two hours (and zero minutes) ahead of UTC. This is indicated in the timestamp by the ending <em>+0200</em>. Timestamps in CET are only one hour ahead of UTC and thus indicated by <em>+0100</em>. Timestamps given in this format can be converted to POSIXct objects by setting the <code>format</code> argument of the <code><a href="https://www.rdocumentation.org/packages/base/topics/as.POSIXlt">as.POSIXct()</a></code> function to <code>"%F %T%z"</code>:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/as.POSIXlt">as.POSIXct</a></span>(iso_timestamps, <span class="dt">tz =</span> <span class="st">"Europe/Berlin"</span>, <span class="dt">format =</span> <span class="st">"%F %T%z"</span>)</a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="co">#&gt; [1] "2017-10-29 01:30:00 CEST" "2017-10-29 02:00:00 CEST"</span></a>
-<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co">#&gt; [3] "2017-10-29 02:30:00 CEST" "2017-10-29 02:00:00 CET" </span></a>
-<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">#&gt; [5] "2017-10-29 02:30:00 CET"  "2017-10-29 03:00:00 CET"</span></a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/as.POSIXlt">as.POSIXct</a></span>(iso_timestamps, <span class="dt">tz =</span> <span class="st">"Europe/Berlin"</span>, <span class="dt">format =</span> <span class="st">"%F %T%z"</span>)</a>
+<a class="sourceLine" id="cb15-2" data-line-number="2"><span class="co">#&gt; [1] "2017-10-29 01:30:00 CEST" "2017-10-29 02:00:00 CEST"</span></a>
+<a class="sourceLine" id="cb15-3" data-line-number="3"><span class="co">#&gt; [3] "2017-10-29 02:30:00 CEST" "2017-10-29 02:00:00 CET" </span></a>
+<a class="sourceLine" id="cb15-4" data-line-number="4"><span class="co">#&gt; [5] "2017-10-29 02:30:00 CET"  "2017-10-29 03:00:00 CET"</span></a></code></pre></div>
 <p>For the meaning of the placeholders %F, %T and %z, respectively, in the format string, see <code><a href="https://www.rdocumentation.org/packages/base/topics/strptime">?strftime</a></code>.</p>
 <p>The package kwb.datetime provides a function <code><a href="../reference/iso_to_localtime.html">iso_to_localtime()</a></code> that does the same:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">kwb.datetime<span class="op">::</span><span class="kw">iso_to_localtime</span>(iso_timestamps)</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co">#&gt; Converting 6 timestamps ... ok.</span></a>
-<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co">#&gt; [1] "2017-10-29 01:30:00 CEST" "2017-10-29 02:00:00 CEST"</span></a>
-<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt; [3] "2017-10-29 02:30:00 CEST" "2017-10-29 02:00:00 CET" </span></a>
-<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt; [5] "2017-10-29 02:30:00 CET"  "2017-10-29 03:00:00 CET"</span></a></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">kwb.datetime<span class="op">::</span><span class="kw">iso_to_localtime</span>(iso_timestamps)</a>
+<a class="sourceLine" id="cb16-2" data-line-number="2"><span class="co">#&gt; Converting 6 timestamps ... ok.</span></a>
+<a class="sourceLine" id="cb16-3" data-line-number="3"><span class="co">#&gt; [1] "2017-10-29 01:30:00 CEST" "2017-10-29 02:00:00 CEST"</span></a>
+<a class="sourceLine" id="cb16-4" data-line-number="4"><span class="co">#&gt; [3] "2017-10-29 02:30:00 CEST" "2017-10-29 02:00:00 CET" </span></a>
+<a class="sourceLine" id="cb16-5" data-line-number="5"><span class="co">#&gt; [5] "2017-10-29 02:30:00 CET"  "2017-10-29 03:00:00 CET"</span></a></code></pre></div>
 <p>In both cases, the timestamps are interpreted correctly, as also shown in this plot:</p>
-<p><img src="text_to_posixct_files/figure-html/unnamed-chunk-9-1.png" width="480"></p>
+<p><img src="text_to_posixct_files/figure-html/unnamed-chunk-18-1.png" width="480"></p>
 <p>Unfortunately, the timestamps logged by measuring devices often do not contain the additional information on the UTC offset. For this case the package kwb.datetime provides three functions that can be applied in a chain to perform a three step process:</p>
 <p><strong>Step 1:</strong> Use the function <code><a href="../reference/utc_offset_Berlin_time.html">utc_offset_Berlin_time()</a></code> to determine the UTC offsets (for timestamps given in time zone “Europe/Berlin”):</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="co"># Guess and print the UTC offsets for the given timestamps</span></a>
-<a class="sourceLine" id="cb8-2" data-line-number="2">(offsets &lt;-<span class="st"> </span>kwb.datetime<span class="op">::</span><span class="kw">utc_offset_Berlin_time</span>(timestamps))</a>
-<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co">#&gt; [1] 2 2 2 1 1 1</span></a></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="co"># Guess and print the UTC offsets for the given timestamps</span></a>
+<a class="sourceLine" id="cb17-2" data-line-number="2">(offsets &lt;-<span class="st"> </span>kwb.datetime<span class="op">::</span><span class="kw">utc_offset_Berlin_time</span>(timestamps))</a>
+<a class="sourceLine" id="cb17-3" data-line-number="3"><span class="co">#&gt; [1] 2 2 2 1 1 1</span></a></code></pre></div>
 <p>This function requires the timestamps to be sorted in increasing order. Otherwise it cannot decide between CEST and CET for possibly unambiguous timestamps between 02:00 and 03:00 at the day of reverting time from CEST back to CET.</p>
 <p><strong>Step 2:</strong> Use these offsets and the function <code><a href="../reference/append_utc_offset_string.html">append_utc_offset_string()</a></code> to create timestamps in ISO 8601 format, i.e. ending in either <em>+0200</em> (when referring to CEST) or in <em>+0100</em> (when referring to CET):</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="co"># Create ISO 8601 timestamps and print them</span></a>
-<a class="sourceLine" id="cb9-2" data-line-number="2">(iso_timestamps &lt;-<span class="st"> </span>kwb.datetime<span class="op">::</span><span class="kw">append_utc_offset_string</span>(timestamps, offsets))</a>
-<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="co">#&gt; [1] "2017-10-29 01:30:00+0200" "2017-10-29 02:00:00+0200"</span></a>
-<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="co">#&gt; [3] "2017-10-29 02:30:00+0200" "2017-10-29 02:00:00+0100"</span></a>
-<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co">#&gt; [5] "2017-10-29 02:30:00+0100" "2017-10-29 03:00:00+0100"</span></a></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="co"># Create ISO 8601 timestamps and print them</span></a>
+<a class="sourceLine" id="cb18-2" data-line-number="2">(iso_timestamps &lt;-<span class="st"> </span>kwb.datetime<span class="op">::</span><span class="kw">append_utc_offset_string</span>(timestamps, offsets))</a>
+<a class="sourceLine" id="cb18-3" data-line-number="3"><span class="co">#&gt; [1] "2017-10-29 01:30:00+0200" "2017-10-29 02:00:00+0200"</span></a>
+<a class="sourceLine" id="cb18-4" data-line-number="4"><span class="co">#&gt; [3] "2017-10-29 02:30:00+0200" "2017-10-29 02:00:00+0100"</span></a>
+<a class="sourceLine" id="cb18-5" data-line-number="5"><span class="co">#&gt; [5] "2017-10-29 02:30:00+0100" "2017-10-29 03:00:00+0100"</span></a></code></pre></div>
 <p><strong>Step 3:</strong> Use the function <code><a href="../reference/iso_to_localtime.html">iso_to_localtime()</a></code> to convert these new timestamps from <code>character</code> into their corresponding <code>POSIXct</code> objects:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="co"># Create POSIXct-objects in time zone "Europe/Berlin" and print them</span></a>
-<a class="sourceLine" id="cb10-2" data-line-number="2">(kwb.datetime<span class="op">:::</span><span class="kw"><a href="../reference/iso_to_localtime.html">iso_to_localtime</a></span>(iso_timestamps))</a>
-<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="co">#&gt; Converting 6 timestamps ... ok.</span></a>
-<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="co">#&gt; [1] "2017-10-29 01:30:00 CEST" "2017-10-29 02:00:00 CEST"</span></a>
-<a class="sourceLine" id="cb10-5" data-line-number="5"><span class="co">#&gt; [3] "2017-10-29 02:30:00 CEST" "2017-10-29 02:00:00 CET" </span></a>
-<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="co">#&gt; [5] "2017-10-29 02:30:00 CET"  "2017-10-29 03:00:00 CET"</span></a></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="co"># Create POSIXct-objects in time zone "Europe/Berlin" and print them</span></a>
+<a class="sourceLine" id="cb19-2" data-line-number="2">(kwb.datetime<span class="op">:::</span><span class="kw"><a href="../reference/iso_to_localtime.html">iso_to_localtime</a></span>(iso_timestamps))</a>
+<a class="sourceLine" id="cb19-3" data-line-number="3"><span class="co">#&gt; Converting 6 timestamps ... ok.</span></a>
+<a class="sourceLine" id="cb19-4" data-line-number="4"><span class="co">#&gt; [1] "2017-10-29 01:30:00 CEST" "2017-10-29 02:00:00 CEST"</span></a>
+<a class="sourceLine" id="cb19-5" data-line-number="5"><span class="co">#&gt; [3] "2017-10-29 02:30:00 CEST" "2017-10-29 02:00:00 CET" </span></a>
+<a class="sourceLine" id="cb19-6" data-line-number="6"><span class="co">#&gt; [5] "2017-10-29 02:30:00 CET"  "2017-10-29 03:00:00 CET"</span></a></code></pre></div>
 </div>
 <div id="what-is-the-solution-one-step" class="section level3">
 <h3 class="hasAnchor">
 <a href="#what-is-the-solution-one-step" class="anchor"></a>What is the solution (one step)?</h3>
 <p>The three steps presented above are performed in the function <code><a href="../reference/berlin_local_timestamps_to_POSIXct.html">berlin_local_timestamps_to_POSIXct()</a></code> so that you can do the conversion of the original <code>timestamps</code> by calling:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">kwb.datetime<span class="op">::</span><span class="kw">berlin_local_timestamps_to_POSIXct</span>(timestamps)</a>
-<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="co">#&gt; Converting 6 timestamps ... ok.</span></a>
-<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="co">#&gt; [1] "2017-10-29 01:30:00 CEST" "2017-10-29 02:00:00 CEST"</span></a>
-<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="co">#&gt; [3] "2017-10-29 02:30:00 CEST" "2017-10-29 02:00:00 CET" </span></a>
-<a class="sourceLine" id="cb11-5" data-line-number="5"><span class="co">#&gt; [5] "2017-10-29 02:30:00 CET"  "2017-10-29 03:00:00 CET"</span></a></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1">kwb.datetime<span class="op">::</span><span class="kw">berlin_local_timestamps_to_POSIXct</span>(timestamps)</a>
+<a class="sourceLine" id="cb20-2" data-line-number="2"><span class="co">#&gt; Converting 6 timestamps ... ok.</span></a>
+<a class="sourceLine" id="cb20-3" data-line-number="3"><span class="co">#&gt; [1] "2017-10-29 01:30:00 CEST" "2017-10-29 02:00:00 CEST"</span></a>
+<a class="sourceLine" id="cb20-4" data-line-number="4"><span class="co">#&gt; [3] "2017-10-29 02:30:00 CEST" "2017-10-29 02:00:00 CET" </span></a>
+<a class="sourceLine" id="cb20-5" data-line-number="5"><span class="co">#&gt; [5] "2017-10-29 02:30:00 CET"  "2017-10-29 03:00:00 CET"</span></a></code></pre></div>
 </div>
 </div>
-<div id="example-2-reading-timestamps-in-utc01" class="section level2">
+<div id="analyse-a-sequence-of-posixct-objects" class="section level2">
 <h2 class="hasAnchor">
-<a href="#example-2-reading-timestamps-in-utc01" class="anchor"></a>Example 2: Reading timestamps in UTC+01</h2>
-<p>See vignette <a href="timezones.html">“Exkurs Zeitzonen”</a> (in German).</p>
+<a href="#analyse-a-sequence-of-posixct-objects" class="anchor"></a>Analyse a sequence of POSIXct objects</h2>
+<p>The package contains a function <code><a href="../reference/getEqualStepRanges.html">getEqualStepRanges()</a></code> that helps find unexpected changes in the time step within a vector of <code>POSIXct</code>. Applied to the example vector <code>times_local</code> from above, this function finds exactly one consistent sequence of times in which the time step is constantly one hour:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1">kwb.datetime<span class="op">::</span><span class="kw">getEqualStepRanges</span>(times_local)</a>
+<a class="sourceLine" id="cb21-2" data-line-number="2"><span class="co">#&gt;   from   to  from_time    to_time    step</span></a>
+<a class="sourceLine" id="cb21-3" data-line-number="3"><span class="co">#&gt; 1    1 8761 2019-01-01 2020-01-01 1 hours</span></a></code></pre></div>
+<p>As already shown above, using <code><a href="https://www.rdocumentation.org/packages/base/topics/as.POSIXlt">as.POSIXct()</a></code> directly on the vector of text timestamps does not return the correct <code>times</code>. Using <code><a href="../reference/getEqualStepRanges.html">getEqualStepRanges()</a></code> helps understand the problem. It shows four different sub-sequences within <code>times</code> in each of which the time step differs from the time step in the previous sub-sequence.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1">times &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/as.POSIXlt">as.POSIXct</a></span>(timestamps_local, <span class="dt">tz =</span> <span class="st">"Europe/Berlin"</span>, <span class="dt">format =</span> format)</a>
+<a class="sourceLine" id="cb22-2" data-line-number="2">kwb.datetime<span class="op">::</span><span class="kw">getEqualStepRanges</span>(times)</a>
+<a class="sourceLine" id="cb22-3" data-line-number="3"><span class="co">#&gt;   from   to           from_time             to_time      step</span></a>
+<a class="sourceLine" id="cb22-4" data-line-number="4"><span class="co">#&gt; 1    1 7178 2019-01-01 00:00:00 2019-10-27 02:00:00 3600 secs</span></a>
+<a class="sourceLine" id="cb22-5" data-line-number="5"><span class="co">#&gt; 2 7178 7179 2019-10-27 02:00:00 2019-10-27 02:00:00    0 secs</span></a>
+<a class="sourceLine" id="cb22-6" data-line-number="6"><span class="co">#&gt; 3 7179 7180 2019-10-27 02:00:00 2019-10-27 03:00:00 7200 secs</span></a>
+<a class="sourceLine" id="cb22-7" data-line-number="7"><span class="co">#&gt; 4 7180 8761 2019-10-27 03:00:00 2020-01-01 00:00:00 3600 secs</span></a></code></pre></div>
+<p>What happened? The timestamp <code>2019-10-27 02:00</code> appears twice! Once in Central European Summer Time (CEST) and once in Central European Time (CET). As shown above, using the function <code><a href="../reference/berlin_local_timestamps_to_POSIXct.html">berlin_local_timestamps_to_POSIXct()</a></code> can solve the problem:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1">iso &lt;-<span class="st"> </span>kwb.datetime<span class="op">::</span><span class="kw">reformatTimestamp</span>(timestamps_local, format)</a>
+<a class="sourceLine" id="cb23-2" data-line-number="2">good_times &lt;-<span class="st"> </span>kwb.datetime<span class="op">::</span><span class="kw">berlin_local_timestamps_to_POSIXct</span>(iso)</a>
+<a class="sourceLine" id="cb23-3" data-line-number="3"><span class="co">#&gt; Converting 8761 timestamps ... ok.</span></a>
+<a class="sourceLine" id="cb23-4" data-line-number="4">kwb.datetime<span class="op">::</span><span class="kw">getEqualStepRanges</span>(times)</a>
+<a class="sourceLine" id="cb23-5" data-line-number="5"><span class="co">#&gt;   from   to           from_time             to_time      step</span></a>
+<a class="sourceLine" id="cb23-6" data-line-number="6"><span class="co">#&gt; 1    1 7178 2019-01-01 00:00:00 2019-10-27 02:00:00 3600 secs</span></a>
+<a class="sourceLine" id="cb23-7" data-line-number="7"><span class="co">#&gt; 2 7178 7179 2019-10-27 02:00:00 2019-10-27 02:00:00    0 secs</span></a>
+<a class="sourceLine" id="cb23-8" data-line-number="8"><span class="co">#&gt; 3 7179 7180 2019-10-27 02:00:00 2019-10-27 03:00:00 7200 secs</span></a>
+<a class="sourceLine" id="cb23-9" data-line-number="9"><span class="co">#&gt; 4 7180 8761 2019-10-27 03:00:00 2020-01-01 00:00:00 3600 secs</span></a></code></pre></div>
+<p>Check if the original date and time objects could be reproduced:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/identical">identical</a></span>(good_times, times_local)</a>
+<a class="sourceLine" id="cb24-2" data-line-number="2"><span class="co">#&gt; [1] FALSE</span></a></code></pre></div>
 </div>
-<div id="test-case" class="section level2">
-<h2 class="hasAnchor">
-<a href="#test-case" class="anchor"></a>Test Case</h2>
-<p>See example of function <code><a href="../reference/getEqualStepRanges.html">getEqualStepRanges()</a></code>.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">as_berlin_posix &lt;-<span class="st"> </span><span class="cf">function</span>(x) <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/as.POSIXlt">as.POSIXct</a></span>(x, <span class="dt">tz =</span> <span class="st">"Europe/Berlin"</span>)</a>
-<a class="sourceLine" id="cb12-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="co"># Generate a sequence of date and time objects</span></a>
-<a class="sourceLine" id="cb12-4" data-line-number="4">times &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq</a></span>(<span class="kw">as_berlin_posix</span>(<span class="st">"2019-01-01"</span>), <span class="kw">as_berlin_posix</span>(<span class="st">"2020-01-01"</span>), <span class="dv">3600</span>)</a>
-<a class="sourceLine" id="cb12-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb12-6" data-line-number="6"><span class="co"># As expected, exactly one sequence of equal time step is found:</span></a>
-<a class="sourceLine" id="cb12-7" data-line-number="7">kwb.datetime<span class="op">::</span><span class="kw">getEqualStepRanges</span>(times)</a>
-<a class="sourceLine" id="cb12-8" data-line-number="8"><span class="co">#&gt;   from   to  from_time    to_time    step</span></a>
-<a class="sourceLine" id="cb12-9" data-line-number="9"><span class="co">#&gt; 1    1 8761 2019-01-01 2020-01-01 1 hours</span></a>
-<a class="sourceLine" id="cb12-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb12-11" data-line-number="11"><span class="co"># Simulate the case that timestamps were read from a text file and converted</span></a>
-<a class="sourceLine" id="cb12-12" data-line-number="12"><span class="co"># with as.POSIXct()</span></a>
-<a class="sourceLine" id="cb12-13" data-line-number="13">timestamps &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/character">as.character</a></span>(times)</a>
-<a class="sourceLine" id="cb12-14" data-line-number="14">new_times &lt;-<span class="st"> </span><span class="kw">as_berlin_posix</span>(timestamps)</a>
-<a class="sourceLine" id="cb12-15" data-line-number="15"></a>
-<a class="sourceLine" id="cb12-16" data-line-number="16"><span class="co"># Show the sequences of equal time steps again</span></a>
-<a class="sourceLine" id="cb12-17" data-line-number="17">kwb.datetime<span class="op">::</span><span class="kw">getEqualStepRanges</span>(new_times)</a>
-<a class="sourceLine" id="cb12-18" data-line-number="18"><span class="co">#&gt;   from   to           from_time             to_time      step</span></a>
-<a class="sourceLine" id="cb12-19" data-line-number="19"><span class="co">#&gt; 1    1 7178 2019-01-01 00:00:00 2019-10-27 02:00:00 3600 secs</span></a>
-<a class="sourceLine" id="cb12-20" data-line-number="20"><span class="co">#&gt; 2 7178 7179 2019-10-27 02:00:00 2019-10-27 02:00:00    0 secs</span></a>
-<a class="sourceLine" id="cb12-21" data-line-number="21"><span class="co">#&gt; 3 7179 7180 2019-10-27 02:00:00 2019-10-27 03:00:00 7200 secs</span></a>
-<a class="sourceLine" id="cb12-22" data-line-number="22"><span class="co">#&gt; 4 7180 8761 2019-10-27 03:00:00 2020-01-01 00:00:00 3600 secs</span></a>
-<a class="sourceLine" id="cb12-23" data-line-number="23"></a>
-<a class="sourceLine" id="cb12-24" data-line-number="24"><span class="co"># What happened? The timestamp 2019-10-27 02:00 appears twice! Once in CEST</span></a>
-<a class="sourceLine" id="cb12-25" data-line-number="25"><span class="co"># and once in CET. Use a helper function that assigns CEST and CET as</span></a>
-<a class="sourceLine" id="cb12-26" data-line-number="26"><span class="co"># required:</span></a>
-<a class="sourceLine" id="cb12-27" data-line-number="27">good_times &lt;-<span class="st"> </span>kwb.datetime<span class="op">::</span><span class="kw">berlin_local_timestamps_to_POSIXct</span>(timestamps)</a>
-<a class="sourceLine" id="cb12-28" data-line-number="28"><span class="co">#&gt; Converting 8761 timestamps ... ok.</span></a>
-<a class="sourceLine" id="cb12-29" data-line-number="29"></a>
-<a class="sourceLine" id="cb12-30" data-line-number="30"><span class="co"># Check if the original date and time objects could be reproduced</span></a>
-<a class="sourceLine" id="cb12-31" data-line-number="31"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/identical">identical</a></span>(good_times, times)</a>
-<a class="sourceLine" id="cb12-32" data-line-number="32"><span class="co">#&gt; [1] FALSE</span></a></code></pre></div>
 </div>
   </div>
 
@@ -253,10 +325,16 @@
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+<li><a href="#creation-of-example-timestamps">Creation of example timestamps</a></li>
+      <li><a href="#case-1-clock-switches-between-standard-time-and-summer-time">Case 1: Clock switches between standard time and summer time</a></li>
+      <li><a href="#case-2-clock-always-stays-in-standard-time">Case 2: Clock always stays in standard time</a></li>
+      <li>
+<a href="#background">Background</a><ul class="nav nav-pills nav-stacked">
 <li><a href="#when-does-summer-time-startend">When does Summer Time start/end?</a></li>
-      <li><a href="#example-1-reading-local-timestamps-in-berlin-germany">Example 1: Reading local timestamps in Berlin, Germany</a></li>
-      <li><a href="#example-2-reading-timestamps-in-utc01">Example 2: Reading timestamps in UTC+01</a></li>
-      <li><a href="#test-case">Test Case</a></li>
+      <li><a href="#example-reading-local-timestamps-in-berlin-germany">Example: Reading local timestamps in Berlin, Germany</a></li>
+      <li><a href="#analyse-a-sequence-of-posixct-objects">Analyse a sequence of POSIXct objects</a></li>
+      </ul>
+</li>
       </ul>
 </div>
       </div>
