@@ -5,7 +5,8 @@ Authors@R: c(
     person("Kompetenzzentrum Wasser Berlin gGmbH", role = c("cph")))
 Version: 0.3.1.9000
 License: MIT + file LICENSE
-Imports: kwb.utils
+Imports: 
+    kwb.utils (>= 0.4.2)
 Remotes: github::kwb-r/kwb.utils
 Title: Functions for date/time objects
 Description: Functions for date/time objects, e.g. functions to convert timestamps between
@@ -14,7 +15,7 @@ RoxygenNote: 6.1.1
 URL: https://github.com/kwb-r/kwb.datetime
 BugReports: https://github.com/kwb-r/kwb.datetime/issues
 Suggests: 
-    testthat,
-    knitr,
-    rmarkdown
+    testthat (>= 2.0.1),
+    knitr (>= 1.23),
+    rmarkdown (>= 1.13)
 VignetteBuilder: knitr
