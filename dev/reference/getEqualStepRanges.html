@@ -142,7 +142,12 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Generate a sequence of date and time objects</span>
-<span class='no'>times</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/seq'>seq</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/as.POSIXlt'>as.POSIXct</a></span>(<span class='st'>"2019-01-01"</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/as.POSIXlt'>as.POSIXct</a></span>(<span class='st'>"2020-01-01"</span>), <span class='fl'>3600</span>)
+<span class='no'>as_berlin_posix</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span>) <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/as.POSIXlt'>as.POSIXct</a></span>(<span class='no'>x</span>, <span class='kw'>tz</span> <span class='kw'>=</span> <span class='st'>"Europe/Berlin"</span>)
+<span class='no'>times</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/seq'>seq</a></span>(
+  <span class='kw'>from</span> <span class='kw'>=</span> <span class='fu'>as_berlin_posix</span>(<span class='st'>"2019-01-01"</span>),
+  <span class='kw'>to</span> <span class='kw'>=</span> <span class='fu'>as_berlin_posix</span>(<span class='st'>"2020-01-01"</span>),
+  <span class='kw'>by</span> <span class='kw'>=</span> <span class='fl'>3600</span>
+)
 
 <span class='co'># As expected, exactly one sequence of equal time step is found:</span>
 <span class='fu'>getEqualStepRanges</span>(<span class='no'>times</span>)</div><div class='output co'>#&gt;   from   to  from_time    to_time    step
@@ -150,7 +155,7 @@
 <span class='co'># Simulate the case that timestamps were read from a text file and converted</span>
 <span class='co'># with as.POSIXct()</span>
 <span class='no'>timestamps</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>as.character</a></span>(<span class='no'>times</span>)
-<span class='no'>new_times</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/as.POSIXlt'>as.POSIXct</a></span>(<span class='no'>timestamps</span>)
+<span class='no'>new_times</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/as.POSIXlt'>as.POSIXct</a></span>(<span class='no'>timestamps</span>, <span class='kw'>tz</span> <span class='kw'>=</span> <span class='st'>"Europe/Berlin"</span>)
 
 <span class='co'># Show the sequences of equal time steps again</span>
 <span class='fu'>getEqualStepRanges</span>(<span class='no'>new_times</span>)</div><div class='output co'>#&gt;   from   to           from_time             to_time      step
@@ -163,7 +168,7 @@
 <span class='co'># required:</span>
 <span class='no'>good_times</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>kwb.datetime</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/kwb.datetime/topics/berlin_local_timestamps_to_POSIXct'>berlin_local_timestamps_to_POSIXct</a></span>(<span class='no'>timestamps</span>)</div><div class='output co'>#&gt; Converting 8761 timestamps ... ok.</div><div class='input'>
 <span class='co'># Check if the original date and time objects could be reproduced</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identical'>identical</a></span>(<span class='no'>good_times</span>, <span class='no'>times</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identical'>identical</a></span>(<span class='no'>good_times</span>, <span class='no'>times</span>)</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
