@@ -14,7 +14,12 @@ Sequences of Date Time Objects With Equal Time Step
 }
 \examples{
 # Generate a sequence of date and time objects
-times <- seq(as.POSIXct("2019-01-01"), as.POSIXct("2020-01-01"), 3600)
+as_berlin_posix <- function(x) as.POSIXct(x, tz = "Europe/Berlin")
+times <- seq(
+  from = as_berln_posix("2019-01-01"), 
+  to = as_berln_posix("2020-01-01"), 
+  by = 3600
+)
 
 # As expected, exactly one sequence of equal time step is found:
 getEqualStepRanges(times)
