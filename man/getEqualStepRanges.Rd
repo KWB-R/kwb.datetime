@@ -16,8 +16,8 @@ Sequences of Date Time Objects With Equal Time Step
 # Generate a sequence of date and time objects
 as_berlin_posix <- function(x) as.POSIXct(x, tz = "Europe/Berlin")
 times <- seq(
-  from = as_berln_posix("2019-01-01"), 
-  to = as_berln_posix("2020-01-01"), 
+  from = as_berlin_posix("2019-01-01"), 
+  to = as_berlin_posix("2020-01-01"), 
   by = 3600
 )
 
@@ -27,7 +27,7 @@ getEqualStepRanges(times)
 # Simulate the case that timestamps were read from a text file and converted
 # with as.POSIXct()
 timestamps <- as.character(times)
-new_times <- as.POSIXct(timestamps)
+new_times <- as.POSIXct(timestamps, tz = "Europe/Berlin")
 
 # Show the sequences of equal time steps again
 getEqualStepRanges(new_times)

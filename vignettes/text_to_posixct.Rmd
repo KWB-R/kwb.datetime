@@ -203,8 +203,10 @@ See vignette ["Exkurs Zeitzonen"](timezones.html) (in German).
 See example of function `getEqualStepRanges()`.
 
 ```{r}
+as_berlin_posix <- function(x) as.POSIXct(x, tz = "Europe/Berlin")
+
 # Generate a sequence of date and time objects
-times <- seq(as.POSIXct("2019-01-01"), as.POSIXct("2020-01-01"), 3600)
+times <- seq(as_berlin_posix("2019-01-01"), as_berlin_posix("2020-01-01"), 3600)
 
 # As expected, exactly one sequence of equal time step is found:
 kwb.datetime::getEqualStepRanges(times)
@@ -212,7 +214,7 @@ kwb.datetime::getEqualStepRanges(times)
 # Simulate the case that timestamps were read from a text file and converted
 # with as.POSIXct()
 timestamps <- as.character(times)
-new_times <- as.POSIXct(timestamps)
+new_times <- as_berlin_posix(timestamps)
 
 # Show the sequences of equal time steps again
 kwb.datetime::getEqualStepRanges(new_times)
