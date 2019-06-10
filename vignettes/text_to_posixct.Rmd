@@ -27,8 +27,7 @@ print_times <- function(x) {
 This tutorial describes how to convert text timestamps to `POSIXct` objects. The
 conversion becomes necessary when time differences are to be calculated. We
 treat two use cases in both of which timestamps were written by a measurement
-device. The cases differ in the way that the clock of the device was operating
-in.
+device. The cases differ in the way the device was operating its clock:
 
 - Case 1: the clock switches between standard (winter) time and summer time.
 - Case 2: the clock does not switch between standard (winter) time and summer 
@@ -326,7 +325,7 @@ helps understand the problem. It shows four different sub-sequences within
 previous sub-sequence.
 
 ```{r}
-times <- as.POSIXct(timestamps_local, tz = "Europe/Berlin", format = format)
+bad_times <- as.POSIXct(timestamps_local, tz = "Europe/Berlin", format = format)
 kwb.datetime::getEqualStepRanges(times)
 ```
 
@@ -336,13 +335,21 @@ above, using the function `berlin_local_timestamps_to_POSIXct()` can solve the
 problem:
 
 ```{r}
+# Reformat the timestamps to ISO format
 iso <- kwb.datetime::reformatTimestamp(timestamps_local, format)
+
+# Convert to POSIXct
 good_times <- kwb.datetime::berlin_local_timestamps_to_POSIXct(iso)
-kwb.datetime::getEqualStepRanges(times)
+
+# Show the contained sub-sequences (should be only one now!)
+kwb.datetime::getEqualStepRanges(good_times)
 ```
 
 Check if the original date and time objects could be reproduced:
 
 ```{r}
+# Explicitly set the time zone before comparing
+attr(good_times, "tzone") <- "Europe/Berlin"
+
 identical(good_times, times_local)
 ```
