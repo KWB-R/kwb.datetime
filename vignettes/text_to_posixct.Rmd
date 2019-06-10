@@ -325,8 +325,11 @@ helps understand the problem. It shows four different sub-sequences within
 previous sub-sequence.
 
 ```{r}
+# (Badly) Convert to POSIXct
 bad_times <- as.POSIXct(timestamps_local, tz = "Europe/Berlin", format = format)
-kwb.datetime::getEqualStepRanges(times)
+
+# Show the contained sub-sequences
+kwb.datetime::getEqualStepRanges(bad_times)
 ```
 
 What happened? The timestamp `2019-10-27 02:00` appears twice! Once in Central
@@ -338,7 +341,7 @@ problem:
 # Reformat the timestamps to ISO format
 iso <- kwb.datetime::reformatTimestamp(timestamps_local, format)
 
-# Convert to POSIXct
+# (Correctly) Convert to POSIXct
 good_times <- kwb.datetime::berlin_local_timestamps_to_POSIXct(iso)
 
 # Show the contained sub-sequences (should be only one now!)
