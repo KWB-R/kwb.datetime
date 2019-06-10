@@ -17,8 +17,8 @@ if (FALSE)
     as_berlin_normal_posix(first_day), as_berlin_posix(last_day), 3600
   ))
 
-  getTimestampSummary(timestamps_berlin_1h_1year)
-  getTimestampSummary(timestamps_berlin_normal_1h_1year)
+  kwb.datetime:::getTimestampSummary(timestamps_berlin_1h_1year)
+  kwb.datetime:::getTimestampSummary(timestamps_berlin_normal_1h_1year)
     
   times_berlin <- as.POSIXct(timestamps_berlin_1h_1year)
   times_berlin_normal <- as.POSIXct(timestamps_berlin_normal_1h_1year)
@@ -26,14 +26,10 @@ if (FALSE)
   table(diff(times_berlin))
   table(diff(times_berlin_normal))
   
-  pdf_file <- kwb.utils::preparePdf()
-  plot(getEqualStepRanges(times_berlin))
-  plot(getEqualStepRanges(times_berlin_normal))
-  kwb.utils::finishAndShowPdf(pdf_file)
-  
-  getEqualStepRanges(times_2)
-  
-  tail(timestamps_berlin_1h_1year)
+  plot(kwb.datetime:::getEqualStepRanges(times_berlin))
+  plot(kwb.datetime:::getEqualStepRanges(times_berlin_normal))
+
+  kwb.datetime:::getEqualStepRanges(times_berlin_normal)
   
   analyse_timestamps(timestamps_berlin_1h_1year)
 }
@@ -53,12 +49,14 @@ if (FALSE)
   
   analyse_timestamps(timestamps = "1.12.2019")
   
-  getTimestampSummary(timestamp_list[[1]])
+  tss <- kwb.datetime:::getTimestampSummary(timestamp_list[[1]])
   
   for (i in seq_along(templates)) {
     message(templates[i])
     analyse_timestamps(timestamps = timestamp_list[[i]])
   }
+  
+  iso_timestamps <- kwb.utils::getAttribute(tss, "iso_timestamps")
   
   # Does the clock adjust for daylight saving time or not?
   times <- lapply(c(TRUE, FALSE), function(dst_shift) if (dst_shift) {
@@ -68,8 +66,6 @@ if (FALSE)
   })
   
   lapply(times, head)
-  
-  times[[1]] - times[[2]]
 }
 
 # plot.equal_step_range --------------------------------------------------------
@@ -128,7 +124,7 @@ print.timestamp_summary <- function(x, ...)
 # analyse_timestamps -----------------------------------------------------------
 analyse_timestamps <- function(timestamps, ...)
 {
-  tss <- getTimestampSummary(timestamps, template_index = 1)
+  tss <- kwb.datetime:::getTimestampSummary(timestamps, template_index = 1)
 
   print(tss)
   
