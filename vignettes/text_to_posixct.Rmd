@@ -201,7 +201,8 @@ attr(times_standard, "tzone") <- "Europe/Berlin"
 identical(times_standard, times_standard_from_text)
 ```
 
-See vignette ["Exkurs Zeitzonen"](timezones.html) for details on this case.
+See vignette ["Exkurs Zeitzonen"](timezones.html) (in German!) for details on
+this case.
 
 # Background and Details
 
@@ -395,12 +396,18 @@ helps understand the problem. It shows four different sub-sequences within
 `times` in each of which the time step differs from the time step in the 
 previous sub-sequence.
 
-```{r}
+```{r fig.width = 6}
 # (Badly) Convert to POSIXct
 bad_times <- as.POSIXct(timestamps_local, tz = "Europe/Berlin", format = format)
 
-# Show the contained sub-sequences
-kwb.datetime::getEqualStepRanges(bad_times)
+# Get information on the contained sub-sequences
+ranges <- kwb.datetime::getEqualStepRanges(bad_times)
+
+# Print the sub-sequences
+ranges
+
+# Plot the sub-sequences
+plot(ranges)
 ```
 
 What happened? The timestamp `2019-10-27 02:00` appears twice! Once in Central
