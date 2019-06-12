@@ -194,7 +194,7 @@
 <a class="sourceLine" id="cb13-2" data-line-number="2">times_standard_from_text &lt;-<span class="st"> </span>kwb.datetime<span class="op">:::</span><span class="kw"><a href="../reference/textToEuropeBerlinPosix.html">textToEuropeBerlinPosix</a></span>(</a>
 <a class="sourceLine" id="cb13-3" data-line-number="3">  timestamps_standard, <span class="dt">format =</span> format, <span class="dt">switches =</span> <span class="ot">FALSE</span></a>
 <a class="sourceLine" id="cb13-4" data-line-number="4">)</a>
-<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="co">#&gt; Converting 8761 timestamps to POSIXct ... ok. (0.02s)</span></a></code></pre></div>
+<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="co">#&gt; Converting 8761 timestamps to POSIXct ... ok. (0.01s)</span></a></code></pre></div>
 <p>The created <code>POSIXct</code> objects are now (almost) identical to the original ones. The only difference is the time zone attribute that is “Etc/GMT-1” in the original timestamps but “Europe/Berlin” in the timestamps provided by <code><a href="../reference/textToEuropeBerlinPosix.html">textToEuropeBerlinPosix()</a></code>:</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/attr">attr</a></span>(times_standard, <span class="st">"tzone"</span>)</a>
 <a class="sourceLine" id="cb14-2" data-line-number="2"><span class="co">#&gt; [1] "Etc/GMT-1"</span></a>
