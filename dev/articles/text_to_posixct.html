@@ -165,7 +165,7 @@
 <a class="sourceLine" id="cb9-2" data-line-number="2">times_local_from_text &lt;-<span class="st"> </span>kwb.datetime<span class="op">:::</span><span class="kw"><a href="../reference/textToEuropeBerlinPosix.html">textToEuropeBerlinPosix</a></span>(</a>
 <a class="sourceLine" id="cb9-3" data-line-number="3">  timestamps_local, <span class="dt">format =</span> format</a>
 <a class="sourceLine" id="cb9-4" data-line-number="4">)</a>
-<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co">#&gt; Converting 8761 timestamps to POSIXct ... ok. (0.07s)</span></a></code></pre></div>
+<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co">#&gt; Converting 8761 timestamps to POSIXct ... ok. (0.06s)</span></a></code></pre></div>
 <p>The created <code>POSIXct</code> objects are now identical to the original ones:</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/identical">identical</a></span>(times_local, times_local_from_text)</a>
 <a class="sourceLine" id="cb10-2" data-line-number="2"><span class="co">#&gt; [1] TRUE</span></a></code></pre></div>
@@ -194,7 +194,7 @@
 <a class="sourceLine" id="cb13-2" data-line-number="2">times_standard_from_text &lt;-<span class="st"> </span>kwb.datetime<span class="op">:::</span><span class="kw"><a href="../reference/textToEuropeBerlinPosix.html">textToEuropeBerlinPosix</a></span>(</a>
 <a class="sourceLine" id="cb13-3" data-line-number="3">  timestamps_standard, <span class="dt">format =</span> format, <span class="dt">switches =</span> <span class="ot">FALSE</span></a>
 <a class="sourceLine" id="cb13-4" data-line-number="4">)</a>
-<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="co">#&gt; Converting 8761 timestamps to POSIXct ... ok. (0.02s)</span></a></code></pre></div>
+<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="co">#&gt; Converting 8761 timestamps to POSIXct ... ok. (0.01s)</span></a></code></pre></div>
 <p>The created <code>POSIXct</code> objects are now (almost) identical to the original ones. The only difference is the time zone attribute that is “Etc/GMT-1” in the original timestamps but “Europe/Berlin” in the timestamps provided by <code><a href="../reference/textToEuropeBerlinPosix.html">textToEuropeBerlinPosix()</a></code>:</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/attr">attr</a></span>(times_standard, <span class="st">"tzone"</span>)</a>
 <a class="sourceLine" id="cb14-2" data-line-number="2"><span class="co">#&gt; [1] "Etc/GMT-1"</span></a>
@@ -287,15 +287,15 @@
 <a class="sourceLine" id="cb22-5" data-line-number="5"><span class="co">#&gt; [5] "2017-10-29 02:30:00 CET"  "2017-10-29 03:00:00 CET"</span></a></code></pre></div>
 <p>In both cases, the timestamps are interpreted correctly, as also shown in this plot:</p>
 <p><img src="text_to_posixct_files/figure-html/unnamed-chunk-24-1.png" width="480"></p>
-<p>Unfortunately, the timestamps logged by measuring devices often do not contain the additional information on the UTC offset. For this case the package kwb.datetime provides three functions that can be applied in a chain to perform a three step process:</p>
+<p>Unfortunately, the timestamps logged by measuring devices often do not contain the additional information on the UTC offset. For this case the package kwb.datetime provides functions that can be applied in a chain to perform a three step process:</p>
 <p><strong>Step 1:</strong> Use the function <code><a href="../reference/utcOffsetBerlinTime.html">utcOffsetBerlinTime()</a></code> to determine the UTC offsets (for timestamps given in time zone “Europe/Berlin”):</p>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="co"># Guess and print the UTC offsets for the given timestamps</span></a>
 <a class="sourceLine" id="cb23-2" data-line-number="2">(offsets &lt;-<span class="st"> </span>kwb.datetime<span class="op">::</span><span class="kw">utcOffsetBerlinTime</span>(timestamps))</a>
 <a class="sourceLine" id="cb23-3" data-line-number="3"><span class="co">#&gt; [1] 2 2 2 1 1 1</span></a></code></pre></div>
 <p>This function requires the timestamps to be sorted in increasing order. Otherwise it cannot decide between CEST and CET for possibly unambiguous timestamps between 02:00 and 03:00 at the day of reverting time from CEST back to CET.</p>
-<p><strong>Step 2:</strong> Use these offsets and the function <code><a href="../reference/append_utc_offset_string.html">append_utc_offset_string()</a></code> to create timestamps in ISO 8601 format, i.e. ending in either <em>+0200</em> (when referring to CEST) or in <em>+0100</em> (when referring to CET):</p>
+<p><strong>Step 2:</strong> Use these offsets to create timestamps in full ISO 8601 format, i.e. ending in either <em>+0200</em> (when referring to CEST) or in <em>+0100</em> (when referring to CET):</p>
 <div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="co"># Create ISO 8601 timestamps and print them</span></a>
-<a class="sourceLine" id="cb24-2" data-line-number="2">(iso_timestamps &lt;-<span class="st"> </span>kwb.datetime<span class="op">::</span><span class="kw">append_utc_offset_string</span>(timestamps, offsets))</a>
+<a class="sourceLine" id="cb24-2" data-line-number="2">(iso_timestamps &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sprintf">sprintf</a></span>(<span class="st">"%s%+03d00"</span>, timestamps, offsets))</a>
 <a class="sourceLine" id="cb24-3" data-line-number="3"><span class="co">#&gt; [1] "2017-10-29 01:30:00+0200" "2017-10-29 02:00:00+0200"</span></a>
 <a class="sourceLine" id="cb24-4" data-line-number="4"><span class="co">#&gt; [3] "2017-10-29 02:30:00+0200" "2017-10-29 02:00:00+0100"</span></a>
 <a class="sourceLine" id="cb24-5" data-line-number="5"><span class="co">#&gt; [5] "2017-10-29 02:30:00+0100" "2017-10-29 03:00:00+0100"</span></a></code></pre></div>

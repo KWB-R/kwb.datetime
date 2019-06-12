@@ -183,14 +183,14 @@ same day.</p></td>
 <span class='no'>offsets_cest_cet</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>kwb.datetime</span><span class='kw ns'>:::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/kwb.datetime/topics/utc_offset_Berlin_one_day'>utc_offset_Berlin_one_day</a></span>(<span class='no'>times_cest_cet</span>)
 
 <span class='co'># Create ISO norm timestamps including the offset</span>
-<span class='no'>iso_cet_cest</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='append_utc_offset_string.html'>append_utc_offset_string</a></span>(<span class='no'>times_cet_cest</span>, <span class='no'>offsets_cet_cest</span>)
-<span class='no'>iso_cest_cet</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='append_utc_offset_string.html'>append_utc_offset_string</a></span>(<span class='no'>times_cest_cet</span>, <span class='no'>offsets_cest_cet</span>)
+<span class='no'>iso_cet_cest</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sprintf'>sprintf</a></span>(<span class='st'>"%s+%02d00"</span>, <span class='no'>times_cet_cest</span>, <span class='no'>offsets_cet_cest</span>)
+<span class='no'>iso_cest_cet</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sprintf'>sprintf</a></span>(<span class='st'>"%s+%02d00"</span>, <span class='no'>times_cest_cet</span>, <span class='no'>offsets_cest_cet</span>)
 
 <span class='co'># Use isoToLocaltime() to create POSIXct-objects in Europe/Berlin</span>
-<span class='kw pkg'>kwb.datetime</span><span class='kw ns'>:::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/kwb.datetime/topics/isoToLocaltime'>isoToLocaltime</a></span>(<span class='no'>iso_cet_cest</span>)</div><div class='output co'>#&gt; Converting 7 timestamps ... ok.</div><div class='output co'>#&gt; [1] "2019-03-31 01:00:00 CET"  "2019-03-31 01:15:00 CET" 
+<span class='fu'><a href='isoToLocaltime.html'>isoToLocaltime</a></span>(<span class='no'>iso_cet_cest</span>)</div><div class='output co'>#&gt; Converting 7 timestamps ... ok.</div><div class='output co'>#&gt; [1] "2019-03-31 01:00:00 CET"  "2019-03-31 01:15:00 CET" 
 #&gt; [3] "2019-03-31 01:30:00 CET"  "2019-03-31 01:45:00 CET" 
 #&gt; [5] "2019-03-31 03:00:00 CEST" "2019-03-31 03:15:00 CEST"
-#&gt; [7] "2019-03-31 03:30:00 CEST"</div><div class='input'><span class='kw pkg'>kwb.datetime</span><span class='kw ns'>:::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/kwb.datetime/topics/isoToLocaltime'>isoToLocaltime</a></span>(<span class='no'>iso_cest_cet</span>)</div><div class='output co'>#&gt; Converting 9 timestamps ... ok.</div><div class='output co'>#&gt; [1] "2019-10-27 01:00:00 CEST" "2019-10-27 01:30:00 CEST"
+#&gt; [7] "2019-03-31 03:30:00 CEST"</div><div class='input'><span class='fu'><a href='isoToLocaltime.html'>isoToLocaltime</a></span>(<span class='no'>iso_cest_cet</span>)</div><div class='output co'>#&gt; Converting 9 timestamps ... ok.</div><div class='output co'>#&gt; [1] "2019-10-27 01:00:00 CEST" "2019-10-27 01:30:00 CEST"
 #&gt; [3] "2019-10-27 02:00:00 CEST" "2019-10-27 02:30:00 CEST"
 #&gt; [5] "2019-10-27 02:00:00 CET"  "2019-10-27 02:30:00 CET" 
 #&gt; [7] "2019-10-27 03:00:00 CET"  "2019-10-27 03:30:00 CET" 
