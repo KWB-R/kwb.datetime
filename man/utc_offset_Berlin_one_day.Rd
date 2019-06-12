@@ -56,12 +56,12 @@ offsets_cest_cet <- kwb.datetime:::utc_offset_Berlin_one_day(times_cest_cet)
 iso_cet_cest <- append_utc_offset_string(times_cet_cest, offsets_cet_cest)
 iso_cest_cet <- append_utc_offset_string(times_cest_cet, offsets_cest_cet)
 
-# Use iso_to_localtime() to create POSIXct-objects in Europe/Berlin
-kwb.datetime:::iso_to_localtime(iso_cet_cest)
-kwb.datetime:::iso_to_localtime(iso_cest_cet)
+# Use isoToLocaltime() to create POSIXct-objects in Europe/Berlin
+kwb.datetime:::isoToLocaltime(iso_cet_cest)
+kwb.datetime:::isoToLocaltime(iso_cest_cet)
 
 }
 \seealso{
-\code{\link{utc_offset_Berlin_time}}
+\code{\link{utcOffsetBerlinTime}}
 }
 \keyword{internal}

@@ -35,6 +35,6 @@ kwb.datetime:::utc_offset_Berlin_day("2017-03-27") #> 2 -> CEST
 
 }
 \seealso{
-\code{\link{utc_offset_Berlin_time}}
+\code{\link{utcOffsetBerlinTime}}
 }
 \keyword{internal}

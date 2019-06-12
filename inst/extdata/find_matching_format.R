@@ -49,7 +49,7 @@ if (FALSE)
   
   analyse_timestamps(timestamps = "1.12.2019")
   
-  tss <- kwb.datetime:::getTimestampSummary(timestamp_list[[1]])
+  tss <- kwb.datetime::getTimestampSummary(timestamp_list[[1]])
   
   for (i in seq_along(templates)) {
     message(templates[i])
@@ -59,13 +59,8 @@ if (FALSE)
   iso_timestamps <- kwb.utils::getAttribute(tss, "iso_timestamps")
   
   # Does the clock adjust for daylight saving time or not?
-  times <- lapply(c(TRUE, FALSE), function(dst_shift) if (dst_shift) {
-    kwb.datetime::berlin_local_timestamps_to_POSIXct(iso_timestamps)
-  } else {
-    structure(as.POSIXct(iso_timestamps, tz = "Etc/GMT-1"), tzone = "")
-  })
-  
-  lapply(times, head)
+  times_1 <- kwb.datetime::textToEuropeBerlinPosix(iso_timestamps, switches = TRUE)
+  times_2 <- kwb.datetime::textToEuropeBerlinPosix(iso_timestamps, switches = FALSE)
 }
 
 # analyse_timestamps -----------------------------------------------------------

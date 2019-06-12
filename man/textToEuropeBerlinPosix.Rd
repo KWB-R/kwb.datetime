@@ -33,6 +33,11 @@ originating from a clock that stays in standard time over the whole year.
 See \code{vignette("text_to_posixct", package = "kwb.datetime")} for details.
 It also tries to find a convenient format description string.
 }
+\details{
+When reading timestamps that observe Daylight Saving, it is required  that 
+the timestamps in \code{x} are ordered by time, which should be the case if 
+they  were recorded by a measuring device.
+}
 \examples{
 # Test the functions with the following "switch" days
 kwb.datetime::date_range_CEST(2019)
@@ -46,5 +51,14 @@ t3 <- textToEuropeBerlinPosix(c("27.10.2019 02:00", "27.10.2019 02:00"))
 t4 <- textToEuropeBerlinPosix(c("27.10.2019 01:00", "27.10.2019 02:00"), 
                               switches = FALSE)
 identical(t3, t4)
+
+kwb.datetime::textToEuropeBerlinPosix(c(
+  "2017-10-29 01:30:00", # 1: CEST
+  "2017-10-29 02:00:00", # 2: CEST
+  "2017-10-29 02:30:00", # 3: CEST
+  "2017-10-29 02:00:00", # 4: CET
+  "2017-10-29 02:30:00", # 5: CET
+  "2017-10-29 03:00:00"  # 6: CET
+))
 
 }

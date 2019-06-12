@@ -7,7 +7,11 @@
 #' clock that switches between standard time and summer time as well as those 
 #' originating from a clock that stays in standard time over the whole year.  
 #' See \code{vignette("text_to_posixct", package = "kwb.datetime")} for details.
-#' It also tries to find a convenient format description string.
+#' It also tries to find a convenient format description string. 
+#' 
+#' When reading timestamps that observe Daylight Saving, it is required  that 
+#' the timestamps in \code{x} are ordered by time, which should be the case if 
+#' they  were recorded by a measuring device.
 #' 
 #' @param x vector of text (i.e. character) timestamps
 #' @param format format string describing the format of a timestamp, such as
@@ -34,6 +38,15 @@
 #' t4 <- textToEuropeBerlinPosix(c("27.10.2019 01:00", "27.10.2019 02:00"), 
 #'                               switches = FALSE)
 #' identical(t3, t4)
+#' 
+#' kwb.datetime::textToEuropeBerlinPosix(c(
+#'   "2017-10-29 01:30:00", # 1: CEST
+#'   "2017-10-29 02:00:00", # 2: CEST
+#'   "2017-10-29 02:30:00", # 3: CEST
+#'   "2017-10-29 02:00:00", # 4: CET
+#'   "2017-10-29 02:30:00", # 5: CET
+#'   "2017-10-29 03:00:00"  # 6: CET
+#' ))
 #' 
 textToEuropeBerlinPosix <- function(
   x, format = NULL, switches = TRUE, dbg = TRUE
@@ -64,7 +77,7 @@ textToEuropeBerlinPosix <- function(
       } else {
         
         utc_offset <- try(silent = TRUE, {
-          utc_offset_Berlin_time(reformatTimestamp(x, old.format = format))
+          utcOffsetBerlinTime(reformatTimestamp(x, old.format = format))
         })
         
         if (inherits(utc_offset, "try-error")) stop(

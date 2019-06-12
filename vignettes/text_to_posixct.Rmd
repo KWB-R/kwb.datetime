@@ -264,6 +264,7 @@ vector of time objects:
 # Convert timestamps to POSIXct and print them
 (times <- as.POSIXct(timestamps, tz = "Europe/Berlin"))
 ``` 
+
 The function cannot distinguish between the first and second occurrences of the
 times 02:00 and  02:30. The output and the following plot reveal that the
 timestamps between 02:00 and 03:00 (exclusive) are always interpreted as being
@@ -318,11 +319,11 @@ as.POSIXct(iso_timestamps, tz = "Europe/Berlin", format = "%F %T%z")
 For the meaning of the placeholders %F, %T and %z, respectively, in the
 format string, see `?strftime`. 
 
-The package kwb.datetime provides a function `iso_to_localtime()` that does
+The package kwb.datetime provides a function `isoToLocaltime()` that does
 the same:
 
 ```{r}
-kwb.datetime::iso_to_localtime(iso_timestamps)
+kwb.datetime::isoToLocaltime(iso_timestamps)
 ```
 
 In both cases, the timestamps are interpreted correctly, as also shown in this 
@@ -330,7 +331,7 @@ plot:
 
 ```{r fig.width = 5, fig.height = 2, echo = FALSE}
 out <- capture.output(
-  print_times(kwb.datetime::iso_to_localtime(iso_timestamps))
+  print_times(kwb.datetime::isoToLocaltime(iso_timestamps))
 )
 ```
 
@@ -339,12 +340,12 @@ the additional information on the UTC offset. For this case the package
 kwb.datetime provides three functions that can be applied in a chain to perform
 a three step process:
 
-**Step 1:** Use the function `utc_offset_Berlin_time()` to determine the UTC 
+**Step 1:** Use the function `utcOffsetBerlinTime()` to determine the UTC 
 offsets (for timestamps given in time zone "Europe/Berlin"):
 
 ```{r}
 # Guess and print the UTC offsets for the given timestamps
-(offsets <- kwb.datetime::utc_offset_Berlin_time(timestamps))
+(offsets <- kwb.datetime::utcOffsetBerlinTime(timestamps))
 ```
 
 This function requires the timestamps to be sorted in increasing order. 
@@ -361,22 +362,22 @@ referring to CEST) or in *+0100* (when referring to CET):
 (iso_timestamps <- kwb.datetime::append_utc_offset_string(timestamps, offsets))
 ```
 
-**Step 3:** Use the function `iso_to_localtime()` to convert these new 
+**Step 3:** Use the function `isoToLocaltime()` to convert these new 
 timestamps from `character` into their corresponding `POSIXct` objects:
 
 ```{r}
 # Create POSIXct-objects in time zone "Europe/Berlin" and print them
-(kwb.datetime:::iso_to_localtime(iso_timestamps))
+(kwb.datetime:::isoToLocaltime(iso_timestamps))
 ```
 
 ### What is the solution (one step)?
 
-The three steps presented above are performed in the function
-`berlin_local_timestamps_to_POSIXct()` so that you can do the conversion of the
-original `timestamps` by calling:
+The three steps presented above are performed within the function
+`textToEuropeBerlinPosix()` so that you can do the conversion of the original
+`timestamps` by calling:
 
 ```{r}
-kwb.datetime::berlin_local_timestamps_to_POSIXct(timestamps)
+kwb.datetime::textToEuropeBerlinPosix(timestamps)
 ```
 
 ## Analyse a sequence of POSIXct objects
@@ -412,7 +413,7 @@ plot(ranges)
 
 What happened? The timestamp `2019-10-27 02:00` appears twice! Once in Central
 European Summer Time (CEST) and once in Central European Time (CET). As shown
-above, using the function `berlin_local_timestamps_to_POSIXct()` can solve the
+above, using the function `textToEuropeBerlinPosix()` can solve the
 problem:
 
 ```{r}
@@ -420,7 +421,7 @@ problem:
 iso <- kwb.datetime::reformatTimestamp(timestamps_local, format)
 
 # (Correctly) Convert to POSIXct
-good_times <- kwb.datetime::berlin_local_timestamps_to_POSIXct(iso)
+good_times <- kwb.datetime::textToEuropeBerlinPosix(iso)
 
 # Show the contained sub-sequences (should be only one now!)
 kwb.datetime::getEqualStepRanges(good_times)

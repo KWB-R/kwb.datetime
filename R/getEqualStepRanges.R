@@ -27,7 +27,7 @@
 #' # What happened? The timestamp 2019-10-27 02:00 appears twice! Once in CEST
 #' # and once in CET. Use a helper function that assigns CEST and CET as 
 #' # required:
-#' good_times <- kwb.datetime::berlin_local_timestamps_to_POSIXct(timestamps)
+#' good_times <- textToEuropeBerlinPosix(timestamps)
 #' 
 #' # Check if the original date and time objects could be reproduced
 #' identical(good_times, times)

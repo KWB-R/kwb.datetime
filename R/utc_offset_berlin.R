@@ -1,4 +1,4 @@
-# utc_offset_Berlin_time -------------------------------------------------------
+# utcOffsetBerlinTime -------------------------------------------------------
 
 #' UTC Offsets of Berlin Local Timestamps
 #' 
@@ -21,7 +21,7 @@
 #' 
 #' @examples 
 #' # Change from CET to CEST
-#' utc_offset_Berlin_time(c(
+#' utcOffsetBerlinTime(c(
 #'   "2017-03-26 01:58:00",
 #'   "2017-03-26 01:59:00",
 #'   "2017-03-26 03:00:00", # jump from 02:00 to 03:00
@@ -34,7 +34,7 @@
 #' # Note that the following timestamps do not exist in Europe/Berlin timezone
 #' # and would result in an error
 #' \dontrun{
-#' utc_offset_Berlin_time(c(
+#' utcOffsetBerlinTime(c(
 #'   "2017-03-26 02:00:00",
 #'   "2017-03-26 02:15:00",
 #'   "2017-03-26 02:30:00",
@@ -44,7 +44,7 @@
 #' #> "+0200" "+0200" "+0200" "+0200"
 #' 
 #' # Change from CEST to CET
-#' utc_offset_Berlin_time(c(
+#' utcOffsetBerlinTime(c(
 #'   "2017-10-29 01:30:00", # CEST
 #'   "2017-10-29 02:00:00", # first time: CEST
 #'   "2017-10-29 02:30:00", # first time: CEST
@@ -54,7 +54,7 @@
 #'   
 #'  #> "+0200" "+0200" "+0200" "+0100" "+0100"
 #'
-utc_offset_Berlin_time <- function(timestamps)
+utcOffsetBerlinTime <- function(timestamps)
 {
   # kwb.utils::assignPackageObjects("kwb.datetime")
   stopifnot(all(hasTimeFormat(timestamps, "%Y-%m-%d %H:%M:%S")))
@@ -105,7 +105,7 @@ utc_offset_Berlin_time <- function(timestamps)
 #'   timestamps at corresponding positions in \code{x} represent Central 
 #'   European Time (CET) or Central European Summer Time (CEST).
 #'
-#' @seealso \code{\link{utc_offset_Berlin_time}}
+#' @seealso \code{\link{utcOffsetBerlinTime}}
 #' 
 #' @keywords internal
 #' 
@@ -146,9 +146,9 @@ utc_offset_Berlin_time <- function(timestamps)
 #' iso_cet_cest <- append_utc_offset_string(times_cet_cest, offsets_cet_cest)
 #' iso_cest_cet <- append_utc_offset_string(times_cest_cet, offsets_cest_cet)
 #' 
-#' # Use iso_to_localtime() to create POSIXct-objects in Europe/Berlin
-#' kwb.datetime:::iso_to_localtime(iso_cet_cest)
-#' kwb.datetime:::iso_to_localtime(iso_cest_cet)
+#' # Use isoToLocaltime() to create POSIXct-objects in Europe/Berlin
+#' kwb.datetime:::isoToLocaltime(iso_cet_cest)
+#' kwb.datetime:::isoToLocaltime(iso_cest_cet)
 #' 
 utc_offset_Berlin_one_day <- function(x)
 {
@@ -244,7 +244,7 @@ utc_offset_Berlin_one_day <- function(x)
 #'   (CEST), respectively. For days at which the time is adjusted from CET to 
 #'   CEST or vice versa, \code{NA} is returned.
 #'
-#' @seealso \code{\link{utc_offset_Berlin_time}}
+#' @seealso \code{\link{utcOffsetBerlinTime}}
 #' 
 #' @keywords internal
 #' 

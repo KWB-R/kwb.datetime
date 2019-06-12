@@ -22,7 +22,7 @@ timestamps <- substr(format(times_berlin, format = "%F %T%z"), 1, 22)
 
 head(timestamps)
 
-system.time(local1 <- kwb.datetime::iso_to_localtime(timestamps))
+system.time(local1 <- kwb.datetime::isoToLocaltime(timestamps))
 system.time(local2 <- as.POSIXct(paste0(timestamps, "00"), format = "%F %T%z"))
 
 all(local1 == local2)
