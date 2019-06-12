@@ -204,7 +204,7 @@
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/attr">attr</a></span>(times_standard, <span class="st">"tzone"</span>) &lt;-<span class="st"> "Europe/Berlin"</span></a>
 <a class="sourceLine" id="cb15-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/identical">identical</a></span>(times_standard, times_standard_from_text)</a>
 <a class="sourceLine" id="cb15-3" data-line-number="3"><span class="co">#&gt; [1] TRUE</span></a></code></pre></div>
-<p>See vignette <a href="timezones.html">“Exkurs Zeitzonen”</a> for details on this case.</p>
+<p>See vignette <a href="timezones.html">“Exkurs Zeitzonen”</a> (in German!) for details on this case.</p>
 </div>
 </div>
 <div id="background-and-details" class="section level1">
@@ -329,13 +329,20 @@
 <div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1"><span class="co"># (Badly) Convert to POSIXct</span></a>
 <a class="sourceLine" id="cb28-2" data-line-number="2">bad_times &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/as.POSIXlt">as.POSIXct</a></span>(timestamps_local, <span class="dt">tz =</span> <span class="st">"Europe/Berlin"</span>, <span class="dt">format =</span> format)</a>
 <a class="sourceLine" id="cb28-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb28-4" data-line-number="4"><span class="co"># Show the contained sub-sequences</span></a>
-<a class="sourceLine" id="cb28-5" data-line-number="5">kwb.datetime<span class="op">::</span><span class="kw">getEqualStepRanges</span>(bad_times)</a>
-<a class="sourceLine" id="cb28-6" data-line-number="6"><span class="co">#&gt;   from   to           from_time             to_time      step</span></a>
-<a class="sourceLine" id="cb28-7" data-line-number="7"><span class="co">#&gt; 1    1 7178 2019-01-01 00:00:00 2019-10-27 02:00:00 3600 secs</span></a>
-<a class="sourceLine" id="cb28-8" data-line-number="8"><span class="co">#&gt; 2 7178 7179 2019-10-27 02:00:00 2019-10-27 02:00:00    0 secs</span></a>
-<a class="sourceLine" id="cb28-9" data-line-number="9"><span class="co">#&gt; 3 7179 7180 2019-10-27 02:00:00 2019-10-27 03:00:00 7200 secs</span></a>
-<a class="sourceLine" id="cb28-10" data-line-number="10"><span class="co">#&gt; 4 7180 8761 2019-10-27 03:00:00 2020-01-01 00:00:00 3600 secs</span></a></code></pre></div>
+<a class="sourceLine" id="cb28-4" data-line-number="4"><span class="co"># Get information on the contained sub-sequences</span></a>
+<a class="sourceLine" id="cb28-5" data-line-number="5">ranges &lt;-<span class="st"> </span>kwb.datetime<span class="op">::</span><span class="kw">getEqualStepRanges</span>(bad_times)</a>
+<a class="sourceLine" id="cb28-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb28-7" data-line-number="7"><span class="co"># Print the sub-sequences</span></a>
+<a class="sourceLine" id="cb28-8" data-line-number="8">ranges</a>
+<a class="sourceLine" id="cb28-9" data-line-number="9"><span class="co">#&gt;   from   to           from_time             to_time      step</span></a>
+<a class="sourceLine" id="cb28-10" data-line-number="10"><span class="co">#&gt; 1    1 7178 2019-01-01 00:00:00 2019-10-27 02:00:00 3600 secs</span></a>
+<a class="sourceLine" id="cb28-11" data-line-number="11"><span class="co">#&gt; 2 7178 7179 2019-10-27 02:00:00 2019-10-27 02:00:00    0 secs</span></a>
+<a class="sourceLine" id="cb28-12" data-line-number="12"><span class="co">#&gt; 3 7179 7180 2019-10-27 02:00:00 2019-10-27 03:00:00 7200 secs</span></a>
+<a class="sourceLine" id="cb28-13" data-line-number="13"><span class="co">#&gt; 4 7180 8761 2019-10-27 03:00:00 2020-01-01 00:00:00 3600 secs</span></a>
+<a class="sourceLine" id="cb28-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb28-15" data-line-number="15"><span class="co"># Plot the sub-sequences</span></a>
+<a class="sourceLine" id="cb28-16" data-line-number="16"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(ranges)</a></code></pre></div>
+<p><img src="text_to_posixct_files/figure-html/unnamed-chunk-30-1.png" width="576"></p>
 <p>What happened? The timestamp <code>2019-10-27 02:00</code> appears twice! Once in Central European Summer Time (CEST) and once in Central European Time (CET). As shown above, using the function <code><a href="../reference/berlin_local_timestamps_to_POSIXct.html">berlin_local_timestamps_to_POSIXct()</a></code> can solve the problem:</p>
 <div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1"><span class="co"># Reformat the timestamps to ISO format</span></a>
 <a class="sourceLine" id="cb29-2" data-line-number="2">iso &lt;-<span class="st"> </span>kwb.datetime<span class="op">::</span><span class="kw">reformatTimestamp</span>(timestamps_local, format)</a>
