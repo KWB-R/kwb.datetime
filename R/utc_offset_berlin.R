@@ -143,12 +143,12 @@ utcOffsetBerlinTime <- function(timestamps)
 #' offsets_cest_cet <- kwb.datetime:::utc_offset_Berlin_one_day(times_cest_cet)
 #' 
 #' # Create ISO norm timestamps including the offset
-#' iso_cet_cest <- append_utc_offset_string(times_cet_cest, offsets_cet_cest)
-#' iso_cest_cet <- append_utc_offset_string(times_cest_cet, offsets_cest_cet)
+#' iso_cet_cest <- sprintf("%s+%02d00", times_cet_cest, offsets_cet_cest)
+#' iso_cest_cet <- sprintf("%s+%02d00", times_cest_cet, offsets_cest_cet)
 #' 
 #' # Use isoToLocaltime() to create POSIXct-objects in Europe/Berlin
-#' kwb.datetime:::isoToLocaltime(iso_cet_cest)
-#' kwb.datetime:::isoToLocaltime(iso_cest_cet)
+#' isoToLocaltime(iso_cet_cest)
+#' isoToLocaltime(iso_cest_cet)
 #' 
 utc_offset_Berlin_one_day <- function(x)
 {
@@ -276,33 +276,4 @@ utc_offset_Berlin_day <- function(x)
   offset_midnight[offset_midnight != offset_noon] <- NA
   
   offset_midnight
-}
-
-# Helper function to provide the offset string
-offset_string <- function(i) sprintf("%+03d00", i)
-
-# append_utc_offset_string -----------------------------------------------------
-
-#' Append UTC Offset String to Character Timestamps
-#' 
-#' @param x vector of character timestamps in format yyyy-mm-dd HH:MM:SS
-#' @param offsets vector of UTC offsets
-#' @return vector of character resulting from pasting UTC offset strings such
-#'   as "+0100" for UTC+1 to the input strings in \code{x}
-#' @export
-#' @examples
-#' # Timestamp in CET -> UTC+1
-#' append_utc_offset_string("2019-01-30 10:34:00", 1)
-#' 
-#' # Timestamp in CEST -> UTC+2
-#' append_utc_offset_string("2019-05-30 10:34:00", 2)
-#' 
-append_utc_offset_string <- function(x, offsets)
-{
-  stopifnot(is.character(x))
-  stopifnot(all(hasTimeFormat(x, "%Y-%m-%d %H:%M:%S")))
-  stopifnot(is.numeric(offsets))
-  stopifnot(length(x) == length(offsets) || length(offsets) == 1)
-  
-  sprintf("%s%+03d00", x, offsets)
 }

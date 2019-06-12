@@ -337,8 +337,8 @@ out <- capture.output(
 
 Unfortunately, the timestamps logged by measuring devices often do not contain
 the additional information on the UTC offset. For this case the package
-kwb.datetime provides three functions that can be applied in a chain to perform
-a three step process:
+kwb.datetime provides functions that can be applied in a chain to perform a 
+three step process:
 
 **Step 1:** Use the function `utcOffsetBerlinTime()` to determine the UTC 
 offsets (for timestamps given in time zone "Europe/Berlin"):
@@ -353,13 +353,13 @@ Otherwise it cannot decide between CEST and CET for possibly unambiguous
 timestamps between 02:00 and 03:00 at the day of reverting time from CEST back
 to CET.
 
-**Step 2:** Use these offsets and the function `append_utc_offset_string()` to 
-create timestamps in ISO 8601 format, i.e. ending in either *+0200* (when 
-referring to CEST) or in *+0100* (when referring to CET):
+**Step 2:** Use these offsets to create timestamps in full ISO 8601 format, i.e.
+ending in either *+0200* (when referring to CEST) or in *+0100* (when referring 
+to CET):
 
 ```{r}
 # Create ISO 8601 timestamps and print them
-(iso_timestamps <- kwb.datetime::append_utc_offset_string(timestamps, offsets))
+(iso_timestamps <- sprintf("%s%+03d00", timestamps, offsets))
 ```
 
 **Step 3:** Use the function `isoToLocaltime()` to convert these new 
