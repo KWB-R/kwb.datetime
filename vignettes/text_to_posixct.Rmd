@@ -26,17 +26,26 @@ print_times <- function(x) {
 
 This tutorial describes how to convert text timestamps to `POSIXct` objects. The
 conversion becomes necessary when time differences are to be calculated. We
-treat two use cases in both of which timestamps were written by a measurement
-device. The cases differ in the way the device was operating its clock:
+consider two cases that differ in the way that the time recording device 
+operates its clock:
 
 - Case 1: the clock switches between standard (winter) time and summer time.
 - Case 2: the clock does not switch between standard (winter) time and summer 
-time but always stays in standard time. 
+time but stays in standard time over the whole year. 
+
+In both cases, using the base R function `as.POSIXct()` to convert text
+timestamps to `POSIXct` objects may lead to unintended results (as detailed 
+below).
+
+This package contains a function `textToEuropeBerlinPosix()` that is a wrapper
+around `as.POSIXct()` but that is specialised on the two above cases. It returns
+`POSIXct` objects in time zone "Europe/Berlin" and can handle timestamps from
+both of the above cases as input.
 
 ## Creation of example timestamps
 
 We start by creating text timestamps as they could have been recorded by a
-measurement device.
+measuring device.
 
 ```{r}
 # Define first and last timestamps
@@ -53,7 +62,14 @@ tz <- "Etc/GMT-1"
 times_standard <- seq(as.POSIXct(from, tz), as.POSIXct(to, tz), by = step)
 ```
 
-We use `format()` to simulate that the timestamps were written in a certain 
+In both cases, all time differences are one (hour), as intended:
+
+```{r}
+all(diff(times_local) == 1)
+all(diff(times_standard) == 1)
+```
+
+We use `format()` to simulate that the timestamps are recorded in a certain 
 local format:
 
 ```{r}
@@ -62,77 +78,132 @@ timestamps_local <- format(times_local, format = format)
 timestamps_standard <- format(times_standard, format = format)
 ```
 
-Show the first three timestamps in each case:
+Show the first three timestamps in each case to check whether the format was 
+applied as intended:
 
 ```{r}
 writeLines(head(timestamps_local, 3))
 writeLines(head(timestamps_standard, 3))
 ```
 
-## Case 1: Clock switches between standard time and summer time
-
-In this case, it is not enough to run the function `as.POSIXct()` on the 
-timestamps, even though the time zone and the format are set correctly:
+Note that one of the local timestamps appears twice:
 
 ```{r}
+timestamps_local[duplicated(timestamps_local)]
+```
+
+In contrast, the standard timestamps are all unique:
+
+```{r}
+any(duplicated(timestamps_standard))
+```
+
+## Case 1: Clock switches between standard time and summer time
+
+In this case the function `as.POSIXct()` may return unexpected results. These
+are caused by duplicates in the input vector of text timestamps. In the case
+considered in this chapter, duplicated timestamps are absolutely valid. They 
+result from shifting time back from summer time to standard time. Let's see what
+happens if we call `as.POSIXct()` on the vector of local timestamps:
+
+```{r}
+# Convert text timestamps to POSIXct objects
 times <- as.POSIXct(timestamps_local, tz = "Europe/Berlin", format = format)
 ```
 
 ### Problem
 
-What is the problem? We can understand the problem when looking at the time
+Even though time zone and time format were set correctly, the vector of returned
+`POSIXct` objects is corrupt. We can see the problem when looking at the time
 differences:
 
 ```{r}
 table(diff(times))
 ```
-Not all time differences are one hour (3600 seconds) anymore! Read further down 
-for the reason and for a function allowing to further investigate the problem.
+
+Not all time differences are one hour (3600 seconds) anymore! Once there is no
+time difference, i.e. two adjacent times are identical, and once there is a time
+difference of two hours (7200 seconds), i.e. one hour is skipped. Read further
+down for the reason and for a function allowing to further investigate the
+problem.
 
 ### Solution
 
-The package kwb.datetime provides a function that can handle the case correctly
-(see below for details). It requires the timestamps to be given in ISO-format,
-i.e. in "yyyy-mm-dd HH:MM:SS".
+Use the function `textToEuropeBerlinPOSIX()` to do the conversion. It interprets ambiguous timestamps correctly, provided that they are given in chronological
+order. See below for details. 
 
 ```{r}
-# Format the local timestamps to timestamps in ISO format
-iso <- kwb.datetime::reformatTimestamp(timestamps_local, old.format = format)
-
 # Convert text timestamps to POSIXct objects
-times_local_from_text <- kwb.datetime::berlin_local_timestamps_to_POSIXct(iso)
-
-# Set the time zone (do not rely on tz = "" representing "Europe/Berlin")
-attr(times_local_from_text, "tzone") <- "Europe/Berlin"
+times_local_from_text <- kwb.datetime:::textToEuropeBerlinPosix(
+  timestamps_local, format = format
+)
 ```
 
-The created `POSIXct`-objects are now identical to the original ones:
+The created `POSIXct` objects are now identical to the original ones:
 
 ```{r}
 identical(times_local, times_local_from_text)
 ```
 
-## Case 2: Clock always stays in standard time
+## Case 2: Clock stays in standard time
 
-In this case it is enough to set the time zone and the format correctly when
-calling `as.POSIXct()`:
+What happens in this case, when applying `as.POSIXct()` on the timestamps?
+
+```{r}
+times <- as.POSIXct(timestamps_standard, tz = "Europe/Berlin", format = format)
+```
+
+### Problem
+
+The vector `timestamps_standard` contains timestamps that do not exist in the 
+time zone `Europe/Berlin` (for details, see below). Unfortunately, the function
+`as.POSIXct()` does not give a warning about this. We convince ourselves that
+something went wrong by looking at the frequencies of the time differences:
+
+```{r}
+table(diff(times))
+```
+
+Not all differences are one hour (3600 seconds) as expected. Once the time
+difference is zero, i.e. two adjacent times are identical, and once there is a 
+time difference of two hours (7200 seconds), i.e. one hour is skipped. This is
+the behaviour on a Linux system, on Windows we would get a different, but also
+unintended result.
+
+### Solution
+
+Use the function `textToEuropeBerlinPOSIX()` to do the conversion. Set 
+`switches = FALSE` to tell the function that the timestamps were recorded by a 
+clock that does not switch between standard time and summer time:
 
 ```{r}
 # Convert text timestamps to POSIXct objects
-times_standard_from_text <- as.POSIXct(
-  timestamps_standard, tz = "Etc/GMT-1", format = format
+times_standard_from_text <- kwb.datetime:::textToEuropeBerlinPosix(
+  timestamps_standard, format = format, switches = FALSE
 )
 ```
 
-The created `POSIXct`-objects are now identical to the original ones:
+The created `POSIXct` objects are now (almost) identical to the original ones.
+The only difference is the time zone attribute that is "Etc/GMT-1" in the
+original timestamps but "Europe/Berlin" in the timestamps provided by
+`textToEuropeBerlinPosix()`:
 
 ```{r}
+attr(times_standard, "tzone")
+attr(times_standard_from_text, "tzone")
+```
+
+We set the time zone of the original times to "Europe/Berlin" (that does not 
+change the underlying time information!) in order to check for identity:
+
+```{r}
+attr(times_standard, "tzone") <- "Europe/Berlin"
 identical(times_standard, times_standard_from_text)
 ```
 
 See vignette ["Exkurs Zeitzonen"](timezones.html) for details on this case.
 
-# Background
+# Background and Details
 
 In R, time information are stored in objects of class `POSIXct`. The function
 `as.POSIXct()` is used to convert character strings representing points in time
