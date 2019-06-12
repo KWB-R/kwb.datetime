@@ -134,7 +134,7 @@ order. See below for details.
 
 ```{r}
 # Convert text timestamps to POSIXct objects
-times_local_from_text <- kwb.datetime:::textToEuropeBerlinPosix(
+times_local_from_text <- kwb.datetime::textToEuropeBerlinPosix(
   timestamps_local, format = format
 )
 ```
@@ -178,7 +178,7 @@ clock that does not switch between standard time and summer time:
 
 ```{r}
 # Convert text timestamps to POSIXct objects
-times_standard_from_text <- kwb.datetime:::textToEuropeBerlinPosix(
+times_standard_from_text <- kwb.datetime::textToEuropeBerlinPosix(
   timestamps_standard, format = format, switches = FALSE
 )
 ```
