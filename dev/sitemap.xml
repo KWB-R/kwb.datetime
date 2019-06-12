@@ -13,9 +13,6 @@
     <loc>https://kwb-r.github.io/kwb.datetime/reference/berlinNormalTimeToUTC.html</loc>
   </url>
   <url>
-    <loc>https://kwb-r.github.io/kwb.datetime/reference/berlin_local_timestamps_to_POSIXct.html</loc>
-  </url>
-  <url>
     <loc>https://kwb-r.github.io/kwb.datetime/reference/currentDateString.html</loc>
   </url>
   <url>
@@ -82,7 +79,7 @@
     <loc>https://kwb-r.github.io/kwb.datetime/reference/isValidTimestampSequence.html</loc>
   </url>
   <url>
-    <loc>https://kwb-r.github.io/kwb.datetime/reference/iso_to_localtime.html</loc>
+    <loc>https://kwb-r.github.io/kwb.datetime/reference/isoToLocaltime.html</loc>
   </url>
   <url>
     <loc>https://kwb-r.github.io/kwb.datetime/reference/localNormalTimeToLocalTime.html</loc>
@@ -136,6 +133,9 @@
     <loc>https://kwb-r.github.io/kwb.datetime/reference/utcOffset.html</loc>
   </url>
   <url>
+    <loc>https://kwb-r.github.io/kwb.datetime/reference/utcOffsetBerlinTime.html</loc>
+  </url>
+  <url>
     <loc>https://kwb-r.github.io/kwb.datetime/reference/utcToBerlinLocalTime.html</loc>
   </url>
   <url>
@@ -146,9 +146,6 @@
   </url>
   <url>
     <loc>https://kwb-r.github.io/kwb.datetime/reference/utc_offset_Berlin_one_day.html</loc>
-  </url>
-  <url>
-    <loc>https://kwb-r.github.io/kwb.datetime/reference/utc_offset_Berlin_time.html</loc>
   </url>
   <url>
     <loc>https://kwb-r.github.io/kwb.datetime/articles/text_to_posixct.html</loc>

@@ -169,19 +169,36 @@ from a clock that stays in standard time over the whole year.</p></td>
 
     <p>vector of POSIXct objects</p>
     
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>When reading timestamps that observe Daylight Saving, it is required  that 
+the timestamps in <code>x</code> are ordered by time, which should be the case if 
+they  were recorded by a measuring device.</p>
+    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Test the functions with the following "switch" days</span>
 <span class='kw pkg'>kwb.datetime</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/kwb.datetime/topics/date_range_CEST'>date_range_CEST</a></span>(<span class='fl'>2019</span>)</div><div class='output co'>#&gt;        begin          end 
 #&gt; "2019-03-31" "2019-10-27" </div><div class='input'>
 <span class='no'>t1</span> <span class='kw'>&lt;-</span> <span class='fu'>textToEuropeBerlinPosix</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"31.03.2019 01:00"</span>, <span class='st'>"31.03.2019 03:00"</span>))</div><div class='output co'>#&gt; Guessing time format ... ok. (0.01s) 
-#&gt; Converting 2 timestamps to POSIXct ... ok. (0.02s) </div><div class='input'><span class='no'>t2</span> <span class='kw'>&lt;-</span> <span class='fu'>textToEuropeBerlinPosix</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"31.03.2019 01:00"</span>, <span class='st'>"31.03.2019 02:00"</span>),
-                              <span class='kw'>switches</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; Guessing time format ... ok. (0.00s) 
+#&gt; Converting 2 timestamps to POSIXct ... ok. (0.01s) </div><div class='input'><span class='no'>t2</span> <span class='kw'>&lt;-</span> <span class='fu'>textToEuropeBerlinPosix</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"31.03.2019 01:00"</span>, <span class='st'>"31.03.2019 02:00"</span>),
+                              <span class='kw'>switches</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; Guessing time format ... ok. (0.01s) 
 #&gt; Converting 2 timestamps to POSIXct ... ok. (0.00s) </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identical'>identical</a></span>(<span class='no'>t1</span>, <span class='no'>t2</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='no'>t3</span> <span class='kw'>&lt;-</span> <span class='fu'>textToEuropeBerlinPosix</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"27.10.2019 02:00"</span>, <span class='st'>"27.10.2019 02:00"</span>))</div><div class='output co'>#&gt; Guessing time format ... ok. (0.00s) 
 #&gt; Converting 2 timestamps to POSIXct ... ok. (0.00s) </div><div class='input'><span class='no'>t4</span> <span class='kw'>&lt;-</span> <span class='fu'>textToEuropeBerlinPosix</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"27.10.2019 01:00"</span>, <span class='st'>"27.10.2019 02:00"</span>),
                               <span class='kw'>switches</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; Guessing time format ... ok. (0.00s) 
 #&gt; Converting 2 timestamps to POSIXct ... ok. (0.00s) </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identical'>identical</a></span>(<span class='no'>t3</span>, <span class='no'>t4</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='kw pkg'>kwb.datetime</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/kwb.datetime/topics/textToEuropeBerlinPosix'>textToEuropeBerlinPosix</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(
+  <span class='st'>"2017-10-29 01:30:00"</span>, <span class='co'># 1: CEST</span>
+  <span class='st'>"2017-10-29 02:00:00"</span>, <span class='co'># 2: CEST</span>
+  <span class='st'>"2017-10-29 02:30:00"</span>, <span class='co'># 3: CEST</span>
+  <span class='st'>"2017-10-29 02:00:00"</span>, <span class='co'># 4: CET</span>
+  <span class='st'>"2017-10-29 02:30:00"</span>, <span class='co'># 5: CET</span>
+  <span class='st'>"2017-10-29 03:00:00"</span>  <span class='co'># 6: CET</span>
+))</div><div class='output co'>#&gt; Guessing time format ... ok. (0.00s) 
+#&gt; Converting 6 timestamps to POSIXct ... ok. (0.00s) </div><div class='output co'>#&gt; [1] "2017-10-29 01:30:00 CEST" "2017-10-29 02:00:00 CEST"
+#&gt; [3] "2017-10-29 02:30:00 CEST" "2017-10-29 02:00:00 CET" 
+#&gt; [5] "2017-10-29 02:30:00 CET"  "2017-10-29 03:00:00 CET" </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -190,6 +207,8 @@ from a clock that stays in standard time over the whole year.</p></td>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#details">Details</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

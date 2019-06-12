@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Sequences of Date Time Objects With Equal Time Step — getEqualStepRanges • kwb.datetime</title>
+<title>Text Timestamps to POSIXct — isoToLocaltime • kwb.datetime</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Sequences of Date Time Objects With Equal Time Step — getEqualStepRanges" />
+<meta property="og:title" content="Text Timestamps to POSIXct — isoToLocaltime" />
 
-<meta property="og:description" content="Sequences of Date Time Objects With Equal Time Step" />
+<meta property="og:description" content="Convert text timestamps in a format according to ISO 8601 to POSIXct objects" />
 <meta name="twitter:card" content="summary" />
 
 <meta name="robots" content="noindex">
@@ -114,59 +114,47 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Sequences of Date Time Objects With Equal Time Step</h1>
-    <small class="dont-index">Source: <a href='https://github.com/kwb-r/kwb.datetime/blob/master/R/getEqualStepRanges.R'><code>R/getEqualStepRanges.R</code></a></small>
-    <div class="hidden name"><code>getEqualStepRanges.Rd</code></div>
+    <h1>Text Timestamps to POSIXct</h1>
+    <small class="dont-index">Source: <a href='https://github.com/kwb-r/kwb.datetime/blob/master/R/convert.R'><code>R/convert.R</code></a></small>
+    <div class="hidden name"><code>isoToLocaltime.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Sequences of Date Time Objects With Equal Time Step</p>
+    <p>Convert text timestamps in a format according to ISO 8601 to POSIXct objects</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>getEqualStepRanges</span>(<span class='no'>times</span>)</pre>
+    <pre class="usage"><span class='fu'>isoToLocaltime</span>(<span class='no'>timestamps</span>, <span class='kw'>dbg</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>times</th>
-      <td><p>vector of <code>POSIXct</code> objects</p></td>
+      <th>timestamps</th>
+      <td><p>vector of character timestamps of format <code>yyyy-mm-dd 
+HH:MM:SS+[01|02]</code>, i.e. ending either in '+0100' (UTC offset in Berlin in
+winter) or '+0200' (UTC offset in Berlin in summer)</p></td>
+    </tr>
+    <tr>
+      <th>dbg</th>
+      <td><p>if <code>TRUE</code> debug messages are shown</p></td>
     </tr>
     </table>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Generate a sequence of date and time objects</span>
-<span class='no'>as_berlin_posix</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span>) <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/as.POSIXlt'>as.POSIXct</a></span>(<span class='no'>x</span>, <span class='kw'>tz</span> <span class='kw'>=</span> <span class='st'>"Europe/Berlin"</span>)
-<span class='no'>times</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/seq'>seq</a></span>(
-  <span class='kw'>from</span> <span class='kw'>=</span> <span class='fu'>as_berlin_posix</span>(<span class='st'>"2019-01-01"</span>),
-  <span class='kw'>to</span> <span class='kw'>=</span> <span class='fu'>as_berlin_posix</span>(<span class='st'>"2020-01-01"</span>),
-  <span class='kw'>by</span> <span class='kw'>=</span> <span class='fl'>3600</span>
-)
-
-<span class='co'># As expected, exactly one sequence of equal time step is found:</span>
-<span class='fu'>getEqualStepRanges</span>(<span class='no'>times</span>)</div><div class='output co'>#&gt;   from   to  from_time    to_time    step
-#&gt; 1    1 8761 2019-01-01 2020-01-01 1 hours</div><div class='input'>
-<span class='co'># Simulate the case that timestamps were read from a text file and converted</span>
-<span class='co'># with as.POSIXct()</span>
-<span class='no'>timestamps</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>as.character</a></span>(<span class='no'>times</span>)
-<span class='no'>new_times</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/as.POSIXlt'>as.POSIXct</a></span>(<span class='no'>timestamps</span>, <span class='kw'>tz</span> <span class='kw'>=</span> <span class='st'>"Europe/Berlin"</span>)
-
-<span class='co'># Show the sequences of equal time steps again</span>
-<span class='fu'>getEqualStepRanges</span>(<span class='no'>new_times</span>)</div><div class='output co'>#&gt;   from   to           from_time             to_time      step
-#&gt; 1    1 7178 2019-01-01 00:00:00 2019-10-27 02:00:00 3600 secs
-#&gt; 2 7178 7179 2019-10-27 02:00:00 2019-10-27 02:00:00    0 secs
-#&gt; 3 7179 7180 2019-10-27 02:00:00 2019-10-27 03:00:00 7200 secs
-#&gt; 4 7180 8761 2019-10-27 03:00:00 2020-01-01 00:00:00 3600 secs</div><div class='input'>
-<span class='co'># What happened? The timestamp 2019-10-27 02:00 appears twice! Once in CEST</span>
-<span class='co'># and once in CET. Use a helper function that assigns CEST and CET as </span>
-<span class='co'># required:</span>
-<span class='no'>good_times</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='textToEuropeBerlinPosix.html'>textToEuropeBerlinPosix</a></span>(<span class='no'>timestamps</span>)</div><div class='output co'>#&gt; Guessing time format ... ok. (0.01s) 
-#&gt; Converting 8761 timestamps to POSIXct ... ok. (0.11s) </div><div class='input'>
-<span class='co'># Check if the original date and time objects could be reproduced</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/identical'>identical</a></span>(<span class='no'>good_times</span>, <span class='no'>times</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+    <pre class="examples"><div class='input'><span class='no'>times</span> <span class='kw'>&lt;-</span> <span class='fu'>isoToLocaltime</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(
+  <span class='st'>"2017-10-29 01:00:00+0200"</span>,
+  <span class='st'>"2017-10-29 01:30:00+0200"</span>,
+  <span class='st'>"2017-10-29 02:00:00+0200"</span>,
+  <span class='st'>"2017-10-29 02:30:00+0200"</span>,
+  <span class='st'>"2017-10-29 02:00:00+0100"</span>,
+  <span class='st'>"2017-10-29 02:30:00+0100"</span>,
+  <span class='st'>"2017-10-29 03:00:00+0100"</span>,
+  <span class='st'>"2017-10-29 03:30:00+0100"</span>
+))</div><div class='output co'>#&gt; Converting 8 timestamps ... ok.</div><div class='input'>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/class'>class</a></span>(<span class='no'>times</span>)</div><div class='output co'>#&gt; [1] "POSIXct" "POSIXt" </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='no'>times</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/rep'>rep</a></span>(<span class='fl'>1</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/length'>length</a></span>(<span class='no'>times</span>)), <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"LocalTime"</span>)</div><div class='img'><img src='isoToLocaltime-1.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

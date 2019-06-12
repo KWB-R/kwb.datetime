@@ -194,7 +194,7 @@
 <a class="sourceLine" id="cb13-2" data-line-number="2">times_standard_from_text &lt;-<span class="st"> </span>kwb.datetime<span class="op">:::</span><span class="kw"><a href="../reference/textToEuropeBerlinPosix.html">textToEuropeBerlinPosix</a></span>(</a>
 <a class="sourceLine" id="cb13-3" data-line-number="3">  timestamps_standard, <span class="dt">format =</span> format, <span class="dt">switches =</span> <span class="ot">FALSE</span></a>
 <a class="sourceLine" id="cb13-4" data-line-number="4">)</a>
-<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="co">#&gt; Converting 8761 timestamps to POSIXct ... ok. (0.01s)</span></a></code></pre></div>
+<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="co">#&gt; Converting 8761 timestamps to POSIXct ... ok. (0.02s)</span></a></code></pre></div>
 <p>The created <code>POSIXct</code> objects are now (almost) identical to the original ones. The only difference is the time zone attribute that is “Etc/GMT-1” in the original timestamps but “Europe/Berlin” in the timestamps provided by <code><a href="../reference/textToEuropeBerlinPosix.html">textToEuropeBerlinPosix()</a></code>:</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/attr">attr</a></span>(times_standard, <span class="st">"tzone"</span>)</a>
 <a class="sourceLine" id="cb14-2" data-line-number="2"><span class="co">#&gt; [1] "Etc/GMT-1"</span></a>
@@ -279,8 +279,8 @@
 <a class="sourceLine" id="cb21-3" data-line-number="3"><span class="co">#&gt; [3] "2017-10-29 02:30:00 CEST" "2017-10-29 02:00:00 CET" </span></a>
 <a class="sourceLine" id="cb21-4" data-line-number="4"><span class="co">#&gt; [5] "2017-10-29 02:30:00 CET"  "2017-10-29 03:00:00 CET"</span></a></code></pre></div>
 <p>For the meaning of the placeholders %F, %T and %z, respectively, in the format string, see <code><a href="https://www.rdocumentation.org/packages/base/topics/strptime">?strftime</a></code>.</p>
-<p>The package kwb.datetime provides a function <code><a href="../reference/iso_to_localtime.html">iso_to_localtime()</a></code> that does the same:</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1">kwb.datetime<span class="op">::</span><span class="kw">iso_to_localtime</span>(iso_timestamps)</a>
+<p>The package kwb.datetime provides a function <code><a href="../reference/isoToLocaltime.html">isoToLocaltime()</a></code> that does the same:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1">kwb.datetime<span class="op">::</span><span class="kw">isoToLocaltime</span>(iso_timestamps)</a>
 <a class="sourceLine" id="cb22-2" data-line-number="2"><span class="co">#&gt; Converting 6 timestamps ... ok.</span></a>
 <a class="sourceLine" id="cb22-3" data-line-number="3"><span class="co">#&gt; [1] "2017-10-29 01:30:00 CEST" "2017-10-29 02:00:00 CEST"</span></a>
 <a class="sourceLine" id="cb22-4" data-line-number="4"><span class="co">#&gt; [3] "2017-10-29 02:30:00 CEST" "2017-10-29 02:00:00 CET" </span></a>
@@ -288,9 +288,9 @@
 <p>In both cases, the timestamps are interpreted correctly, as also shown in this plot:</p>
 <p><img src="text_to_posixct_files/figure-html/unnamed-chunk-24-1.png" width="480"></p>
 <p>Unfortunately, the timestamps logged by measuring devices often do not contain the additional information on the UTC offset. For this case the package kwb.datetime provides three functions that can be applied in a chain to perform a three step process:</p>
-<p><strong>Step 1:</strong> Use the function <code><a href="../reference/utc_offset_Berlin_time.html">utc_offset_Berlin_time()</a></code> to determine the UTC offsets (for timestamps given in time zone “Europe/Berlin”):</p>
+<p><strong>Step 1:</strong> Use the function <code><a href="../reference/utcOffsetBerlinTime.html">utcOffsetBerlinTime()</a></code> to determine the UTC offsets (for timestamps given in time zone “Europe/Berlin”):</p>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="co"># Guess and print the UTC offsets for the given timestamps</span></a>
-<a class="sourceLine" id="cb23-2" data-line-number="2">(offsets &lt;-<span class="st"> </span>kwb.datetime<span class="op">::</span><span class="kw">utc_offset_Berlin_time</span>(timestamps))</a>
+<a class="sourceLine" id="cb23-2" data-line-number="2">(offsets &lt;-<span class="st"> </span>kwb.datetime<span class="op">::</span><span class="kw">utcOffsetBerlinTime</span>(timestamps))</a>
 <a class="sourceLine" id="cb23-3" data-line-number="3"><span class="co">#&gt; [1] 2 2 2 1 1 1</span></a></code></pre></div>
 <p>This function requires the timestamps to be sorted in increasing order. Otherwise it cannot decide between CEST and CET for possibly unambiguous timestamps between 02:00 and 03:00 at the day of reverting time from CEST back to CET.</p>
 <p><strong>Step 2:</strong> Use these offsets and the function <code><a href="../reference/append_utc_offset_string.html">append_utc_offset_string()</a></code> to create timestamps in ISO 8601 format, i.e. ending in either <em>+0200</em> (when referring to CEST) or in <em>+0100</em> (when referring to CET):</p>
@@ -299,9 +299,9 @@
 <a class="sourceLine" id="cb24-3" data-line-number="3"><span class="co">#&gt; [1] "2017-10-29 01:30:00+0200" "2017-10-29 02:00:00+0200"</span></a>
 <a class="sourceLine" id="cb24-4" data-line-number="4"><span class="co">#&gt; [3] "2017-10-29 02:30:00+0200" "2017-10-29 02:00:00+0100"</span></a>
 <a class="sourceLine" id="cb24-5" data-line-number="5"><span class="co">#&gt; [5] "2017-10-29 02:30:00+0100" "2017-10-29 03:00:00+0100"</span></a></code></pre></div>
-<p><strong>Step 3:</strong> Use the function <code><a href="../reference/iso_to_localtime.html">iso_to_localtime()</a></code> to convert these new timestamps from <code>character</code> into their corresponding <code>POSIXct</code> objects:</p>
+<p><strong>Step 3:</strong> Use the function <code><a href="../reference/isoToLocaltime.html">isoToLocaltime()</a></code> to convert these new timestamps from <code>character</code> into their corresponding <code>POSIXct</code> objects:</p>
 <div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1"><span class="co"># Create POSIXct-objects in time zone "Europe/Berlin" and print them</span></a>
-<a class="sourceLine" id="cb25-2" data-line-number="2">(kwb.datetime<span class="op">:::</span><span class="kw"><a href="../reference/iso_to_localtime.html">iso_to_localtime</a></span>(iso_timestamps))</a>
+<a class="sourceLine" id="cb25-2" data-line-number="2">(kwb.datetime<span class="op">:::</span><span class="kw"><a href="../reference/isoToLocaltime.html">isoToLocaltime</a></span>(iso_timestamps))</a>
 <a class="sourceLine" id="cb25-3" data-line-number="3"><span class="co">#&gt; Converting 6 timestamps ... ok.</span></a>
 <a class="sourceLine" id="cb25-4" data-line-number="4"><span class="co">#&gt; [1] "2017-10-29 01:30:00 CEST" "2017-10-29 02:00:00 CEST"</span></a>
 <a class="sourceLine" id="cb25-5" data-line-number="5"><span class="co">#&gt; [3] "2017-10-29 02:30:00 CEST" "2017-10-29 02:00:00 CET" </span></a>
@@ -310,12 +310,13 @@
 <div id="what-is-the-solution-one-step" class="section level3">
 <h3 class="hasAnchor">
 <a href="#what-is-the-solution-one-step" class="anchor"></a>What is the solution (one step)?</h3>
-<p>The three steps presented above are performed in the function <code><a href="../reference/berlin_local_timestamps_to_POSIXct.html">berlin_local_timestamps_to_POSIXct()</a></code> so that you can do the conversion of the original <code>timestamps</code> by calling:</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1">kwb.datetime<span class="op">::</span><span class="kw">berlin_local_timestamps_to_POSIXct</span>(timestamps)</a>
-<a class="sourceLine" id="cb26-2" data-line-number="2"><span class="co">#&gt; Converting 6 timestamps ... ok.</span></a>
-<a class="sourceLine" id="cb26-3" data-line-number="3"><span class="co">#&gt; [1] "2017-10-29 01:30:00 CEST" "2017-10-29 02:00:00 CEST"</span></a>
-<a class="sourceLine" id="cb26-4" data-line-number="4"><span class="co">#&gt; [3] "2017-10-29 02:30:00 CEST" "2017-10-29 02:00:00 CET" </span></a>
-<a class="sourceLine" id="cb26-5" data-line-number="5"><span class="co">#&gt; [5] "2017-10-29 02:30:00 CET"  "2017-10-29 03:00:00 CET"</span></a></code></pre></div>
+<p>The three steps presented above are performed within the function <code><a href="../reference/textToEuropeBerlinPosix.html">textToEuropeBerlinPosix()</a></code> so that you can do the conversion of the original <code>timestamps</code> by calling:</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1">kwb.datetime<span class="op">::</span><span class="kw">textToEuropeBerlinPosix</span>(timestamps)</a>
+<a class="sourceLine" id="cb26-2" data-line-number="2"><span class="co">#&gt; Guessing time format ... ok. (0.01s) </span></a>
+<a class="sourceLine" id="cb26-3" data-line-number="3"><span class="co">#&gt; Converting 6 timestamps to POSIXct ... ok. (0.00s)</span></a>
+<a class="sourceLine" id="cb26-4" data-line-number="4"><span class="co">#&gt; [1] "2017-10-29 01:30:00 CEST" "2017-10-29 02:00:00 CEST"</span></a>
+<a class="sourceLine" id="cb26-5" data-line-number="5"><span class="co">#&gt; [3] "2017-10-29 02:30:00 CEST" "2017-10-29 02:00:00 CET" </span></a>
+<a class="sourceLine" id="cb26-6" data-line-number="6"><span class="co">#&gt; [5] "2017-10-29 02:30:00 CET"  "2017-10-29 03:00:00 CET"</span></a></code></pre></div>
 </div>
 </div>
 <div id="analyse-a-sequence-of-posixct-objects" class="section level2">
@@ -343,18 +344,19 @@
 <a class="sourceLine" id="cb28-15" data-line-number="15"><span class="co"># Plot the sub-sequences</span></a>
 <a class="sourceLine" id="cb28-16" data-line-number="16"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(ranges)</a></code></pre></div>
 <p><img src="text_to_posixct_files/figure-html/unnamed-chunk-30-1.png" width="576"></p>
-<p>What happened? The timestamp <code>2019-10-27 02:00</code> appears twice! Once in Central European Summer Time (CEST) and once in Central European Time (CET). As shown above, using the function <code><a href="../reference/berlin_local_timestamps_to_POSIXct.html">berlin_local_timestamps_to_POSIXct()</a></code> can solve the problem:</p>
+<p>What happened? The timestamp <code>2019-10-27 02:00</code> appears twice! Once in Central European Summer Time (CEST) and once in Central European Time (CET). As shown above, using the function <code><a href="../reference/textToEuropeBerlinPosix.html">textToEuropeBerlinPosix()</a></code> can solve the problem:</p>
 <div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1"><span class="co"># Reformat the timestamps to ISO format</span></a>
 <a class="sourceLine" id="cb29-2" data-line-number="2">iso &lt;-<span class="st"> </span>kwb.datetime<span class="op">::</span><span class="kw">reformatTimestamp</span>(timestamps_local, format)</a>
 <a class="sourceLine" id="cb29-3" data-line-number="3"></a>
 <a class="sourceLine" id="cb29-4" data-line-number="4"><span class="co"># (Correctly) Convert to POSIXct</span></a>
-<a class="sourceLine" id="cb29-5" data-line-number="5">good_times &lt;-<span class="st"> </span>kwb.datetime<span class="op">::</span><span class="kw">berlin_local_timestamps_to_POSIXct</span>(iso)</a>
-<a class="sourceLine" id="cb29-6" data-line-number="6"><span class="co">#&gt; Converting 8761 timestamps ... ok.</span></a>
-<a class="sourceLine" id="cb29-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb29-8" data-line-number="8"><span class="co"># Show the contained sub-sequences (should be only one now!)</span></a>
-<a class="sourceLine" id="cb29-9" data-line-number="9">kwb.datetime<span class="op">::</span><span class="kw">getEqualStepRanges</span>(good_times)</a>
-<a class="sourceLine" id="cb29-10" data-line-number="10"><span class="co">#&gt;   from   to  from_time    to_time    step</span></a>
-<a class="sourceLine" id="cb29-11" data-line-number="11"><span class="co">#&gt; 1    1 8761 2019-01-01 2020-01-01 1 hours</span></a></code></pre></div>
+<a class="sourceLine" id="cb29-5" data-line-number="5">good_times &lt;-<span class="st"> </span>kwb.datetime<span class="op">::</span><span class="kw">textToEuropeBerlinPosix</span>(iso)</a>
+<a class="sourceLine" id="cb29-6" data-line-number="6"><span class="co">#&gt; Guessing time format ... ok. (0.00s) </span></a>
+<a class="sourceLine" id="cb29-7" data-line-number="7"><span class="co">#&gt; Converting 8761 timestamps to POSIXct ... ok. (0.06s)</span></a>
+<a class="sourceLine" id="cb29-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb29-9" data-line-number="9"><span class="co"># Show the contained sub-sequences (should be only one now!)</span></a>
+<a class="sourceLine" id="cb29-10" data-line-number="10">kwb.datetime<span class="op">::</span><span class="kw">getEqualStepRanges</span>(good_times)</a>
+<a class="sourceLine" id="cb29-11" data-line-number="11"><span class="co">#&gt;   from   to  from_time    to_time    step</span></a>
+<a class="sourceLine" id="cb29-12" data-line-number="12"><span class="co">#&gt; 1    1 8761 2019-01-01 2020-01-01 1 hours</span></a></code></pre></div>
 <p>Check if the original date and time objects could be reproduced:</p>
 <div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="co"># Explicitly set the time zone before comparing</span></a>
 <a class="sourceLine" id="cb30-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/attr">attr</a></span>(good_times, <span class="st">"tzone"</span>) &lt;-<span class="st"> "Europe/Berlin"</span></a>
