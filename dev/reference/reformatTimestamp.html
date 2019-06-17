@@ -125,7 +125,7 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>reformatTimestamp</span>(<span class='no'>x</span>, <span class='kw'>old.format</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>new.format</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>reformatTimestamp</span>(<span class='no'>x</span>, <span class='kw'>old.format</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>new.format</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -143,6 +143,11 @@
       <th>new.format</th>
       <td><p>format to be applied to timestamps. Default: 
 <code>"%Y-%m-%d %H:%M:%S"</code></p></td>
+    </tr>
+    <tr>
+      <th>&#8230;</th>
+      <td><p>further arguments passed to <code><a href='hasTimeFormat.html'>hasTimeFormat</a></code>, such as
+<code>method</code></p></td>
     </tr>
     </table>
     

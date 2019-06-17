@@ -84,7 +84,7 @@
       <h1>Converting Text to Time Objects</h1>
                         <h4 class="author">Hauke Sonnenberg</h4>
             
-            <h4 class="date">2019-06-12</h4>
+            <h4 class="date">2019-06-17</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/kwb-r/kwb.datetime/blob/master/vignettes/text_to_posixct.Rmd"><code>vignettes/text_to_posixct.Rmd</code></a></small>
       <div class="hidden name"><code>text_to_posixct.Rmd</code></div>
@@ -165,7 +165,7 @@
 <a class="sourceLine" id="cb9-2" data-line-number="2">times_local_from_text &lt;-<span class="st"> </span>kwb.datetime<span class="op">::</span><span class="kw">textToEuropeBerlinPosix</span>(</a>
 <a class="sourceLine" id="cb9-3" data-line-number="3">  timestamps_local, <span class="dt">format =</span> format</a>
 <a class="sourceLine" id="cb9-4" data-line-number="4">)</a>
-<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co">#&gt; Converting 8761 timestamps to POSIXct ... ok. (0.06s)</span></a></code></pre></div>
+<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co">#&gt; Converting 8761 timestamps to POSIXct ... ok. (0.07s)</span></a></code></pre></div>
 <p>The created <code>POSIXct</code> objects are now identical to the original ones:</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/identical">identical</a></span>(times_local, times_local_from_text)</a>
 <a class="sourceLine" id="cb10-2" data-line-number="2"><span class="co">#&gt; [1] TRUE</span></a></code></pre></div>
