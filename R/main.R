@@ -7,10 +7,11 @@
 #'   \code{"\%Y-\%m-\%d \%H:\%M:\%S"}
 #' @param new.format format to be applied to timestamps. Default: 
 #'   \code{"\%Y-\%m-\%d \%H:\%M:\%S"}
-#'   
+#' @param \dots further arguments passed to \code{\link{hasTimeFormat}}, such as
+#'   \code{method}
 #' @export
 #' 
-reformatTimestamp <- function(x, old.format = NULL, new.format = NULL)
+reformatTimestamp <- function(x, old.format = NULL, new.format = NULL, ...)
 {
   stopifnot(is.character(x))
   
@@ -20,7 +21,7 @@ reformatTimestamp <- function(x, old.format = NULL, new.format = NULL)
   new.format <- kwb.utils::defaultIfNULL(new.format, "%Y-%m-%d %H:%M:%S")
 
   # check if all timestamps have the expected format (old.format)
-  invalid <- which(!hasTimeFormat(x, old.format))
+  invalid <- which(!hasTimeFormat(x, old.format, ...))
   
   if (length(invalid) > 0) {
     

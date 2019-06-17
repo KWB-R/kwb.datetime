@@ -5,7 +5,7 @@
 \title{Convert Text Timestamps to POSIXct Objects}
 \usage{
 textToEuropeBerlinPosix(x, format = NULL, switches = TRUE,
-  dbg = TRUE)
+  dbg = TRUE, ...)
 }
 \arguments{
 \item{x}{vector of text (i.e. character) timestamps}
@@ -21,6 +21,9 @@ Otherwise (\code{switches = FALSE}) timestamps are assumed to originate
 from a clock that stays in standard time over the whole year.}
 
 \item{dbg}{if \code{TRUE} debug messages are shown}
+
+\item{\dots}{further arguments passed to \code{\link{reformatTimestamp}}
+(only relevant if \code{switches = TRUE})}
 }
 \value{
 vector of POSIXct objects

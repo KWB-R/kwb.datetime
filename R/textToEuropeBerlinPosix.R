@@ -23,6 +23,8 @@
 #'   Otherwise (\code{switches = FALSE}) timestamps are assumed to originate 
 #'   from a clock that stays in standard time over the whole year.
 #' @param dbg if \code{TRUE} debug messages are shown
+#' @param \dots further arguments passed to \code{\link{reformatTimestamp}}
+#'   (only relevant if \code{switches = TRUE})
 #' @return vector of POSIXct objects
 #' @export
 #' @examples 
@@ -49,7 +51,7 @@
 #' ))
 #' 
 textToEuropeBerlinPosix <- function(
-  x, format = NULL, switches = TRUE, dbg = TRUE
+  x, format = NULL, switches = TRUE, dbg = TRUE, ...
 )
 {
   stopifnot(is.character(x))
@@ -77,7 +79,7 @@ textToEuropeBerlinPosix <- function(
       } else {
         
         utc_offset <- try(silent = TRUE, {
-          utcOffsetBerlinTime(reformatTimestamp(x, old.format = format))
+          utcOffsetBerlinTime(reformatTimestamp(x, old.format = format, ...))
         })
         
         if (inherits(utc_offset, "try-error")) stop(
