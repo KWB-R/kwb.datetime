@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Minimum Time Step in Sequence of Timestamps — minTimeStep • kwb.datetime</title>
+<title>Page not found (404) • kwb.datetime</title>
 
 
 <!-- jquery -->
@@ -29,15 +29,13 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
-<link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script>
+<link href="https://kwb-r.github.io/kwb.datetime/pkgdown.css" rel="stylesheet">
+<script src="https://kwb-r.github.io/kwb.datetime/pkgdown.js"></script>
 
 
 
 
-<meta property="og:title" content="Minimum Time Step in Sequence of Timestamps — minTimeStep" />
-<meta property="og:description" content="Minimum Time Step in Sequence of Timestamps" />
-<meta name="twitter:card" content="summary" />
+<meta property="og:title" content="Page not found (404)" />
 
 
 <meta name="robots" content="noindex">
@@ -56,7 +54,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-topic">
+    <div class="container template-title-body">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -68,7 +66,7 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">kwb.datetime</a>
+        <a class="navbar-link" href="https://kwb-r.github.io/kwb.datetime/index.html">kwb.datetime</a>
         <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.3.1.9000</span>
       </span>
     </div>
@@ -76,13 +74,13 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
+  <a href="index.html">
     <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
 <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -92,10 +90,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/text_to_posixct.html">Converting Text to Time Objects</a>
+      <a href="articles/text_to_posixct.html">Converting Text to Time Objects</a>
     </li>
     <li>
-      <a href="../articles/timezones.html">Exkurs Zeitzonen</a>
+      <a href="articles/timezones.html">Exkurs Zeitzonen</a>
     </li>
   </ul>
 </li>
@@ -118,50 +116,17 @@
       </header>
 
 <div class="row">
-  <div class="col-md-9 contents">
+  <div class="contents col-md-9">
     <div class="page-header">
-    <h1>Minimum Time Step in Sequence of Timestamps</h1>
-    <small class="dont-index">Source: <a href='https://github.com/kwb-r/kwb.datetime/blob/master/R/step.R'><code>R/step.R</code></a></small>
-    <div class="hidden name"><code>minTimeStep.Rd</code></div>
+      <h1>Page not found (404)</h1>
     </div>
 
-    <div class="ref-description">
-    <p>Minimum Time Step in Sequence of Timestamps</p>
-    </div>
-
-    <pre class="usage"><span class='fu'>minTimeStep</span>(<span class='no'>tstamps</span>, <span class='kw'>dbg</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
-
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>tstamps</th>
-      <td><p>vector of POSIX-type timestamps or any other vector that can
-be converted to integer</p></td>
-    </tr>
-    <tr>
-      <th>dbg</th>
-      <td><p>should debug messages be shown?</p></td>
-    </tr>
-    </table>
-
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>tstamps</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct</a></span>(<span class='st'>"2017-11-03"</span>), <span class='fu'><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct</a></span>(<span class='st'>"2017-11-04"</span>), <span class='fl'>3600</span>)
-<span class='fu'>minTimeStep</span>(<span class='no'>tstamps</span>)</div><div class='output co'>#&gt; [1] 3600</div><div class='input'>
-<span class='co'># No need for timestamps!</span>
-<span class='fu'>minTimeStep</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>10</span>, <span class='fl'>20</span>, <span class='fl'>30</span>, <span class='fl'>40</span>, <span class='fl'>45</span>, <span class='fl'>50</span>, <span class='fl'>60</span>))</div><div class='output co'>#&gt; [1] 5</div><div class='input'><span class='fu'>minTimeStep</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>10</span>, <span class='fl'>20</span>, <span class='fl'>30</span>, <span class='fl'>40</span>, <span class='fl'>45</span>, <span class='fl'>50</span>, <span class='fl'>60</span>), <span class='kw'>dbg</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; timestep: 5 s (min. time diff. found between consecutive timestamps).</div><div class='output co'>#&gt; [1] 5</div><div class='input'>
-</div></pre>
-  </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+Content not found. Please use links in the navbar.
 
   </div>
+
 </div>
+
 
 
       <footer>
