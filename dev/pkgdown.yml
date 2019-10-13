@@ -1,5 +1,5 @@
 pandoc: '2.2'
-pkgdown: 1.4.0
+pkgdown: 1.4.1
 pkgdown_sha: ~
 articles:
   text_to_posixct: text_to_posixct.html
