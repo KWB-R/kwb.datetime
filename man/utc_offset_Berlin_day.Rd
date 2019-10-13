@@ -11,29 +11,30 @@ utc_offset_Berlin_day(x)
 \code{yyyy-mm-dd}}
 }
 \value{
-vector of elements \code{"+0100"} or \code{"+0200"}, depending on 
-  whether all timestamps of the days at corresponding positions in \code{x}
-  are in winter (CET) or summer (CEST), respectively. For days at which the
-  time is adjusted from CET to CEST or vice versa, \code{NA} is returned.
+vector of integers \code{1} or \code{2}, depending on whether all 
+  timestamps of the days at corresponding positions in \code{x}
+  are in Central European Time (CET) or in Central European Summer Time 
+  (CEST), respectively. For days at which the time is adjusted from CET to 
+  CEST or vice versa, \code{NA} is returned.
 }
 \description{
 UTC Offsets of Days in Time Zone Europe/Berlin
 }
 \examples{
-kwb.datetime:::utc_offset_Berlin_day("2017-11-04") #> "+0100" -> CET
+kwb.datetime:::utc_offset_Berlin_day("2017-11-04") #> 1 -> CET
 
 # The offset is not unique at the days of clock change CEST -> CET
-kwb.datetime:::utc_offset_Berlin_day("2017-10-28") #> "+0200" -> CEST
+kwb.datetime:::utc_offset_Berlin_day("2017-10-28") #> 2 -> CEST
 kwb.datetime:::utc_offset_Berlin_day("2017-10-29") #> NA -> offset not unique!
-kwb.datetime:::utc_offset_Berlin_day("2017-10-30") #> "+0100" -> CET
+kwb.datetime:::utc_offset_Berlin_day("2017-10-30") #> 1 -> CET
 
 # The offset is not unique at the days of clock change CET -> CEST
-kwb.datetime:::utc_offset_Berlin_day("2017-03-25") #> "+0100" -> CET
+kwb.datetime:::utc_offset_Berlin_day("2017-03-25") #> 1 -> CET
 kwb.datetime:::utc_offset_Berlin_day("2017-03-26") #> NA -> offset not unique!
-kwb.datetime:::utc_offset_Berlin_day("2017-03-27") #> "+0200" -> CEST
+kwb.datetime:::utc_offset_Berlin_day("2017-03-27") #> 2 -> CEST
 
 }
 \seealso{
-\code{\link{utc_offset_Berlin_time}}
+\code{\link{utcOffsetBerlinTime}}
 }
 \keyword{internal}

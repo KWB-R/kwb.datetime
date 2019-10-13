@@ -4,7 +4,7 @@
 \alias{reformatTimestamp}
 \title{Convert Timstamp String from one Format to another}
 \usage{
-reformatTimestamp(x, old.format = NULL, new.format = NULL)
+reformatTimestamp(x, old.format = NULL, new.format = NULL, ...)
 }
 \arguments{
 \item{x}{vector of timestamps (character)}
@@ -14,6 +14,9 @@ reformatTimestamp(x, old.format = NULL, new.format = NULL)
 
 \item{new.format}{format to be applied to timestamps. Default: 
 \code{"\%Y-\%m-\%d \%H:\%M:\%S"}}
+
+\item{\dots}{further arguments passed to \code{\link{hasTimeFormat}}, such as
+\code{method}}
 }
 \description{
 Convert Timstamp String from one Format to another

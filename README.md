@@ -8,6 +8,13 @@
 
 R Package with Functions for Date Time Handling
 
+## Installation
+
+```r
+#install.packages("remotes", repos = "https://cloud.r-project.org")
+remotes::install_github("KWB-R/kwb.datetime")
+```
+
 ## Documentation
 
 Development version: [https://kwb-r.github.io/kwb.datetime/dev](https://kwb-r.github.io/kwb.datetime/dev)

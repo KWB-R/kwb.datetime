@@ -1,0 +1,437 @@
+---
+title: "Converting Text to Time Objects"
+author: "Hauke Sonnenberg"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Text to Time Objects}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+print_times <- function(x) {
+  old_pars <- par(mar = c(2.5, 4.5, 0.5, 0.5))
+  plot(x, seq_along(x), las = 1, xlab = "", ylab = "Index", ylim = c(length(x) + 0.4, 0.6))
+  par(old_pars)
+}
+```
+
+This tutorial describes how to convert text timestamps to `POSIXct` objects. The
+conversion becomes necessary when time differences are to be calculated. We
+consider two cases that differ in the way that the time recording device 
+operates its clock:
+
+- Case 1: the clock switches between standard (winter) time and summer time.
+- Case 2: the clock does not switch between standard (winter) time and summer 
+time but stays in standard time over the whole year. 
+
+In both cases, using the base R function `as.POSIXct()` to convert text
+timestamps to `POSIXct` objects may lead to unintended results (as detailed 
+below).
+
+This package contains a function `textToEuropeBerlinPosix()` that is a wrapper
+around `as.POSIXct()` but that is specialised on the two above cases. It returns
+`POSIXct` objects in time zone "Europe/Berlin" and can handle timestamps from
+both of the above cases as input.
+
+## Creation of example timestamps
+
+We start by creating text timestamps as they could have been recorded by a
+measuring device.
+
+```{r}
+# Define first and last timestamps
+from <- "2019-01-01"
+to <- "2020-01-01"
+step <- 3600 # seconds, i.e. one timestamp per hour
+
+# Case 1: local time, i.e. standard time in winter, summer time in summer
+tz <- "Europe/Berlin"
+times_local <- seq(as.POSIXct(from, tz), as.POSIXct(to, tz), by = step)
+
+# Case 2: always standard time (Note that GMT-1 refers to UTC+1!)
+tz <- "Etc/GMT-1"
+times_standard <- seq(as.POSIXct(from, tz), as.POSIXct(to, tz), by = step)
+```
+
+In both cases, all time differences are one (hour), as intended:
+
+```{r}
+all(diff(times_local) == 1)
+all(diff(times_standard) == 1)
+```
+
+We use `format()` to simulate that the timestamps are recorded in a certain 
+local format:
+
+```{r}
+format <- "%d.%m.%y %H:%M"
+timestamps_local <- format(times_local, format = format)
+timestamps_standard <- format(times_standard, format = format)
+```
+
+Show the first three timestamps in each case to check whether the format was 
+applied as intended:
+
+```{r}
+writeLines(head(timestamps_local, 3))
+writeLines(head(timestamps_standard, 3))
+```
+
+Note that one of the local timestamps appears twice:
+
+```{r}
+timestamps_local[duplicated(timestamps_local)]
+```
+
+In contrast, the standard timestamps are all unique:
+
+```{r}
+any(duplicated(timestamps_standard))
+```
+
+## Case 1: Clock switches between standard time and summer time
+
+In this case the function `as.POSIXct()` may return unexpected results. These
+are caused by duplicates in the input vector of text timestamps. In the case
+considered in this chapter, duplicated timestamps are absolutely valid. They 
+result from shifting time back from summer time to standard time. Let's see what
+happens if we call `as.POSIXct()` on the vector of local timestamps:
+
+```{r}
+# Convert text timestamps to POSIXct objects
+times <- as.POSIXct(timestamps_local, tz = "Europe/Berlin", format = format)
+```
+
+### Problem
+
+Even though time zone and time format were set correctly, the vector of returned
+`POSIXct` objects is corrupt. We can see the problem when looking at the time
+differences:
+
+```{r}
+table(diff(times))
+```
+
+Not all time differences are one hour (3600 seconds) anymore! Once there is no
+time difference, i.e. two adjacent times are identical, and once there is a time
+difference of two hours (7200 seconds), i.e. one hour is skipped. Read further
+down for the reason and for a function allowing to further investigate the
+problem.
+
+### Solution
+
+Use the function `textToEuropeBerlinPOSIX()` to do the conversion. It interprets ambiguous timestamps correctly, provided that they are given in chronological
+order. See below for details. 
+
+```{r}
+# Convert text timestamps to POSIXct objects
+times_local_from_text <- kwb.datetime::textToEuropeBerlinPosix(
+  timestamps_local, format = format
+)
+```
+
+The created `POSIXct` objects are now identical to the original ones:
+
+```{r}
+identical(times_local, times_local_from_text)
+```
+
+## Case 2: Clock stays in standard time
+
+What happens in this case, when applying `as.POSIXct()` on the timestamps?
+
+```{r}
+times <- as.POSIXct(timestamps_standard, tz = "Europe/Berlin", format = format)
+```
+
+### Problem
+
+The vector `timestamps_standard` contains timestamps that do not exist in the 
+time zone `Europe/Berlin` (for details, see below). Unfortunately, the function
+`as.POSIXct()` does not give a warning about this. We convince ourselves that
+something went wrong by looking at the frequencies of the time differences:
+
+```{r}
+table(diff(times))
+```
+
+Not all differences are one hour (3600 seconds) as expected. Once the time
+difference is zero, i.e. two adjacent times are identical, and once there is a 
+time difference of two hours (7200 seconds), i.e. one hour is skipped. This is
+the behaviour on a Linux system, on Windows we would get a different, but also
+unintended result.
+
+### Solution
+
+Use the function `textToEuropeBerlinPOSIX()` to do the conversion. Set 
+`switches = FALSE` to tell the function that the timestamps were recorded by a 
+clock that does not switch between standard time and summer time:
+
+```{r}
+# Convert text timestamps to POSIXct objects
+times_standard_from_text <- kwb.datetime::textToEuropeBerlinPosix(
+  timestamps_standard, format = format, switches = FALSE
+)
+```
+
+The created `POSIXct` objects are now (almost) identical to the original ones.
+The only difference is the time zone attribute that is "Etc/GMT-1" in the
+original timestamps but "Europe/Berlin" in the timestamps provided by
+`textToEuropeBerlinPosix()`:
+
+```{r}
+attr(times_standard, "tzone")
+attr(times_standard_from_text, "tzone")
+```
+
+We set the time zone of the original times to "Europe/Berlin" (that does not 
+change the underlying time information!) in order to check for identity:
+
+```{r}
+attr(times_standard, "tzone") <- "Europe/Berlin"
+identical(times_standard, times_standard_from_text)
+```
+
+See vignette ["Exkurs Zeitzonen"](timezones.html) (in German!) for details on
+this case.
+
+# Background and Details
+
+In R, time information are stored in objects of class `POSIXct`. The function
+`as.POSIXct()` is used to convert character strings representing points in time
+into the corresponding `POSIXct` objects. This chapter points out some important
+details about this function.
+
+Problems may arise with times recorded in time zones that change for Daylight
+Saving. This is the case for the time zone "Europe/Berlin" that is used in the
+following example. In this time zone, the time is given in Central European
+Time (CET) in winter and in Central European Summer Time (CEST) in summer.
+
+## When does Summer Time start/end?
+
+Use the function `date_range_CEST()` to find out at what days summer time starts
+and ends, respectively:
+
+```{r}
+kwb.datetime::date_range_CEST(2017:2019)
+```
+
+Note that this function returns character strings and not, for example, `Date`
+objects.
+
+## Example: Reading local timestamps in Berlin, Germany
+
+Imagine a measuring device taking measurements every 30 minutes at some location
+in Berlin, Germany. The clock of the device is configured to switch between
+standard time and daylight saving time (summer time) and vice versa. In 2017, on
+October 29, when summer time is reverted back to standard time, the recorded
+timestamps around the time shift are:
+
+```{r}
+# Define timestamps (character)
+timestamps <- c(
+  "2017-10-29 01:30:00", # 1: CEST
+  "2017-10-29 02:00:00", # 2: CEST
+  "2017-10-29 02:30:00", # 3: CEST
+  "2017-10-29 02:00:00", # 4: CET
+  "2017-10-29 02:30:00", # 5: CET
+  "2017-10-29 03:00:00"  # 6: CET
+)
+```
+
+The timestamps "02:00" and "02:30" appear twice, at indices 2 and 3,
+respectively, first and at indices 4 and 5, respectively, second. This is
+because at 03:00 (CEST) the clock is set back to 02:00 (CET). The first
+occurrences of the two timestamps refer to summer time (CEST) whereas the second
+occurrences refer to standard time (CET).
+
+### What is the problem?
+
+What happens if we convert these timestamps to time objects? Using 
+`as.POSIXct()` and the (correct) time zone "Europe/Berlin", we get the following
+vector of time objects:
+
+```{r}
+# Convert timestamps to POSIXct and print them
+(times <- as.POSIXct(timestamps, tz = "Europe/Berlin"))
+``` 
+
+The function cannot distinguish between the first and second occurrences of the
+times 02:00 and  02:30. The output and the following plot reveal that the
+timestamps between 02:00 and 03:00 (exclusive) are always interpreted as being
+in summer time (CEST).
+
+```{r fig.width = 5, fig.height = 2, echo = FALSE}
+print_times(times)
+```
+
+### What is the solution (step by step)?
+
+How can we tell R that the first occurrences of 02:00 and 02:30 refer to CEST
+and the second ocurrences refer to CET? We could try the following:
+
+```{r}
+as.POSIXct(tz = "Europe/Berlin", c(
+  "2017-10-29 01:30:00 CEST",
+  "2017-10-29 02:00:00 CEST",
+  "2017-10-29 02:30:00 CEST",
+  "2017-10-29 02:00:00 CET",
+  "2017-10-29 02:30:00 CET",
+  "2017-10-29 03:00:00 CET"
+))
+```
+
+**Unfortunately, this does not work!** Again, everything between 02:00 and 03:00
+(exclusive) is assumed to refer to CEST, as the output above indicates. However,
+R accepts a format in which the number of hours ahead of Coordinated Universal
+Time (UTC) is indicated in the timestamps. In our example this looks as follows:
+
+```{r}
+iso_timestamps <- c(
+  "2017-10-29 01:30:00+0200",
+  "2017-10-29 02:00:00+0200",
+  "2017-10-29 02:30:00+0200",
+  "2017-10-29 02:00:00+0100",
+  "2017-10-29 02:30:00+0100",
+  "2017-10-29 03:00:00+0100"
+)
+```
+
+Timestamps in CEST are two hours (and zero minutes) ahead of UTC. This is 
+indicated in the timestamp by the ending *+0200*. Timestamps in CET are only one 
+hour ahead of UTC and thus indicated by *+0100*. Timestamps given in this format 
+can be converted to POSIXct objects by setting the `format` argument of the 
+`as.POSIXct()` function to `"%F %T%z"`:
+
+```{r}
+as.POSIXct(iso_timestamps, tz = "Europe/Berlin", format = "%F %T%z")
+```
+
+For the meaning of the placeholders %F, %T and %z, respectively, in the
+format string, see `?strftime`. 
+
+The package kwb.datetime provides a function `isoToLocaltime()` that does
+the same:
+
+```{r}
+kwb.datetime::isoToLocaltime(iso_timestamps)
+```
+
+In both cases, the timestamps are interpreted correctly, as also shown in this 
+plot:
+
+```{r fig.width = 5, fig.height = 2, echo = FALSE}
+out <- capture.output(
+  print_times(kwb.datetime::isoToLocaltime(iso_timestamps))
+)
+```
+
+Unfortunately, the timestamps logged by measuring devices often do not contain
+the additional information on the UTC offset. For this case the package
+kwb.datetime provides functions that can be applied in a chain to perform a 
+three step process:
+
+**Step 1:** Use the function `utcOffsetBerlinTime()` to determine the UTC 
+offsets (for timestamps given in time zone "Europe/Berlin"):
+
+```{r}
+# Guess and print the UTC offsets for the given timestamps
+(offsets <- kwb.datetime::utcOffsetBerlinTime(timestamps))
+```
+
+This function requires the timestamps to be sorted in increasing order. 
+Otherwise it cannot decide between CEST and CET for possibly unambiguous 
+timestamps between 02:00 and 03:00 at the day of reverting time from CEST back
+to CET.
+
+**Step 2:** Use these offsets to create timestamps in full ISO 8601 format, i.e.
+ending in either *+0200* (when referring to CEST) or in *+0100* (when referring 
+to CET):
+
+```{r}
+# Create ISO 8601 timestamps and print them
+(iso_timestamps <- sprintf("%s%+03d00", timestamps, offsets))
+```
+
+**Step 3:** Use the function `isoToLocaltime()` to convert these new 
+timestamps from `character` into their corresponding `POSIXct` objects:
+
+```{r}
+# Create POSIXct-objects in time zone "Europe/Berlin" and print them
+(kwb.datetime:::isoToLocaltime(iso_timestamps))
+```
+
+### What is the solution (one step)?
+
+The three steps presented above are performed within the function
+`textToEuropeBerlinPosix()` so that you can do the conversion of the original
+`timestamps` by calling:
+
+```{r}
+kwb.datetime::textToEuropeBerlinPosix(timestamps)
+```
+
+## Analyse a sequence of POSIXct objects
+
+The package contains a function `getEqualStepRanges()` that helps find
+unexpected changes in the time step within a vector of `POSIXct`. Applied to the
+example vector `times_local` from above, this function finds exactly one
+consistent sequence of times in which the time step is constantly one hour:
+
+```{r}
+kwb.datetime::getEqualStepRanges(times_local)
+```
+
+As already shown above, using `as.POSIXct()` directly on the vector of text
+timestamps does not return the correct `times`. Using `getEqualStepRanges()`
+helps understand the problem. It shows four different sub-sequences within 
+`times` in each of which the time step differs from the time step in the 
+previous sub-sequence.
+
+```{r fig.width = 6}
+# (Badly) Convert to POSIXct
+bad_times <- as.POSIXct(timestamps_local, tz = "Europe/Berlin", format = format)
+
+# Get information on the contained sub-sequences
+ranges <- kwb.datetime::getEqualStepRanges(bad_times)
+
+# Print the sub-sequences
+ranges
+
+# Plot the sub-sequences
+plot(ranges)
+```
+
+What happened? The timestamp `2019-10-27 02:00` appears twice! Once in Central
+European Summer Time (CEST) and once in Central European Time (CET). As shown
+above, using the function `textToEuropeBerlinPosix()` can solve the
+problem:
+
+```{r}
+# Reformat the timestamps to ISO format
+iso <- kwb.datetime::reformatTimestamp(timestamps_local, format)
+
+# (Correctly) Convert to POSIXct
+good_times <- kwb.datetime::textToEuropeBerlinPosix(iso)
+
+# Show the contained sub-sequences (should be only one now!)
+kwb.datetime::getEqualStepRanges(good_times)
+```
+
+Check if the original date and time objects could be reproduced:
+
+```{r}
+# Explicitly set the time zone before comparing
+attr(good_times, "tzone") <- "Europe/Berlin"
+
+identical(good_times, times_local)
+```

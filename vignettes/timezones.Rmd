@@ -32,7 +32,7 @@ Sys.timezone()
 ```
 
 Das sollte bei Ihnen die Zeitzone "Europe/Berlin" sein. In dieser Zeitzone gibt
-es (noch, die EU hat die Abschaffung der Zeitumstellung beschlossen) eine 
+es (noch, die EU hat die Abschaffung der Zeitumstellung beschlossen, oder?) eine 
 Umstellung zwischen Sommer- und Winterzeit und umgekehrt. Erst vor kurzem,
 am 31.03.2019, wurde die Uhr wieder von Winterzeit (bzw. Normalzeit) auf 
 Sommerzeit umgestellt. Wie sieht das in R aus?
@@ -93,7 +93,7 @@ Sommer- auf Winterzeit vornehme. Wir versuchen zum Beispiel unsere Messgeräte s
 einzustellen, dass sie den Zeitstempel immer in Normalzeit (Winterzeit) 
 aufzeichnen und die Uhr weder vor- noch zurückstellen. Wir tun dies, um zu 
 vermeiden, dass doppelte Zeitstempel, nämlich in der Stunde, in der die Uhr
-von Sommer- auf Winterzeit zurückgestellt wird, zu vermeiden.
+von Sommer- auf Winterzeit zurückgestellt wird, aufgezeichnet werden.
 
 Der entscheidende Hinweis findet sich in der Hilfe zu "timezones":
 
