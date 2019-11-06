@@ -167,7 +167,7 @@
 <a class="sourceLine" id="cb9-2" data-line-number="2">times_local_from_text &lt;-<span class="st"> </span>kwb.datetime<span class="op">::</span><span class="kw">textToEuropeBerlinPosix</span>(</a>
 <a class="sourceLine" id="cb9-3" data-line-number="3">  timestamps_local, <span class="dt">format =</span> format</a>
 <a class="sourceLine" id="cb9-4" data-line-number="4">)</a>
-<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co">#&gt; Converting 8761 timestamps to POSIXct ... ok. (0.07s)</span></a></code></pre></div>
+<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co">#&gt; Converting 8761 timestamps to POSIXct ... ok. (0.08s)</span></a></code></pre></div>
 <p>The created <code>POSIXct</code> objects are now identical to the original ones:</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/identical.html">identical</a></span>(times_local, times_local_from_text)</a>
 <a class="sourceLine" id="cb10-2" data-line-number="2"><span class="co">#&gt; [1] TRUE</span></a></code></pre></div>
@@ -196,7 +196,7 @@
 <a class="sourceLine" id="cb13-2" data-line-number="2">times_standard_from_text &lt;-<span class="st"> </span>kwb.datetime<span class="op">::</span><span class="kw">textToEuropeBerlinPosix</span>(</a>
 <a class="sourceLine" id="cb13-3" data-line-number="3">  timestamps_standard, <span class="dt">format =</span> format, <span class="dt">switches =</span> <span class="ot">FALSE</span></a>
 <a class="sourceLine" id="cb13-4" data-line-number="4">)</a>
-<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="co">#&gt; Converting 8761 timestamps to POSIXct ... ok. (0.01s)</span></a></code></pre></div>
+<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="co">#&gt; Converting 8761 timestamps to POSIXct ... ok. (0.02s)</span></a></code></pre></div>
 <p>The created <code>POSIXct</code> objects are now (almost) identical to the original ones. The only difference is the time zone attribute that is “Etc/GMT-1” in the original timestamps but “Europe/Berlin” in the timestamps provided by <code><a href="../reference/textToEuropeBerlinPosix.html">textToEuropeBerlinPosix()</a></code>:</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/attr.html">attr</a></span>(times_standard, <span class="st">"tzone"</span>)</a>
 <a class="sourceLine" id="cb14-2" data-line-number="2"><span class="co">#&gt; [1] "Etc/GMT-1"</span></a>
@@ -353,7 +353,7 @@
 <a class="sourceLine" id="cb29-4" data-line-number="4"><span class="co"># (Correctly) Convert to POSIXct</span></a>
 <a class="sourceLine" id="cb29-5" data-line-number="5">good_times &lt;-<span class="st"> </span>kwb.datetime<span class="op">::</span><span class="kw">textToEuropeBerlinPosix</span>(iso)</a>
 <a class="sourceLine" id="cb29-6" data-line-number="6"><span class="co">#&gt; Guessing time format ... ok. (0.00s) </span></a>
-<a class="sourceLine" id="cb29-7" data-line-number="7"><span class="co">#&gt; Converting 8761 timestamps to POSIXct ... ok. (0.06s)</span></a>
+<a class="sourceLine" id="cb29-7" data-line-number="7"><span class="co">#&gt; Converting 8761 timestamps to POSIXct ... ok. (0.07s)</span></a>
 <a class="sourceLine" id="cb29-8" data-line-number="8"></a>
 <a class="sourceLine" id="cb29-9" data-line-number="9"><span class="co"># Show the contained sub-sequences (should be only one now!)</span></a>
 <a class="sourceLine" id="cb29-10" data-line-number="10">kwb.datetime<span class="op">::</span><span class="kw">getEqualStepRanges</span>(good_times)</a>
