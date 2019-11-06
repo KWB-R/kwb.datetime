@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>String representing the current Date — currentDateString • kwb.datetime</title>
+<title>Times Around Clock Change in Central Europe — timesAroundClockChange • kwb.datetime</title>
 
 
 <!-- jquery -->
@@ -35,8 +35,8 @@
 
 
 
-<meta property="og:title" content="String representing the current Date — currentDateString" />
-<meta property="og:description" content="String representing the current Date" />
+<meta property="og:title" content="Times Around Clock Change in Central Europe — timesAroundClockChange" />
+<meta property="og:description" content="Sequence of Times Around Clock Change in Central Europe" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -120,34 +120,52 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>String representing the current Date</h1>
-    <small class="dont-index">Source: <a href='https://github.com/kwb-r/kwb.datetime/blob/master/R/current.R'><code>R/current.R</code></a></small>
-    <div class="hidden name"><code>currentDateString.Rd</code></div>
+    <h1>Times Around Clock Change in Central Europe</h1>
+    <small class="dont-index">Source: <a href='https://github.com/kwb-r/kwb.datetime/blob/master/R/timesAroundClockChange.R'><code>R/timesAroundClockChange.R</code></a></small>
+    <div class="hidden name"><code>timesAroundClockChange.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>String representing the current Date</p>
+    <p>Sequence of Times Around Clock Change in Central Europe</p>
     </div>
 
-    <pre class="usage"><span class='fu'>currentDateString</span>(<span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"%d %B %Y"</span>)</pre>
+    <pre class="usage"><span class='fu'>timesAroundClockChange</span>(<span class='kw'>year</span> <span class='kw'>=</span> <span class='fl'>2000</span>, <span class='kw'>normalToSummer</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>step_s</span> <span class='kw'>=</span> <span class='fl'>1800</span>, <span class='kw'>length.out</span> <span class='kw'>=</span> <span class='fl'>5</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>format</th>
-      <td><p>format string containing percentage-placeholders as defined in 
-<code>strptime</code></p></td>
+      <th>year</th>
+      <td><p>year for which to demonstrate the switch between Central European
+Time (CET) and Central European Summer Time (CEST)</p></td>
+    </tr>
+    <tr>
+      <th>normalToSummer</th>
+      <td><p><code>TRUE</code>: CET to CEST, <code>FALSE</code>: CEST to CET</p></td>
+    </tr>
+    <tr>
+      <th>step_s</th>
+      <td><p>time step in seconds</p></td>
+    </tr>
+    <tr>
+      <th>length.out</th>
+      <td><p>number of time objects in returned vector</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>character string representing the current date</p>
+    <p>vector of POSIXct objects with length <code>length.out</code></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>currentDateString</span>()</div><div class='output co'>#&gt; [1] "06 November 2019"</div><div class='input'><span class='fu'>currentDateString</span>(<span class='st'>"%d.%m.%Y"</span>)</div><div class='output co'>#&gt; [1] "06.11.2019"</div><div class='input'><span class='fu'>currentDateString</span>(<span class='st'>"%Y-%m-%d"</span>)</div><div class='output co'>#&gt; [1] "2019-11-06"</div><div class='input'>
-</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>timesAroundClockChange</span>(<span class='fl'>2019</span>, <span class='kw'>normalToSummer</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; [1] "2019-03-31 01:00:00 CET"  "2019-03-31 01:30:00 CET" 
+#&gt; [3] "2019-03-31 03:00:00 CEST" "2019-03-31 03:30:00 CEST"
+#&gt; [5] "2019-03-31 04:00:00 CEST"</div><div class='input'><span class='fu'>timesAroundClockChange</span>(<span class='fl'>2019</span>, <span class='kw'>normalToSummer</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; [1] "2019-10-27 02:00:00 CEST" "2019-10-27 02:30:00 CEST"
+#&gt; [3] "2019-10-27 02:00:00 CET"  "2019-10-27 02:30:00 CET" 
+#&gt; [5] "2019-10-27 03:00:00 CET" </div><div class='input'><span class='fu'>timesAroundClockChange</span>(<span class='fl'>2019</span>, <span class='fl'>TRUE</span>, <span class='kw'>step_s</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>length.out</span> <span class='kw'>=</span> <span class='fl'>3</span>)</div><div class='output co'>#&gt; [1] "2019-03-31 01:59:59 CET"  "2019-03-31 03:00:00 CEST"
+#&gt; [3] "2019-03-31 03:00:01 CEST"</div><div class='input'><span class='fu'>timesAroundClockChange</span>(<span class='fl'>2019</span>, <span class='fl'>FALSE</span>, <span class='kw'>step_s</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>length.out</span> <span class='kw'>=</span> <span class='fl'>3</span>)</div><div class='output co'>#&gt; [1] "2019-10-27 02:59:59 CEST" "2019-10-27 02:00:00 CET" 
+#&gt; [3] "2019-10-27 02:00:01 CET" </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
