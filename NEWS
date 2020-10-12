@@ -1,3 +1,8 @@
+Latest changes
+==============
+
+* Fix bug in hasTimeFormat(): return vector of boolean also if method = 2
+
 Changes in version 0.4.0
 ========================
 
