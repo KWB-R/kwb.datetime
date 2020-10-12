@@ -4,8 +4,12 @@
 \alias{timesAroundClockChange}
 \title{Times Around Clock Change in Central Europe}
 \usage{
-timesAroundClockChange(year = 2000, normalToSummer = TRUE,
-  step_s = 1800, length.out = 5)
+timesAroundClockChange(
+  year = 2000,
+  normalToSummer = TRUE,
+  step_s = 1800,
+  length.out = 5
+)
 }
 \arguments{
 \item{year}{year for which to demonstrate the switch between Central European

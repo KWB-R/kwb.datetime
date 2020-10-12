@@ -4,8 +4,7 @@
 \alias{textToEuropeBerlinPosix}
 \title{Convert Text Timestamps to POSIXct Objects}
 \usage{
-textToEuropeBerlinPosix(x, format = NULL, switches = TRUE,
-  dbg = TRUE, ...)
+textToEuropeBerlinPosix(x, format = NULL, switches = TRUE, dbg = TRUE, ...)
 }
 \arguments{
 \item{x}{vector of text (i.e. character) timestamps}
