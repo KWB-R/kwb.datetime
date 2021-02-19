@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cerulean/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -37,7 +41,6 @@
 
 <meta property="og:title" content="Sequences of Date Time Objects With Equal Time Step — getEqualStepRanges" />
 <meta property="og:description" content="Sequences of Date Time Objects With Equal Time Step" />
-<meta name="twitter:card" content="summary" />
 
 
 <meta name="robots" content="noindex">
@@ -55,7 +58,7 @@
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -77,7 +80,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -99,11 +102,14 @@
     </li>
   </ul>
 </li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/kwb-r/kwb.datetime">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/kwb-r/kwb.datetime/">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -129,7 +135,7 @@
     <p>Sequences of Date Time Objects With Equal Time Step</p>
     </div>
 
-    <pre class="usage"><span class='fu'>getEqualStepRanges</span>(<span class='no'>times</span>)</pre>
+    <pre class="usage"><span class='fu'>getEqualStepRanges</span><span class='op'>(</span><span class='va'>times</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -143,23 +149,25 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Generate a sequence of date and time objects</span>
-<span class='no'>as_berlin_posix</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span>) <span class='fu'><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct</a></span>(<span class='no'>x</span>, <span class='kw'>tz</span> <span class='kw'>=</span> <span class='st'>"Europe/Berlin"</span>)
-<span class='no'>times</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(
-  <span class='kw'>from</span> <span class='kw'>=</span> <span class='fu'>as_berlin_posix</span>(<span class='st'>"2019-01-01"</span>),
-  <span class='kw'>to</span> <span class='kw'>=</span> <span class='fu'>as_berlin_posix</span>(<span class='st'>"2020-01-01"</span>),
-  <span class='kw'>by</span> <span class='kw'>=</span> <span class='fl'>3600</span>
-)
+<span class='va'>as_berlin_posix</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct</a></span><span class='op'>(</span><span class='va'>x</span>, tz <span class='op'>=</span> <span class='st'>"Europe/Berlin"</span><span class='op'>)</span>
+<span class='va'>times</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span>
+  from <span class='op'>=</span> <span class='fu'>as_berlin_posix</span><span class='op'>(</span><span class='st'>"2019-01-01"</span><span class='op'>)</span>, 
+  to <span class='op'>=</span> <span class='fu'>as_berlin_posix</span><span class='op'>(</span><span class='st'>"2020-01-01"</span><span class='op'>)</span>, 
+  by <span class='op'>=</span> <span class='fl'>3600</span>
+<span class='op'>)</span>
 
 <span class='co'># As expected, exactly one sequence of equal time step is found:</span>
-<span class='fu'>getEqualStepRanges</span>(<span class='no'>times</span>)</div><div class='output co'>#&gt;   from   to  from_time    to_time    step
+<span class='fu'>getEqualStepRanges</span><span class='op'>(</span><span class='va'>times</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;   from   to  from_time    to_time    step
 #&gt; 1    1 8761 2019-01-01 2020-01-01 1 hours</div><div class='input'>
 <span class='co'># Simulate the case that timestamps were read from a text file and converted</span>
 <span class='co'># with as.POSIXct()</span>
-<span class='no'>timestamps</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span>(<span class='no'>times</span>)
-<span class='no'>new_times</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct</a></span>(<span class='no'>timestamps</span>, <span class='kw'>tz</span> <span class='kw'>=</span> <span class='st'>"Europe/Berlin"</span>)
+<span class='va'>timestamps</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span><span class='op'>(</span><span class='va'>times</span><span class='op'>)</span>
+<span class='va'>new_times</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct</a></span><span class='op'>(</span><span class='va'>timestamps</span>, tz <span class='op'>=</span> <span class='st'>"Europe/Berlin"</span><span class='op'>)</span>
 
 <span class='co'># Show the sequences of equal time steps again</span>
-<span class='fu'>getEqualStepRanges</span>(<span class='no'>new_times</span>)</div><div class='output co'>#&gt;   from   to           from_time             to_time      step
+<span class='fu'>getEqualStepRanges</span><span class='op'>(</span><span class='va'>new_times</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;   from   to           from_time             to_time      step
 #&gt; 1    1 7178 2019-01-01 00:00:00 2019-10-27 02:00:00 3600 secs
 #&gt; 2 7178 7179 2019-10-27 02:00:00 2019-10-27 02:00:00    0 secs
 #&gt; 3 7179 7180 2019-10-27 02:00:00 2019-10-27 03:00:00 7200 secs
@@ -167,19 +175,18 @@
 <span class='co'># What happened? The timestamp 2019-10-27 02:00 appears twice! Once in CEST</span>
 <span class='co'># and once in CET. Use a helper function that assigns CEST and CET as </span>
 <span class='co'># required:</span>
-<span class='no'>good_times</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='textToEuropeBerlinPosix.html'>textToEuropeBerlinPosix</a></span>(<span class='no'>timestamps</span>)</div><div class='output co'>#&gt; Guessing time format ... ok. (0.01s) 
-#&gt; Converting 8761 timestamps to POSIXct ... ok. (0.08s) </div><div class='input'>
+<span class='va'>good_times</span> <span class='op'>&lt;-</span> <span class='fu'><a href='textToEuropeBerlinPosix.html'>textToEuropeBerlinPosix</a></span><span class='op'>(</span><span class='va'>timestamps</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Guessing time format ... ok. (0.01s) 
+#&gt; Converting 8761 timestamps to POSIXct ... ok. (0.15s) </div><div class='input'>
 <span class='co'># Check if the original date and time objects could be reproduced</span>
-<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='no'>good_times</span>, <span class='no'>times</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span><span class='op'>(</span><span class='va'>good_times</span>, <span class='va'>times</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 </div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -190,7 +197,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

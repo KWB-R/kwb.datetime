@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cerulean/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -39,7 +43,6 @@
 <meta property="og:description" content="Converts an object representing a date (and if applicable a time) into an 
 object of class POSIXct. Supported input classes are character, Date and 
 POSIXt." />
-<meta name="twitter:card" content="summary" />
 
 
 <meta name="robots" content="noindex">
@@ -57,7 +60,7 @@ POSIXt." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -79,7 +82,7 @@ POSIXt." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -101,11 +104,14 @@ POSIXt." />
     </li>
   </ul>
 </li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/kwb-r/kwb.datetime">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/kwb-r/kwb.datetime/">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -133,8 +139,7 @@ object of class POSIXct. Supported input classes are character, Date and
 POSIXt.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>hsToPosix</span>(<span class='no'>datetime</span>, <span class='kw'>keepTZ</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/NULL.html'>is.null</a></span>(<span class='no'>tzone</span>), <span class='kw'>tzone</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>lt</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>hsToPosix</span><span class='op'>(</span><span class='va'>datetime</span>, keepTZ <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/NULL.html'>is.null</a></span><span class='op'>(</span><span class='va'>tzone</span><span class='op'>)</span>, tzone <span class='op'>=</span> <span class='cn'>NULL</span>, lt <span class='op'>=</span> <span class='cn'>FALSE</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -177,19 +182,23 @@ format, help for as.POSIXct/as.POSIXlt.</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Start with a string representing a timestamp</span>
-<span class='no'>datetime</span> <span class='kw'>&lt;-</span> <span class='st'>"2011-01-02 12:34:56"</span>
-
+<span class='va'>datetime</span> <span class='op'>&lt;-</span> <span class='st'>"2011-01-02 12:34:56"</span>
+  
 <span class='co'># By default hsToPosix creates a POSIXct object:</span>
-<span class='no'>ct</span> <span class='kw'>&lt;-</span> <span class='fu'>hsToPosix</span>(<span class='no'>datetime</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span>(<span class='no'>ct</span>) <span class='co'># "POSIXct" "POSIXt"</span></div><div class='output co'>#&gt; [1] "POSIXct" "POSIXt" </div><div class='input'>
+<span class='va'>ct</span> <span class='op'>&lt;-</span> <span class='fu'>hsToPosix</span><span class='op'>(</span><span class='va'>datetime</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span><span class='op'>(</span><span class='va'>ct</span><span class='op'>)</span> <span class='co'># "POSIXct" "POSIXt"</span>
+</div><div class='output co'>#&gt; [1] "POSIXct" "POSIXt" </div><div class='input'>  
 <span class='co'># You may decide to create a POSIXlt object instead:</span>
-<span class='no'>lt</span> <span class='kw'>&lt;-</span> <span class='fu'>hsToPosix</span>(<span class='no'>datetime</span>, <span class='kw'>lt</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span>(<span class='no'>lt</span>) <span class='co'># "POSIXlt" "POSIXt"</span></div><div class='output co'>#&gt; [1] "POSIXlt" "POSIXt" </div><div class='input'>
+<span class='va'>lt</span> <span class='op'>&lt;-</span> <span class='fu'>hsToPosix</span><span class='op'>(</span><span class='va'>datetime</span>, lt <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span><span class='op'>(</span><span class='va'>lt</span><span class='op'>)</span> <span class='co'># "POSIXlt" "POSIXt"</span>
+</div><div class='output co'>#&gt; [1] "POSIXlt" "POSIXt" </div><div class='input'>  
 <span class='co'># With a POSIXlt object you can access the different parts of the timestamp</span>
-<span class='fu'><a href='https://rdrr.io/r/base/sprintf.html'>sprintf</a></span>(<span class='st'>"%d hours, %d minutes, %d seconds"</span>, <span class='no'>lt</span>$<span class='no'>hour</span>, <span class='no'>lt</span>$<span class='no'>min</span>, <span class='no'>lt</span>$<span class='no'>sec</span>)</div><div class='output co'>#&gt; [1] "12 hours, 34 minutes, 56 seconds"</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/sprintf.html'>sprintf</a></span><span class='op'>(</span><span class='st'>"%d hours, %d minutes, %d seconds"</span>, <span class='va'>lt</span><span class='op'>$</span><span class='va'>hour</span>, <span class='va'>lt</span><span class='op'>$</span><span class='va'>min</span>, <span class='va'>lt</span><span class='op'>$</span><span class='va'>sec</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "12 hours, 34 minutes, 56 seconds"</div><div class='input'>
 <span class='co'># These are all available pieces of information </span>
 <span class='co'># (isdst = is daylight savings time in effect)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>sapply</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span>(<span class='no'>lt</span>, <span class='st'>"names"</span>), <span class='kw'>function</span>(<span class='no'>name</span>) <span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='no'>lt</span><span class='kw'>[[</span><span class='no'>name</span>]]))</div><div class='output co'>#&gt; Error in FUN(X[[i]], ...) : subscript out of bounds
+<span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>sapply</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span><span class='op'>(</span><span class='va'>lt</span>, <span class='st'>"names"</span><span class='op'>)</span>, <span class='kw'>function</span><span class='op'>(</span><span class='va'>name</span><span class='op'>)</span> <span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span><span class='va'>lt</span><span class='op'>[[</span><span class='va'>name</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Error in FUN(X[[i]], ...) : subscript out of bounds
 #&gt; Error in FUN(X[[i]], ...) : subscript out of bounds
 #&gt; Error in FUN(X[[i]], ...) : subscript out of bounds
 #&gt; Error in FUN(X[[i]], ...) : subscript out of bounds
@@ -214,41 +223,44 @@ format, help for as.POSIXct/as.POSIXlt.</p></td>
 #&gt;                                                    yday 
 #&gt; "Error in FUN(X[[i]], ...) : subscript out of bounds\n" 
 #&gt;                                                   isdst 
-#&gt; "Error in FUN(X[[i]], ...) : subscript out of bounds\n" </div><div class='input'>
+#&gt; "Error in FUN(X[[i]], ...) : subscript out of bounds\n" </div><div class='input'>  
 <span class='co'># You may use hsToPosix to convert between lt and ct</span>
-<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='fu'>hsToPosix</span>(<span class='no'>ct</span>, <span class='kw'>lt</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>), <span class='no'>lt</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='fu'>hsToPosix</span>(<span class='no'>lt</span>, <span class='kw'>lt</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>), <span class='no'>ct</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span><span class='op'>(</span><span class='fu'>hsToPosix</span><span class='op'>(</span><span class='va'>ct</span>, lt <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>, <span class='va'>lt</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span><span class='op'>(</span><span class='fu'>hsToPosix</span><span class='op'>(</span><span class='va'>lt</span>, lt <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>, <span class='va'>ct</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>  
 <span class='co'># The following time does not exist in CET/CEST but in UTC </span>
 <span class='co'># as it is the time when daylight-savings time switched.</span>
-<span class='fu'>hsToPosix</span>(<span class='st'>"2011-03-27 02:00:00"</span>) <span class='co'># "2011-03-27 02:00:00 UTC"</span></div><div class='output co'>#&gt; [1] "2011-03-27 02:00:00 UTC"</div><div class='input'>
+<span class='fu'>hsToPosix</span><span class='op'>(</span><span class='st'>"2011-03-27 02:00:00"</span><span class='op'>)</span> <span class='co'># "2011-03-27 02:00:00 UTC"</span>
+</div><div class='output co'>#&gt; [1] "2011-03-27 02:00:00 UTC"</div><div class='input'>  
 <span class='co'># Compare with as.POSIXct: between 02:00:00 and 02:59:59 the </span>
 <span class='co'># time information gets lost and is only recognized again </span>
 <span class='co'># from 03:00:00 on. Similar results with as.POSIXlt.</span>
-<span class='fu'><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXlt</a></span>(<span class='st'>"2011-03-27 01:59:59"</span>) <span class='co'># "2011-03-27 01:59:59"</span></div><div class='output co'>#&gt; [1] "2011-03-27 01:59:59 CET"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXlt</a></span>(<span class='st'>"2011-03-27 02:00:00"</span>) <span class='co'># "2011-03-27"</span></div><div class='output co'>#&gt; [1] "2011-03-27 02:00:00 CEST"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXlt</a></span>(<span class='st'>"2011-03-27 02:59:59"</span>) <span class='co'># "2011-03-27"</span></div><div class='output co'>#&gt; [1] "2011-03-27 02:59:59 CEST"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXlt</a></span>(<span class='st'>"2011-03-27 03:00:00"</span>) <span class='co'># "2011-03-27 03:00:00"  </span></div><div class='output co'>#&gt; [1] "2011-03-27 03:00:00 CEST"</div><div class='input'>  
-# When loading data from an Access table it will be of class
-# POSIXct:
-#dat <- hsGetTable(xmdb(), "tbl_Hyd")
-#class(dat$Zeitst) # "POSIXct" "POSIXt"
+<span class='fu'><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXlt</a></span><span class='op'>(</span><span class='st'>"2011-03-27 01:59:59"</span><span class='op'>)</span> <span class='co'># "2011-03-27 01:59:59"</span>
+</div><div class='output co'>#&gt; [1] "2011-03-27 01:59:59 UTC"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXlt</a></span><span class='op'>(</span><span class='st'>"2011-03-27 02:00:00"</span><span class='op'>)</span> <span class='co'># "2011-03-27"</span>
+</div><div class='output co'>#&gt; [1] "2011-03-27 02:00:00 UTC"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXlt</a></span><span class='op'>(</span><span class='st'>"2011-03-27 02:59:59"</span><span class='op'>)</span> <span class='co'># "2011-03-27"</span>
+</div><div class='output co'>#&gt; [1] "2011-03-27 02:59:59 UTC"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXlt</a></span><span class='op'>(</span><span class='st'>"2011-03-27 03:00:00"</span><span class='op'>)</span> <span class='co'># "2011-03-27 03:00:00"  </span>
+</div><div class='output co'>#&gt; [1] "2011-03-27 03:00:00 UTC"</div><div class='input'>  
+<span class='co'># When loading data from an Access table it will be of class</span>
+<span class='co'># POSIXct:</span>
+<span class='co'>#dat &lt;- hsGetTable(xmdb(), "tbl_Hyd")</span>
+<span class='co'>#class(dat$Zeitst) # "POSIXct" "POSIXt"</span>
   
-# In order to prevent R from considering daylight savings time
-# we should convert to UTC time zone. But then we have to keep
-# in mind that the indication "UTC" is not correct as the time
-# stamps in fact represent the time zone "UTC+1"!
-#head(dat$Zeitst) 
-# "2011-08-23 00:00:00 CEST" "2011-08-23 00:01:00 CEST" ...
+<span class='co'># In order to prevent R from considering daylight savings time</span>
+<span class='co'># we should convert to UTC time zone. But then we have to keep</span>
+<span class='co'># in mind that the indication "UTC" is not correct as the time</span>
+<span class='co'># stamps in fact represent the time zone "UTC+1"!</span>
+<span class='co'>#head(dat$Zeitst) </span>
+<span class='co'># "2011-08-23 00:00:00 CEST" "2011-08-23 00:01:00 CEST" ...</span>
   
-#head(hsToPosix(dat$Zeitst))  
-# "2011-08-23 00:00:00 UTC" "2011-08-23 00:01:00 UTC" ...
+<span class='co'>#head(hsToPosix(dat$Zeitst))  </span>
+<span class='co'># "2011-08-23 00:00:00 UTC" "2011-08-23 00:01:00 UTC" ...</span>
 
 </div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#details">Details</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -259,7 +271,7 @@ format, help for as.POSIXct/as.POSIXlt.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
