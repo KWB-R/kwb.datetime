@@ -1,21 +1,28 @@
 Package: kwb.datetime
-Authors@R: c(
-    person("Hauke", "Sonnenberg", , "hauke.sonnenberg@kompetenz-wasser.de", 
-           role = c("aut", "cre"), comment = c(ORCID = "0000-0001-9134-2871")),
-    person("Kompetenzzentrum Wasser Berlin gGmbH", role = c("cph")))
-Version: 0.4.0.9000
-License: MIT + file LICENSE
-Imports: 
-    kwb.utils (>= 0.4.2)
-Remotes: github::kwb-r/kwb.utils
 Title: Functions for date/time objects
-Description: Functions for date/time objects, e.g. functions to convert timestamps between
-          different time zones. Correctness for some functions still to be verified! 
-RoxygenNote: 7.1.1
+Version: 0.4.0.9000
+Authors@R: 
+    c(person(given = "Hauke",
+             family = "Sonnenberg",
+             role = c("aut", "cre"),
+             email = "hauke.sonnenberg@kompetenz-wasser.de",
+             comment = c(ORCID = "0000-0001-9134-2871")),
+      person(given = "Kompetenzzentrum Wasser Berlin gGmbH",
+             role = "cph"))
+Description: Functions for date/time objects, e.g. functions to
+    convert timestamps between different time zones. Correctness for some
+    functions still to be verified!
+License: MIT + file LICENSE
 URL: https://github.com/kwb-r/kwb.datetime
 BugReports: https://github.com/kwb-r/kwb.datetime/issues
+Imports: 
+    kwb.utils (>= 0.4.2)
 Suggests: 
     testthat (>= 2.0.1),
     knitr (>= 1.23),
     rmarkdown (>= 1.13)
-VignetteBuilder: knitr
+VignetteBuilder: 
+    knitr
+Remotes: 
+    github::kwb-r/kwb.utils
+RoxygenNote: 7.1.1
