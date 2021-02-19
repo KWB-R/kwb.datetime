@@ -1,10 +1,10 @@
-Latest changes
-==============
+# kwb.datetime 0.4.0.9000
 
+* Added a `NEWS.md` file to track changes to the package (see 
+https://style.tidyverse.org/news.html for writing a good `NEWS.md`)
 * Fix bug in hasTimeFormat(): return vector of boolean also if method = 2
 
-Changes in version 0.4.0
-========================
+# kwb.datetime 0.4.0
 
 * New vignettes: "Converting Text to Time Objects", 
   "Use Case: Importing Timestamps"
@@ -16,10 +16,10 @@ Changes in version 0.4.0
   allow to pass a vector of timestamps
 * utc_offset_Berlin_time(): rename to utcOffsetBerlinTime()
 
-Changes in version 0.3.1
-========================
+# kwb.datetime 0.3.1
+
 * Add vignette "Exkurs: Zeitzonen" (in German!)
 
-Changes in version 0.1.0
-========================
+# kwb.datetime 0.1.0
+
 * package created
