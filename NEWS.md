@@ -1,8 +1,10 @@
-# kwb.datetime 0.4.0.9000
+# kwb.datetime 0.4.1
 
+* Fix installation of GitHub dependencies via `Remotes` field 
+* Use Github Actions for continuous integration
+* Fix bug in hasTimeFormat(): return vector of boolean also if method = 2
 * Added a `NEWS.md` file to track changes to the package (see 
 https://style.tidyverse.org/news.html for writing a good `NEWS.md`)
-* Fix bug in hasTimeFormat(): return vector of boolean also if method = 2
 
 # kwb.datetime 0.4.0
 

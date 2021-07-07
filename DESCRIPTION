@@ -1,12 +1,17 @@
 Package: kwb.datetime
 Title: Functions for date/time objects
-Version: 0.4.0.9000
+Version: 0.4.1
 Authors@R: 
     c(person(given = "Hauke",
              family = "Sonnenberg",
              role = c("aut", "cre"),
              email = "hauke.sonnenberg@kompetenz-wasser.de",
-             comment = c(ORCID = "0000-0001-9134-2871")),
+             comment = c(ORCID = "0000-0001-9134-2871"),
+      person(given = "Michael",
+             family = "Rustler",
+             role = "ctb",
+             email = "michael.rustler@kompetenz-wasser.de",
+             comment = c(ORCID = "0000-0003-0647-7726")),
       person(given = "Kompetenzzentrum Wasser Berlin gGmbH",
              role = "cph"))
 Description: Functions for date/time objects, e.g. functions to
