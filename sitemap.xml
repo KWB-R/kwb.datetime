@@ -106,10 +106,16 @@
     <loc>https://kwb-r.github.io/kwb.datetime/reference/stringToPosix.html</loc>
   </url>
   <url>
+    <loc>https://kwb-r.github.io/kwb.datetime/reference/test_TimeConversionFunctions.html</loc>
+  </url>
+  <url>
     <loc>https://kwb-r.github.io/kwb.datetime/reference/textToEuropeBerlinPosix.html</loc>
   </url>
   <url>
     <loc>https://kwb-r.github.io/kwb.datetime/reference/timeFormatToRegex.html</loc>
+  </url>
+  <url>
+    <loc>https://kwb-r.github.io/kwb.datetime/reference/timesAroundClockChange.html</loc>
   </url>
   <url>
     <loc>https://kwb-r.github.io/kwb.datetime/reference/timestampIn.html</loc>

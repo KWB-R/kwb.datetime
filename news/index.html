@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Number of Month to Number to Quarter — hsQua • kwb.datetime</title>
+<title>Changelog • kwb.datetime</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,7 @@
 
 
 
-<meta property="og:title" content="Number of Month to Number to Quarter — hsQua" />
-<meta property="og:description" content="Number of Month to Number to Quarter" />
+<meta property="og:title" content="Changelog" />
 
 
 
@@ -59,7 +58,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-reference-topic">
+    <div class="container template-news">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -126,37 +125,54 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Number of Month to Number to Quarter</h1>
-    <small class="dont-index">Source: <a href='https://github.com/kwb-r/kwb.datetime/blob/master/R/main.R'><code>R/main.R</code></a></small>
-    <div class="hidden name"><code>hsQua.Rd</code></div>
+      <h1 data-toc-skip>Changelog <small></small></h1>
+      <small>Source: <a href='https://github.com/kwb-r/kwb.datetime/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div class="ref-description">
-    <p>Number of Month to Number to Quarter</p>
-    </div>
-
-    <pre class="usage"><span class='fu'>hsQua</span><span class='op'>(</span><span class='va'>month</span><span class='op'>)</span></pre>
-
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>month</th>
-      <td><p>number of month (1:12)</p></td>
-    </tr>
-    </table>
-
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>number of quarter: 1 if month in (1:3), 2 if month in (4:6), 3 if
-  month in (7:9), 4 if month in (10:12)</p>
-
+    <div id="kwbdatetime-041" class="section level1">
+<h1 class="page-header" data-toc-text="0.4.1">
+<a href="#kwbdatetime-041" class="anchor"></a>kwb.datetime 0.4.1</h1>
+<ul>
+<li>Fix installation of GitHub dependencies via <code>Remotes</code> field</li>
+<li>Use Github Actions for continuous integration</li>
+<li>Fix bug in hasTimeFormat(): return vector of boolean also if method = 2</li>
+<li>Added a <code>NEWS.md</code> file to track changes to the package (see <a href="https://style.tidyverse.org/news.html" class="uri">https://style.tidyverse.org/news.html</a> for writing a good <code>NEWS.md</code>)</li>
+</ul>
+</div>
+    <div id="kwbdatetime-040" class="section level1">
+<h1 class="page-header" data-toc-text="0.4.0">
+<a href="#kwbdatetime-040" class="anchor"></a>kwb.datetime 0.4.0</h1>
+<ul>
+<li>New vignettes: “Converting Text to Time Objects”, “Use Case: Importing Timestamps”</li>
+<li>New functions: getEqualStepRanges(), getTimestampSummary(), textToEuropeBerlinPosix()</li>
+<li>hasTimeFormat(): add argument “method”</li>
+<li>iso_to_localtime(): rename to isoToLocaltime()</li>
+<li>matchingTimeFormat(): add arguments “method”, “warn”, “failureValue”; allow to pass a vector of timestamps</li>
+<li>utc_offset_Berlin_time(): rename to utcOffsetBerlinTime()</li>
+</ul>
+</div>
+    <div id="kwbdatetime-031" class="section level1">
+<h1 class="page-header" data-toc-text="0.3.1">
+<a href="#kwbdatetime-031" class="anchor"></a>kwb.datetime 0.3.1</h1>
+<ul>
+<li>Add vignette “Exkurs: Zeitzonen” (in German!)</li>
+</ul>
+</div>
+    <div id="kwbdatetime-010" class="section level1">
+<h1 class="page-header" data-toc-text="0.1.0">
+<a href="#kwbdatetime-010" class="anchor"></a>kwb.datetime 0.1.0</h1>
+<ul>
+<li>package created</li>
+</ul>
+</div>
   </div>
+
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>
     </nav>
   </div>
+
 </div>
 
 

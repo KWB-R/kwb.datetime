@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Number of Month to Number to Quarter — hsQua • kwb.datetime</title>
+<title>Test Time Conversion Functions — test_TimeConversionFunctions • kwb.datetime</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Number of Month to Number to Quarter — hsQua" />
-<meta property="og:description" content="Number of Month to Number to Quarter" />
+<meta property="og:title" content="Test Time Conversion Functions — test_TimeConversionFunctions" />
+<meta property="og:description" content="Test Time Conversion Functions" />
 
 
 
@@ -126,30 +126,31 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Number of Month to Number to Quarter</h1>
-    <small class="dont-index">Source: <a href='https://github.com/kwb-r/kwb.datetime/blob/master/R/main.R'><code>R/main.R</code></a></small>
-    <div class="hidden name"><code>hsQua.Rd</code></div>
+    <h1>Test Time Conversion Functions</h1>
+    <small class="dont-index">Source: <a href='https://github.com/kwb-r/kwb.datetime/blob/master/R/test_datetime.R'><code>R/test_datetime.R</code></a></small>
+    <div class="hidden name"><code>test_TimeConversionFunctions.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Number of Month to Number to Quarter</p>
+    <p>Test Time Conversion Functions</p>
     </div>
 
-    <pre class="usage"><span class='fu'>hsQua</span><span class='op'>(</span><span class='va'>month</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>test_TimeConversionFunctions</span><span class='op'>(</span>year <span class='op'>=</span> <span class='fl'>2000</span>, normalToSummer <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>month</th>
-      <td><p>number of month (1:12)</p></td>
+      <th>year</th>
+      <td><p>year for which to demonstrate the switch between Central European
+Time (CET) and Central European Summer Time (CEST)</p></td>
+    </tr>
+    <tr>
+      <th>normalToSummer</th>
+      <td><p><code>TRUE</code>: CET to CEST, <code>FALSE</code>: CEST to CET</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>number of quarter: 1 if month in (1:3), 2 if month in (4:6), 3 if
-  month in (7:9), 4 if month in (10:12)</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
