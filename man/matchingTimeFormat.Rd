@@ -4,8 +4,13 @@
 \alias{matchingTimeFormat}
 \title{Find Time Format matching a Timestamp}
 \usage{
-matchingTimeFormat(timestamp, timeFormats = getTimeFormats(),
-  method = 1L, warn = TRUE, failureValue = NULL)
+matchingTimeFormat(
+  timestamp,
+  timeFormats = getTimeFormats(),
+  method = 1L,
+  warn = TRUE,
+  failureValue = NULL
+)
 }
 \arguments{
 \item{timestamp}{character timestamp to be checked against different possible

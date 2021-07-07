@@ -25,7 +25,7 @@ times <- as.POSIXct(kwb.datetime::sequenceOfTimestamps(
 
 # Apply all different defined types and print the result
 for (type in rownames(kwb.datetime:::.timestamp_type_info())) {
-  kwb.utils::printIf(TRUE, intervalKey(times, type), paste("\\ntype:", type))
+  kwb.utils::printIf(TRUE, intervalKey(times, type), paste("\ntype:", type))
 }
 
 }

@@ -136,20 +136,26 @@ hasTimeFormat <- function(timestamps, timeformat = NULL, method = 1L)
   
   if (method == 1L) {
     
-    pattern <- sprintf("^%s$", timeFormatToRegex(timeformat))
-    grepl(pattern, timestamps)
-    
-  } else if (method == 2L) {
+    return(grepl(
+      pattern = sprintf("^%s$", timeFormatToRegex(timeformat)), 
+      x = timestamps
+    ))
+  }
+  
+  if (method == 2L) {
     
     posix_time <- as.POSIXct(timestamps, tz = "UTC", format = timeformat)
-    ! is.na(posix_time) && 
-      identical(timestamps, format(posix_time, format = timeformat))
     
-  } else {
-    
-    stop("No such method. Use method = 1 (pattern matching) or method = 2 ", 
-         "(identity of converting back and forth)", call. = FALSE)
-  }
+    return(
+      ! is.na(posix_time) & 
+        timestamps == format(posix_time, format = timeformat)
+    )
+  } 
+  
+  stop(
+    "No such method. Use method = 1 (pattern matching) or method = 2 ", 
+    "(identity of converting back and forth)", call. = FALSE
+  )
 }
 
 # timeFormatToRegex ------------------------------------------------------------

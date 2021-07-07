@@ -1,10 +1,10 @@
 ---
-title: "Exkurs Zeitzonen"
+title: "Exkurs Zeitzonen (in German)"
 author: "Hauke Sonnenberg"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{Exkurs Zeitzonen (in German)}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

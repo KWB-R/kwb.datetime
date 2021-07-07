@@ -4,8 +4,11 @@
 \alias{isValidTimestampSequence}
 \title{Check Sequence of Timestamps for Validity}
 \usage{
-isValidTimestampSequence(timestamps, checks = c("sorted", "duplicates",
-  "timestep"), dbg = FALSE)
+isValidTimestampSequence(
+  timestamps,
+  checks = c("sorted", "duplicates", "timestep"),
+  dbg = FALSE
+)
 }
 \arguments{
 \item{timestamps}{vector of timestamps of class POSIXt}

@@ -4,9 +4,17 @@
 \alias{resetTimePart}
 \title{Reduce a Timestamp to a certain Information}
 \usage{
-resetTimePart(tstamp, resetYear = FALSE, resetMonth = FALSE,
-  resetDay = FALSE, resetTime = FALSE, resetHour = resetTime,
-  resetMin = resetTime, resetSec = resetTime, ...)
+resetTimePart(
+  tstamp,
+  resetYear = FALSE,
+  resetMonth = FALSE,
+  resetDay = FALSE,
+  resetTime = FALSE,
+  resetHour = resetTime,
+  resetMin = resetTime,
+  resetSec = resetTime,
+  ...
+)
 }
 \arguments{
 \item{tstamp}{(vector of) timestamp(s) of type POSXIXt}
