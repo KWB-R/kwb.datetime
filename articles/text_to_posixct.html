@@ -211,7 +211,7 @@
 <span class="va">times_standard_from_text</span> <span class="op">&lt;-</span> <span class="fu">kwb.datetime</span><span class="fu">::</span><span class="fu"><a href="../reference/textToEuropeBerlinPosix.html">textToEuropeBerlinPosix</a></span><span class="op">(</span>
   <span class="va">timestamps_standard</span>, format <span class="op">=</span> <span class="va">format</span>, switches <span class="op">=</span> <span class="cn">FALSE</span>
 <span class="op">)</span>
-<span class="co">#&gt; Converting 8761 timestamps to POSIXct ... ok. (0.05s)</span></code></pre></div>
+<span class="co">#&gt; Converting 8761 timestamps to POSIXct ... ok. (0.04s)</span></code></pre></div>
 <p>The created <code>POSIXct</code> objects are now (almost) identical to the original ones. The only difference is the time zone attribute that is “Etc/GMT-1” in the original timestamps but “Europe/Berlin” in the timestamps provided by <code><a href="../reference/textToEuropeBerlinPosix.html">textToEuropeBerlinPosix()</a></code>:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/attr.html">attr</a></span><span class="op">(</span><span class="va">times_standard</span>, <span class="st">"tzone"</span><span class="op">)</span>
