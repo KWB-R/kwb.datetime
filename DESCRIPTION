@@ -1,6 +1,6 @@
 Package: kwb.datetime
 Title: Functions for date/time objects
-Version: 0.4.1
+Version: 0.5.0
 Authors@R: 
     c(person(given = "Hauke",
              family = "Sonnenberg",
