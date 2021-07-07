@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   text_to_posixct: text_to_posixct.html
   timezones: timezones.html
-last_built: 2021-07-07T11:15Z
+last_built: 2021-07-07T11:19Z
 urls:
   reference: https://kwb-r.github.io/kwb.datetime/reference
   article: https://kwb-r.github.io/kwb.datetime/articles
