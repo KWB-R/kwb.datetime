@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">kwb.datetime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -178,7 +178,7 @@
 <span class="va">times_local_from_text</span> <span class="op">&lt;-</span> <span class="fu">kwb.datetime</span><span class="fu">::</span><span class="fu"><a href="../reference/textToEuropeBerlinPosix.html">textToEuropeBerlinPosix</a></span><span class="op">(</span>
   <span class="va">timestamps_local</span>, format <span class="op">=</span> <span class="va">format</span>
 <span class="op">)</span>
-<span class="co">#&gt; Converting 8761 timestamps to POSIXct ... ok. (0.15s)</span></code></pre></div>
+<span class="co">#&gt; Converting 8761 timestamps to POSIXct ... ok. (0.14s)</span></code></pre></div>
 <p>The created <code>POSIXct</code> objects are now identical to the original ones:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/identical.html">identical</a></span><span class="op">(</span><span class="va">times_local</span>, <span class="va">times_local_from_text</span><span class="op">)</span>
@@ -384,7 +384,7 @@
 <span class="co"># (Correctly) Convert to POSIXct</span>
 <span class="va">good_times</span> <span class="op">&lt;-</span> <span class="fu">kwb.datetime</span><span class="fu">::</span><span class="fu"><a href="../reference/textToEuropeBerlinPosix.html">textToEuropeBerlinPosix</a></span><span class="op">(</span><span class="va">iso</span><span class="op">)</span>
 <span class="co">#&gt; Guessing time format ... ok. (0.01s) </span>
-<span class="co">#&gt; Converting 8761 timestamps to POSIXct ... ok. (0.16s)</span>
+<span class="co">#&gt; Converting 8761 timestamps to POSIXct ... ok. (0.15s)</span>
 
 <span class="co"># Show the contained sub-sequences (should be only one now!)</span>
 <span class="fu">kwb.datetime</span><span class="fu">::</span><span class="fu"><a href="../reference/getEqualStepRanges.html">getEqualStepRanges</a></span><span class="op">(</span><span class="va">good_times</span><span class="op">)</span>

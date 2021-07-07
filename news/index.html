@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">kwb.datetime</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -129,13 +129,15 @@
       <small>Source: <a href='https://github.com/kwb-r/kwb.datetime/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="kwbdatetime-041" class="section level1">
-<h1 class="page-header" data-toc-text="0.4.1">
-<a href="#kwbdatetime-041" class="anchor"></a>kwb.datetime 0.4.1</h1>
+    <div id="kwbdatetime-050" class="section level1">
+<h1 class="page-header" data-toc-text="0.5.0">
+<a href="#kwbdatetime-050" class="anchor"></a>kwb.datetime 0.5.0</h1>
 <ul>
 <li>Fix installation of GitHub dependencies via <code>Remotes</code> field</li>
 <li>Use Github Actions for continuous integration</li>
-<li>Fix bug in hasTimeFormat(): return vector of boolean also if method = 2</li>
+<li>Fix bug in <code><a href="../reference/hasTimeFormat.html">hasTimeFormat()</a></code>: return vector of boolean also if method = 2</li>
+<li>New function: <code><a href="../reference/timesAroundClockChange.html">timesAroundClockChange()</a></code> (moved from R package <a href="https://github.com/kwb-r/kwb.test.datetime">kwb.test.datetime</a>)</li>
+<li>New function: <code><a href="../reference/test_TimeConversionFunctions.html">test_TimeConversionFunctions()</a></code> (moved from R package <a href="https://github.com/kwb-r/kwb.test.datetime">kwb.test.datetime</a>)</li>
 <li>Added a <code>NEWS.md</code> file to track changes to the package (see <a href="https://style.tidyverse.org/news.html" class="uri">https://style.tidyverse.org/news.html</a> for writing a good <code>NEWS.md</code>)</li>
 </ul>
 </div>
@@ -144,11 +146,17 @@
 <a href="#kwbdatetime-040" class="anchor"></a>kwb.datetime 0.4.0</h1>
 <ul>
 <li>New vignettes: “Converting Text to Time Objects”, “Use Case: Importing Timestamps”</li>
-<li>New functions: getEqualStepRanges(), getTimestampSummary(), textToEuropeBerlinPosix()</li>
-<li>hasTimeFormat(): add argument “method”</li>
-<li>iso_to_localtime(): rename to isoToLocaltime()</li>
-<li>matchingTimeFormat(): add arguments “method”, “warn”, “failureValue”; allow to pass a vector of timestamps</li>
-<li>utc_offset_Berlin_time(): rename to utcOffsetBerlinTime()</li>
+<li>New functions: <code><a href="../reference/getEqualStepRanges.html">getEqualStepRanges()</a></code>, <code><a href="../reference/getTimestampSummary.html">getTimestampSummary()</a></code>, <code><a href="../reference/textToEuropeBerlinPosix.html">textToEuropeBerlinPosix()</a></code>
+</li>
+<li>
+<code><a href="../reference/hasTimeFormat.html">hasTimeFormat()</a></code>: add argument “method”</li>
+<li>
+<code>iso_to_localtime()</code>: rename to isoToLocaltime()</li>
+<li>
+<code><a href="../reference/matchingTimeFormat.html">matchingTimeFormat()</a></code>: add arguments “method”, “warn”, “failureValue”; allow to pass a vector of timestamps</li>
+<li>
+<code>utc_offset_Berlin_time()</code>: rename to <code><a href="../reference/utcOffsetBerlinTime.html">utcOffsetBerlinTime()</a></code>
+</li>
 </ul>
 </div>
     <div id="kwbdatetime-031" class="section level1">
