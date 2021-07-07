@@ -14,8 +14,8 @@ Authors@R:
              comment = c(ORCID = "0000-0003-0647-7726")),
       person(given = "Kompetenzzentrum Wasser Berlin gGmbH",
              role = "cph"))
-Description: Functions for date/time objects, e.g. functions to
-    convert timestamps between different time zones. Correctness for some
+Description: Functions for date/time objects, e.g. functions to convert
+    timestamps between different time zones. Correctness for some
     functions still to be verified!
 License: MIT + file LICENSE
 URL: https://github.com/kwb-r/kwb.datetime
@@ -23,9 +23,9 @@ BugReports: https://github.com/kwb-r/kwb.datetime/issues
 Imports: 
     kwb.utils (>= 0.4.2)
 Suggests: 
-    testthat (>= 2.0.1),
     knitr (>= 1.23),
-    rmarkdown (>= 1.13)
+    rmarkdown (>= 1.13),
+    testthat (>= 2.0.1)
 VignetteBuilder: 
     knitr
 Remotes: 
